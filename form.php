@@ -1,3 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Popup contact form</title>
+<link href="css/form.css" rel="stylesheet">
+<script src="js/form.js"></script>
+</head>
+<!-- Body Starts Here -->
+<body id="body" style="overflow:hidden;">
+<div id="abc">
+<!-- Popup Div Starts Here -->
+<div id="popupContact">
+<!-- Contact Us Form -->
+
+<!-- vvvvvvvvvvvvv Nette Form  vvvvvvvvvvvvv -->
 <?php
 require 'Nette/loader.php';
 
@@ -13,9 +28,10 @@ select {
   color: #808080;
 }
 -->
+<img id="close" src="images/3.png" onclick ="div_hide()">
 <?php
 $form = new Form;
-// $form->setAction('/submit.php');
+$form->setAction('submitform.php');
 // $form->setMethod('GET');
 
 $form->addText('name', 'Jméno:')
@@ -87,27 +103,22 @@ echo $form; // vykreslí formulář
 $sub1 = $form->addContainer('first');
 
 
-
-
 if ($form->isSuccess()) {
   echo 'Formulář byl správně vyplněn a odeslán';
     $values = $form->getValues();
   dump($values);
 }
 
-//include "connect.php";
-if(!empty($_POST)) {
-  $jmeno = $_POST["name"];
-  $vek = $_POST["age"];
-  $email = $_POST["email"];
-  // if(empty($_POST["n_jm_lyz"]) || empty($_POST["n_cn_lyz"])) echo "Nezadali jste všechny nové údaje.";
-  // else { 
-  //   pg_exec($connect,"update lyze set zn_mod='$n_jm_lyz' where id_l=$id_lyz");
-  //   pg_exec($connect,"update lyze set cena='$n_cn_lyz' where id_l=$id_lyz");
-  // }
-  echo "jmeno: " . $jmeno . "<br>";
-  echo "vek: " . $vek . "<br>";
-  echo "email: " . $email . "<br>";
-}
 
 ?>
+<!-- ^^^^^^^^^^^^^ Nette Form  ^^^^^^^^^^^^^ -->
+
+</div>
+<!-- Popup Div Ends Here -->
+</div>
+<!-- Display Popup Button -->
+<h1>Click Button To Popup Form Using Javascript</h1>
+<button id="popup" onclick="div_show()">Popup</button>
+</body>
+<!-- Body Ends Here -->
+</html>
