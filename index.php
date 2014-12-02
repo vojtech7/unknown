@@ -154,15 +154,25 @@ use Nette\Forms\Form;
 							$tabulka = "Skladba";
 							break;
 						case 'personalista':
-							$tabulka = 
+							$tabulka = "Hudebnik";
 							break;
+						case 'nastrojar':
+							$tabulka = "Nastroj";
+							break;
+						case 'hudebnik':
+							$tabulka = "Koncert";
+							break;
+						case 'manazer':
+							$tabulka = "Koncert";
+							break;
+
 						default:
 							# code...
 							break;
 					}
 
 					/*tahání dat z databáze*/
-					$sql = "select * from Skladba";
+					$sql = "select * from ".$tabulka;
 					$hudebnici = mysql_query($sql);
 
 					for ($i=0; $i < mysql_num_rows($hudebnici); $i++) { 
