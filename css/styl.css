@@ -1,0 +1,37 @@
+input[type="button"] { width: 150px;
+					   height: 40px;
+					   color: 
+					}
+					
+table, th, td {
+   border: 1px solid black;
+}
+span.nadpis {font: italic 150/1.5 arial;
+			 font-size: 20;
+			 font-style: italic;
+			 line-height: 1.5em;
+
+		}
+span#nadpis_vyhledavani {position: absolute; top: 20; left: 250;}
+table#hledani {position: absolute; top: 50px; left: 250px;
+			   border-collapse: collapse;
+			   border: solid 1px black;
+			   width: 678px;
+			   text-align: center;
+			   }
+span#nadpis_vysledku {position: absolute; top: 170; left: 250;}
+table#prehled {position: absolute; top: 200px; left: 250px;
+			   border: 3px silver;
+			   border-collapse: collapse;
+			   width: 678px
+			}
+td.hlavicka {height: 20px;
+			 width: 140px;
+			}
+td#check {width: 50px;}
+#logout {position: absolute; top: 0px; right: 0px;}
+
+#vyhledat {position: relative; top: 55px; left: 50px;}
+#add {position: relative; top: 150px; left: 50px;}
+#alter {position: relative; top: 170px; left: 50px;}
+#delete {position: relative; top: 190px; left: 50px;}
