@@ -23,29 +23,29 @@ use Nette\Forms\Form;
 			$buttons->addButton('logout', 'Odhlásit');
 			if ($_GET["user"] == "aranzer") {
 				$buttons->addButton('find_song', 'Vyhledat skladbu');
-				$buttons->addButton('add_song', 'Pøidat skladbu');
+				$buttons->addButton('add_song', 'Přidat skladbu');
 				$buttons->addButton('alter_song', 'Upravit skladbu');
 				$buttons->addButton('delete_song', 'Odstranit skladbu');
 			}
 			if ($_GET["user"] == "personalista") {
-				$buttons->addButton('find_human', 'Vyhledat zamìstnance');
-				$buttons->addButton('add_human', 'Pøidat zamìstnance');
-				$buttons->addButton('alter_human', 'Upravit zamìstnance');
-				$buttons->addButton('delete_human', 'Odstranit zamìstnance');
+				$buttons->addButton('find_human', 'Vyhledat zaměstnance');
+				$buttons->addButton('add_human', 'Přidat zaměstnance');
+				$buttons->addButton('alter_human', 'Upravit zaměstnance');
+				$buttons->addButton('delete_human', 'Odstranit zaměstnance');
 			}
 			if ($_GET["user"] == "nastrojar") {
-				$buttons->addButton('find_instrument', 'Vyhledat zamìstnance');
-				$buttons->addButton('add_instrument', 'Pøidat zamìstnance');
-				$buttons->addButton('alter_instrument', 'Upravit zamìstnance');
-				$buttons->addButton('delete_instrument', 'Odstranit zamìstnance');
+				$buttons->addButton('find_instrument', 'Vyhledat zaměstnance');
+				$buttons->addButton('add_instrument', 'Přidat zaměstnance');
+				$buttons->addButton('alter_instrument', 'Upravit zaměstnance');
+				$buttons->addButton('delete_instrument', 'Odstranit zaměstnance');
 			}
 		?>
 		<div id="logout" class="buttons"><?php echo $buttons['logout']->control ?></div>
 
 		<?php
 			$moznosti_aranzer = array('ID skladby', 'Název','Délka','ID autora' );
-			$moznosti_personalista = array('Rodné èíslo', 'Jméno', 'Pøíjmení');
-			$moznosti_nastrojar = array('Výrobní èíslo', 'Datum výroby', 'Výrobce', 'Datum poslední revize', 'Datum poslední výmìny', 'Vymìnìno');
+			$moznosti_personalista = array('Rodné číslo', 'Jméno', 'Příjmení');
+			$moznosti_nastrojar = array( 'Datum výroby', 'Výrobce', 'Datum poslední revize', 'Datum poslední výměny', 'Vyměněno', 'Výrobní číslo', "Typ");
 			
 
 			$select = new Form;
@@ -68,7 +68,7 @@ use Nette\Forms\Form;
 						echo "Filtry pro vyhledávání skladeb";
 						break;
 					case "personalista" :
-						echo "Filtry pro vyhledávání zamìstnancù";
+						echo "Filtry pro vyhledávání zaměstnancù";
 						break;
 					case "nastrojar" :
 						echo "Filtry pro vyhledávání nástrojù";
