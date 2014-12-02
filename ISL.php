@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <link rel="stylesheet" type="text/css" href="css/styl.css">
+<? header("Content-Type: text/html; charset=UTF-8");?>
 <title>Filharmonie Liptákov</title>
 
 
