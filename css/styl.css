@@ -1,6 +1,5 @@
 input[type="button"] { width: 150px;
 					   height: 40px;
-					   color: 
 					}
 					
 table, th, td {
@@ -29,6 +28,7 @@ td.hlavicka {height: 20px;
 			 width: 140px;
 			}
 td#check {width: 50px;}
+.buttons {width: 150px;}
 #logout {position: absolute; top: 0px; right: 0px;}
 
 #vyhledat {position: relative; top: 55px; left: 50px;}
