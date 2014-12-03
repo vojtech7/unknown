@@ -10,7 +10,7 @@ use Nette\Forms\Form;
 
 if(isset($_GET["user"])) {
 	$buttons = new Form;
-	$buttons->addButton('logout', 'Odhl√°sit');
+	$buttons->addButton('logout', 'Odhl·sit');
 	if ($_GET["user"] == "aranzer") {
 		$buttons->addButton('add_song', 'P¯idat skladbu');
 		
@@ -70,7 +70,8 @@ if(isset($_GET["user"])) {
 <head>
 <link rel="stylesheet" type="text/css" href="css/styl.css">
 <? header("Content-Type: text/html; charset=iso-8859-2");?>
-<title>Filharmonie Lipt√°kov</title>
+<script src="js/filter.js"></script>
+<title>Filharmonie Lipt·kov</title>
 </head>
 
 <body>
@@ -80,7 +81,7 @@ if(isset($_GET["user"])) {
 			echo '<div id="logout" class="buttons">';
 			$buttons['logout']->control;	
 			echo "</div>";
-			echo '<table id="hledani">';
+			echo '<table id="hledani" class="pattern">';
 			echo '<span class="nadpis" id="nadpis_vyhledavani">';
 
 			switch ($_GET["user"]) {
@@ -132,7 +133,7 @@ if(isset($_GET["user"])) {
 			}
 
 			echo "</div>";
-			echo '<table id="prehled">';
+			echo '<table id="prehled" class="data">';
 			echo '<span class="nadpis" id="nadpis_vysledku">';
 
 			switch ($_GET["user"]) {
@@ -189,7 +190,7 @@ if(isset($_GET["user"])) {
 						break;
 				}
 			
-				/*tah√°n√≠ dat z datab√°ze*/
+				/*tah·nÌ dat z datab·ze*/
 				$sql = "select * from ".$tabulka;
 				$vysledek = mysql_query($sql);
 

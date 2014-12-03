@@ -39,3 +39,17 @@ td#check {width: 50px;}
 #blok {position: relative; top: 55px; left: 170px;}
 #alter_intrument {position: relative; top:190px ; left: 50px;}
 #delete_instrument {position: relative; top: 250px; left: 50px;}
+
+.hide {
+    display: none !important;
+}
+.show {
+    display: block !important;
+}
+.invisible {
+    visibility: hidden;
+}
+.hidden {
+    display: none !important;
+    visibility: hidden !important;
+}
