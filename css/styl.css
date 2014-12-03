@@ -5,6 +5,30 @@ input[type="button"] { width: 150px;
 table, th, td {
    border: 1px solid black;
 }
+#tlacitka ul {
+	list-style-type: none;
+}
+#tlacitka li a {
+	border: powderblue solid thick;
+	background-color: dodgerblue;
+  display: block;
+	text-align: center;
+	width: 10em;
+	padding-top: 1em;
+	padding-bottom: 1em;
+  text-decoration: none;
+  text-align: center;
+  color: white;
+}
+#tlacitka li a:hover {
+	background-color: powderblue;
+	color: dodgerblue;
+}
+#tlacitka li {
+	margin-bottom: 1em;
+	position: relative;
+	top: 160px;
+}
 span.nadpis {font: italic 150/1.5 arial;
 			 font-size: 20;
 			 font-style: italic;
@@ -40,16 +64,7 @@ td#check {width: 50px;}
 #alter_intrument {position: relative; top:190px ; left: 50px;}
 #delete_instrument {position: relative; top: 250px; left: 50px;}
 
-.hide {
-    display: none !important;
-}
-.show {
-    display: block !important;
-}
-.invisible {
-    visibility: hidden;
-}
-.hidden {
-    display: none !important;
-    visibility: hidden !important;
-}
+.hide {display: none !important; }
+.show {display: block !important; }
+.invisible {visibility: hidden; }
+.hidden {display: none !important; visibility: hidden !important; }

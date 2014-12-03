@@ -9,36 +9,41 @@ use Nette\Forms\Form;
 	include "connect.php";
 
 if(isset($_GET["user"])) {
-	$buttons = new Form;
-	$buttons->addButton('logout', 'Odhlásit');
+	// $buttons->addButton('logout', 'Odhlásit');
 	if ($_GET["user"] == "aranzer") {
-		$buttons->addButton('add_song', 'Pøidat skladbu');
-		
-		$buttons->addButton('alter_song', 'Upravit skladbu');
-		$buttons->addButton('delete_song', 'Odstranit skladbu');
+		echo '<div id="tlacitka">';
+		echo "<ul><li><a href='add_song'>Pøidat skladbu</a></li>";
+		echo "<li><a href='edit_song'>Upravit skladbu</a></li>";
+		echo "<li><a href='delete_song'>Odstranit skladbu</a></li></ul>";
+		echo "<div>";
 	}
 	if ($_GET["user"] == "personalista") {
-		$buttons->addButton('find_human', 'Vyhledat zamìstnance');
-		$buttons->addButton('add_human', 'Pøidat zamìstnance');
-		$buttons->addButton('alter_human', 'Upravit zamìstnance');
-		$buttons->addButton('delete_human', 'Odstranit zamìstnance');
+		echo '<div id="tlacitka">';
+		echo "<ul><li><a href='add_human'>Pøidat zamìstnance</a></li>";
+		echo "<li><a href='edit_human'>Upravit zamìstnance</a></li>";
+		echo "<li><a href='delete_human'>Odstranit zamìstnance</a></li></ul>";
+		echo "<div>";
 	}
 	if ($_GET["user"] == "nastrojar") {
-		$buttons->addButton('find_instrument', 'Vyhledat nástroj');
-		$buttons->addButton('add_instrument', 'Pøidat nástroj');
-		$buttons->addTextArea('vymena', 'Vymìnit èásti');
-		$buttons->addButton('vymena_casti', 'Zadej výmìnu èástí');
-		$buttons->addButton('revize', 'Zaznamenat revizi');
-		$buttons->addButton('delete_instrument', 'Odstranit nástroj');
+		echo '<div id="tlacitka">';
+		echo "<ul><li><a href='add_instrument'>Pøidat nástroj</a></li>";
+		// $buttons->addTextArea('vymena', 'Vymìnit èásti');
+		echo "<li><a href='vymena_casti'>Zadat výmìnu èástí</a></li>";
+		echo "<li><a href='revize'>Zaznamenat revizi</a></li>";
+		echo "<li><a href='delete_instrument'>Odstranit nástroj</a></li></ul>";
+		echo "<div>";
 	}
 	if ($_GET["user"] == "hudebnik") {
-		$buttons->addButton('find_concert', 'Vyhledat koncert');
-		$buttons->addButton('first_concert', 'Zobraz nejbli¾¹í koncert');
+		echo '<div id="tlacitka">';
+		echo "<ul><li><a href='first_concert'>Zobraz nejbli¾¹í koncert</a></li></ul>";
+		echo "<div>";
 	}
 
 	$moznosti_aranzer = array('ID skladby', 'Název','Délka','ID autora' );
 	$moznosti_personalista = array('Rodné èíslo', 'Jméno', 'Pøíjmení');
 	$moznosti_nastrojar = array( 'Datum výroby', 'Výrobce', 'Datum poslední revize', 'Datum poslední výmì›ny', 'Vymìnìno', 'Výrobní èíslo', "Typ");
+	$moznosti_manazer = array('ID koncertu', 'Datum a èas', 'Mìsto', 'Adresa');
+	$moznosti_hudebnik = array('ID koncertu', 'Datum a èas', 'Mìsto', 'Adresa');
 
 
 	$select = new Form;
@@ -50,7 +55,7 @@ if(isset($_GET["user"])) {
 	$select->addText('value_5');
 	$select->addText('value_6');
 	$select->addText('value_7');
-	$select->addSubmit('find_song', 'Vyhledat skladbu');
+	// $select->addSubmit('find_song', 'Vyhledat skladbu');
 
 	if ($select->isSuccess()) {
 		echo 'Form was submitted and successfully validated';
@@ -79,7 +84,7 @@ if(isset($_GET["user"])) {
 	//jestlize je vybran uzivatel
 		if(isset($_GET["user"])) {
 			echo '<div id="logout" class="buttons">';
-			$buttons['logout']->control;	
+			// $buttons['logout']->control;	
 			echo "</div>";
 			echo '<table id="hledani" class="pattern">';
 			echo '<span class="nadpis" id="nadpis_vyhledavani">';
@@ -123,13 +128,13 @@ if(isset($_GET["user"])) {
 			echo "<div class='buttons' id='vyhledat'>";
 
 			if ($_GET["user"] == "aranzer") {
-	     	echo $select['find_song']->control;
+	     	// echo $select['find_song']->control;
 			}
 			elseif ($_GET["user"] == "personalista") {
-				echo $buttons['find_human']->control;
+				// echo $buttons['find_human']->control;
 			}
 			elseif ($_GET["user"] == "nastrojar") {
-				echo $buttons['find_instrument']->control;
+				// echo $buttons['find_instrument']->control;
 			}
 
 			echo "</div>";
@@ -155,14 +160,12 @@ if(isset($_GET["user"])) {
 			echo "<tr>";
 			echo '<td class="hlavicka" id="check">Výbì›r</td>';
 
-			if (isset($_GET["user"])) {
-				$vyber = "moznosti_".$_GET["user"];
-				$count=0;
-				
-				foreach ($$vyber as $value) {
-					echo "<td class=\"hlavicka\">". $value ."</td>";
-					$count++;
-				}
+			$vyber = "moznosti_".$_GET["user"];
+			$count=0;
+			
+			foreach ($$vyber as $value) {
+				echo "<td class=\"hlavicka\">". $value ."</td>";
+				$count++;
 			}
 				
 			echo "</tr>";
@@ -209,42 +212,42 @@ if(isset($_GET["user"])) {
 			echo '<div id="tlacitka">';
 		
 
-			switch ($_GET["user"]) {
-				case 'aranzer':	
-					echo "<div class=\"buttons\" id=\"add\">".$buttons['add_song']->control."</div>";
-					echo "<div class=\"buttons\" id=\"alter\">".$buttons['alter_song']->control."</div>";
-					echo "<div class=\"buttons\" id=\"delete\">".$buttons['delete_song']->control."</div>";
-					break;
-				case 'personalista':
-					echo "<div class=\"buttons\" id=\"add\">".$buttons['add_human']->control."</div>";
-					echo "<div class=\"buttons\" id=\"alter\">".$buttons['alter_human']->control."</div>";
-					echo "<div class=\"buttons\" id=\"delete\">".$buttons['delete_human']->control."</div>";
-					break;
-				case 'nastrojar':
-					echo "<div class=\"buttons\" id=\"add\">".$buttons['add_instrument']->control."</div>";
-					echo "<div class=\"buttons\" id=\"blok\">".$buttons['vymena']->control."</div>";
-					echo "<div class=\"buttons\" id=\"alter_intrument\">".$buttons['vymena_casti']->control."</div>";
-					echo "<div class=\"buttons\" id=\"delete_instrument\">".$buttons['delete_instrument']->control."</div>";
-					break;
-				case 'hudebnik':
+			// switch ($_GET["user"]) {
+			// 	case 'aranzer':	
+			// 		echo "<div class=\"buttons\" id=\"add\">".$buttons['add_song']->control."</div>";
+			// 		echo "<div class=\"buttons\" id=\"alter\">".$buttons['alter_song']->control."</div>";
+			// 		echo "<div class=\"buttons\" id=\"delete\">".$buttons['delete_song']->control."</div>";
+			// 		break;
+			// 	case 'personalista':
+			// 		echo "<div class=\"buttons\" id=\"add\">".$buttons['add_human']->control."</div>";
+			// 		echo "<div class=\"buttons\" id=\"alter\">".$buttons['alter_human']->control."</div>";
+			// 		echo "<div class=\"buttons\" id=\"delete\">".$buttons['delete_human']->control."</div>";
+			// 		break;
+			// 	case 'nastrojar':
+			// 		echo "<div class=\"buttons\" id=\"add\">".$buttons['add_instrument']->control."</div>";
+			// 		echo "<div class=\"buttons\" id=\"blok\">".$buttons['vymena']->control."</div>";
+			// 		echo "<div class=\"buttons\" id=\"alter_intrument\">".$buttons['vymena_casti']->control."</div>";
+			// 		echo "<div class=\"buttons\" id=\"delete_instrument\">".$buttons['delete_instrument']->control."</div>";
+			// 		break;
+			// 	case 'hudebnik':
 					
-					break;
-				default:
+			// 		break;
+			// 	default:
 					
-					break;
-				}
+			// 		break;
+			// 	}
 			}
 
 			//neni vybran zadny uzivatel; obrazovka pro vyber role uzivatele
 			//prihlasit se jako: manazer, hudebnik, personalista, nastrojar, aranzer
 			else {
 				echo "Vítejte v informaèním systému Filharmonie Liptákov!<br>";
-      	echo '<ul> <div style="font-size:medium; font-weight:bold;">Objednávky</div>        
-        <li><a href="?user=manazer">Mana¾er</a></li>  
-        <li><a href="?user=personalista">Personalista</a></li>          
+      	echo '<div id="tlacitka"><ul>
+        <li><a href="?user=manazer">Mana¾er</a></li>
+        <li><a href="?user=personalista">Personalista</a></li>
         <li><a href="?user=hudebnik">Hudebník</a></li>
         <li><a href="?user=aranzer">Aran¾ér</a></li>
-        <li><a href="?user=nastrojar">Nástrojáø</a></li></ul>';
+        <li><a href="?user=nastrojar">Nástrojáø</a></li></ul></div>';
 			}
 
 		 ?>
