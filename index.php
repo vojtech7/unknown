@@ -12,33 +12,33 @@ if(isset($_GET["user"])) {
 	$buttons = new Form;
 	$buttons->addButton('logout', 'OdhlÃ¡sit');
 	if ($_GET["user"] == "aranzer") {
-		$buttons->addButton('add_song', 'PÅ™idat skladbu');
+		$buttons->addButton('add_song', 'Pøidat skladbu');
 		
 		$buttons->addButton('alter_song', 'Upravit skladbu');
 		$buttons->addButton('delete_song', 'Odstranit skladbu');
 	}
 	if ($_GET["user"] == "personalista") {
-		$buttons->addButton('find_human', 'Vyhledat zamÄ›stnance');
-		$buttons->addButton('add_human', 'PÅ™idat zamÄ›stnance');
-		$buttons->addButton('alter_human', 'Upravit zamÄ›stnance');
-		$buttons->addButton('delete_human', 'Odstranit zamÄ›stnance');
+		$buttons->addButton('find_human', 'Vyhledat zamìstnance');
+		$buttons->addButton('add_human', 'Pøidat zamìstnance');
+		$buttons->addButton('alter_human', 'Upravit zamìstnance');
+		$buttons->addButton('delete_human', 'Odstranit zamìstnance');
 	}
 	if ($_GET["user"] == "nastrojar") {
-		$buttons->addButton('find_instrument', 'Vyhledat nÃ¡stroj');
-		$buttons->addButton('add_instrument', 'PÅ™idat nÃ¡stroj');
-		$buttons->addTextArea('vymena', 'VymÄ›nÄ›nÃ© ÄÃ¡sti');
-		$buttons->addButton('vymena_casti', 'Zadej vÃ½mÄ›nu ÄÃ¡stÃ­');
+		$buttons->addButton('find_instrument', 'Vyhledat nástroj');
+		$buttons->addButton('add_instrument', 'Pøidat nástroj');
+		$buttons->addTextArea('vymena', 'Vymìnit èásti');
+		$buttons->addButton('vymena_casti', 'Zadej vımìnu èástí');
 		$buttons->addButton('revize', 'Zaznamenat revizi');
-		$buttons->addButton('delete_instrument', 'Odstranit nÃ¡stroj');
+		$buttons->addButton('delete_instrument', 'Odstranit nástroj');
 	}
 	if ($_GET["user"] == "hudebnik") {
 		$buttons->addButton('find_concert', 'Vyhledat koncert');
-		$buttons->addButton('first_concert', 'Zobraz nejbliÅ¾Å¡Ã­ koncert');
+		$buttons->addButton('first_concert', 'Zobraz nejbli¾¹í koncert');
 	}
 
-	$moznosti_aranzer = array('ID skladby', 'NÃ¡zev','DÃ©lka','ID autora' );
-	$moznosti_personalista = array('RodnÃ© ÄÃ­slo', 'JmÃ©no', 'PÅ™Ã­jmenÃ­');
-	$moznosti_nastrojar = array( 'Datum vÃ½roby', 'VÃ½robce', 'Datum poslednÃ­ revize', 'Datum poslednÃ­ vÃ½mÄ›ny', 'VymÄ›nÄ›no', 'VÃ½robnÃ­ ÄÃ­slo', "Typ");
+	$moznosti_aranzer = array('ID skladby', 'Název','Délka','ID autora' );
+	$moznosti_personalista = array('Rodné èíslo', 'Jméno', 'Pøíjmení');
+	$moznosti_nastrojar = array( 'Datum vıroby', 'Vırobce', 'Datum poslední revize', 'Datum poslední vımì›ny', 'Vymìnìno', 'Vırobní èíslo', "Typ");
 
 
 	$select = new Form;
@@ -69,7 +69,7 @@ if(isset($_GET["user"])) {
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="css/styl.css">
-<? header("Content-Type: text/html; charset=UTF-8");?>
+<? header("Content-Type: text/html; charset=iso-8859-2");?>
 <title>Filharmonie LiptÃ¡kov</title>
 </head>
 
@@ -77,19 +77,21 @@ if(isset($_GET["user"])) {
 	<?php
 	//jestlize je vybran uzivatel
 		if(isset($_GET["user"])) {
-			echo '<div id="logout" class="buttons">$buttons["logout"]->control</div>';
+			echo '<div id="logout" class="buttons">';
+			$buttons['logout']->control;	
+			echo "</div>";
 			echo '<table id="hledani">';
 			echo '<span class="nadpis" id="nadpis_vyhledavani">';
 
 			switch ($_GET["user"]) {
 				case "aranzer" :
-					echo "Filtry pro vyhledÃ¡vÃ¡nÃ­ skladeb";
+					echo "Filtry pro vyhledávání skladeb";
 					break;
 				case "personalista" :
-					echo "Filtry pro vyhledÃ¡vÃ¡nÃ­ zamÄ›stnancÅ¯";
+					echo "Filtry pro vyhledávání zamìstnancù";
 					break;
 				case "nastrojar" :
-					echo "Filtry pro vyhledÃ¡vÃ¡nÃ­ nÃ¡strojÃ¹";
+					echo "Filtry pro vyhledávání nástrojù";
 					break;
 				default:
 					# code...
@@ -138,10 +140,10 @@ if(isset($_GET["user"])) {
 					echo "Seznam  skladeb";
 					break;
 				case "personalista" :
-					echo "Seznam  zamÄ›stnancÅ¯";
+					echo "Seznam  zamìstnancù";
 					break;
 				case "nastrojar" :
-					echo "Seznam  nÃ¡strojÅ¯";
+					echo "Seznam  nástrojù";
 					break;
 				default:
 					# code...
@@ -150,7 +152,7 @@ if(isset($_GET["user"])) {
 
 			echo "</span>";
 			echo "<tr>";
-			echo '<td class="hlavicka" id="check">VÃ½bÄ›r</td>';
+			echo '<td class="hlavicka" id="check">Vıbì›r</td>';
 
 			if (isset($_GET["user"])) {
 				$vyber = "moznosti_".$_GET["user"];
@@ -235,8 +237,13 @@ if(isset($_GET["user"])) {
 			//neni vybran zadny uzivatel; obrazovka pro vyber role uzivatele
 			//prihlasit se jako: manazer, hudebnik, personalista, nastrojar, aranzer
 			else {
-				echo "VÃ­tejte na strÃ¡nkÃ¡ch Filharmonie LiptÃ¡kov!<br>";
-				echo "MÅ¯Å¾ete se pÅ™ihlÃ¡sit jako manaÅ¾er, hudebnÃ­k, personalista, nÃ¡strojÃ¡Å™ nebo aranÅ¾Ã©r<br>";
+				echo "Vítejte v informaèním systému Filharmonie Liptákov!<br>";
+      	echo '<ul> <div style="font-size:medium; font-weight:bold;">Objednávky</div>        
+        <li><a href="?user=manazer">Mana¾er</a></li>  
+        <li><a href="?user=personalista">Personalista</a></li>          
+        <li><a href="?user=hudebnik">Hudebník</a></li>
+        <li><a href="?user=aranzer">Aran¾ér</a></li>
+        <li><a href="?user=nastrojar">Nástrojáø</a></li></ul>';
 			}
 
 		 ?>
