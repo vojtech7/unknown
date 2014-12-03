@@ -23,16 +23,10 @@ if ($_GET["user"] == "personalista") {
 	$buttons->addButton('delete_human', 'Odstranit zaměstnance');
 }
 if ($_GET["user"] == "nastrojar") {
-	$buttons->addButton('find_instrument', 'Vyhledat nástroj');
-	$buttons->addButton('add_instrument', 'Přidat nástroj');
-	$buttons->addTextArea('vymena', 'Vyměněné části');
-	$buttons->addButton('vymena_casti', 'Zadej výměnu částí');
-	$buttons->addButton('revize', 'Zaznamenat revizi');
-	$buttons->addButton('delete_instrument', 'Odstranit nástroj');
-}
-if ($_GET["user"] == "hudebnik") {
-	$buttons->addButton('find_concert', 'Vyhledat koncert');
-	$buttons->addButton('first_concert', 'Zobraz nejbližší koncert');
+	$buttons->addButton('find_instrument', 'Vyhledat zaměstnance');
+	$buttons->addButton('add_instrument', 'Přidat zaměstnance');
+	$buttons->addButton('alter_instrument', 'Upravit zaměstnance');
+	$buttons->addButton('delete_instrument', 'Odstranit zaměstnance');
 }
 
 $moznosti_aranzer = array('ID skladby', 'Název','Délka','ID autora' );
@@ -46,9 +40,6 @@ $select->addText('value_1');
 $select->addText('value_2');
 $select->addText('value_3');
 $select->addText('value_4');
-$select->addText('value_5');
-$select->addText('value_6');
-$select->addText('value_7');
 $select->addSubmit('find_song', 'Vyhledat skladbu');
 
 if ($select->isSuccess()) {
@@ -206,33 +197,51 @@ if ($select->isSuccess()) {
 
 		</table>
 		<div id="tlacitka">
-			
-
-		<?php switch ($_GET["user"]) {
-					case 'aranzer':	
-						echo "<div class=\"buttons\" id=\"add\">".$buttons['add_song']->control."</div>";
-						echo "<div class=\"buttons\" id=\"alter\">".$buttons['alter_song']->control."</div>";
-						echo "<div class=\"buttons\" id=\"delete\">".$buttons['delete_song']->control."</div>";
-						break;
-					case 'personalista':
-						echo "<div class=\"buttons\" id=\"add\">".$buttons['add_human']->control."</div>";
-						echo "<div class=\"buttons\" id=\"alter\">".$buttons['alter_human']->control."</div>";
-						echo "<div class=\"buttons\" id=\"delete\">".$buttons['delete_human']->control."</div>";
-						break;
-					case 'nastrojar':
-						echo "<div class=\"buttons\" id=\"add\">".$buttons['add_instrument']->control."</div>";
-						echo "<div class=\"buttons\" id=\"blok\">".$buttons['vymena']->control."</div>";
-						echo "<div class=\"buttons\" id=\"alter_intrument\">".$buttons['vymena_casti']->control."</div>";
-						echo "<div class=\"buttons\" id=\"delete_instrument\">".$buttons['delete_instrument']->control."</div>";
-						break;
-					case 'hudebnik':
-						
-						break;
-					default:
-						
-						break;
-				}
-		 ?>
+			<div class="buttons" id="add"><?php switch ($_GET["user"]) {
+													case 'aranzer':	
+														echo $buttons['add_song']->control;
+														break;
+													case 'personalista':
+														echo $buttons['add_human']->control;
+														break;
+													case 'nastrojar':
+														echo $buttons['add_instrument']->control;
+														break;
+													default:
+														# code...
+														break;
+												}
+										 ?></div>
+			<div class="buttons" id="alter"><?php switch ($_GET["user"]) {
+													case 'aranzer':	
+														echo $buttons['alter_song']->control;
+														break;
+													case 'personalista':
+														echo $buttons['alter_human']->control;
+														break;
+													case 'nastrojar':
+														echo $buttons['alter_instrument']->control;
+														break;
+													default:
+														# code...
+														break;
+												}
+										 ?></div>
+			<div class="buttons" id="delete"><?php switch ($_GET["user"]) {
+													case 'aranzer':	
+														echo $buttons['delete_song']->control;
+														break;
+													case 'personalista':
+														echo $buttons['delete_human']->control;
+														break;
+													case 'nastrojar':
+														echo $buttons['delete_instrument']->control;
+														break;
+													default:
+														# code...
+														break;
+												}
+										 ?></div>
 
 		</div>
 	
