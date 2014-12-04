@@ -25,6 +25,7 @@ table, th, td {
 	color: dodgerblue;
 }
 #tlacitka li {
+	width: 100px;
 	margin-bottom: 1em;
 	position: relative;
 	top: 160px;
