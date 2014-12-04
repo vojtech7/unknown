@@ -11,32 +11,38 @@ use Nette\Forms\Form;
 if(isset($_GET["user"])) {
 	// $buttons->addButton('logout', 'Odhlásit');
 	if ($_GET["user"] == "aranzer") {
-		echo '<div id="tlacitka">';
-		echo "<ul><li><a href='add_song'>Pøidat skladbu</a></li>";
+		echo '<div id="tlacitka"><ul>';
+		echo "<li><a href='add_song'>Pøidat skladbu</a></li>";
 		echo "<li><a href='edit_song'>Upravit skladbu</a></li>";
-		echo "<li><a href='delete_song'>Odstranit skladbu</a></li></ul>";
-		echo "<div>";
+		echo "<li><a href='delete_song'>Odstranit skladbu</a></li>";
+		echo "</ul><div>";
 	}
 	if ($_GET["user"] == "personalista") {
-		echo '<div id="tlacitka">';
+		echo '<div id="tlacitka"><ul>';
 		echo "<ul><li><a href='add_human'>Pøidat zamìstnance</a></li>";
 		echo "<li><a href='edit_human'>Upravit zamìstnance</a></li>";
-		echo "<li><a href='delete_human'>Odstranit zamìstnance</a></li></ul>";
-		echo "<div>";
+		echo "<li><a href='delete_human'>Odstranit zamìstnance</a></li>";
+		echo "</ul><div>";
 	}
 	if ($_GET["user"] == "nastrojar") {
-		echo '<div id="tlacitka">';
-		echo "<ul><li><a href='add_instrument'>Pøidat nástroj</a></li>";
+		echo '<div id="tlacitka"><ul>';
+		echo "<li><a href='add_instrument'>Pøidat nástroj</a></li>";
 		// $buttons->addTextArea('vymena', 'Vymìnit èásti');
 		echo "<li><a href='vymena_casti'>Zadat výmìnu èástí</a></li>";
 		echo "<li><a href='revize'>Zaznamenat revizi</a></li>";
-		echo "<li><a href='delete_instrument'>Odstranit nástroj</a></li></ul>";
-		echo "<div>";
+		echo "<li><a href='delete_instrument'>Odstranit nástroj</a></li>";
+		echo "</ul><div>";
 	}
 	if ($_GET["user"] == "hudebnik") {
-		echo '<div id="tlacitka">';
-		echo "<ul><li><a href='first_concert'>Zobraz nejbli¾¹í koncert</a></li></ul>";
-		echo "<div>";
+		echo '<div id="tlacitka"><ul>';
+		echo "<li><a href='first_concert'>Zobraz nejbli¾¹í koncert</a></li>";
+		echo "</ul><div>";
+	}
+	if ($_GET["user"] == "manazer") {
+		echo '<div id="tlacitka"><ul>';
+		echo "<li><a href='naplanuj_koncert'>Naplánuj koncert</a></li>";
+		echo "<li><a href='stornuj_koncert'>Stornuj koncert</a></li>";
+		echo "</ul><div>";
 	}
 
 	$moznosti_aranzer = array('ID skladby', 'Název','Délka','ID autora' );
