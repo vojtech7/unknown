@@ -13,15 +13,11 @@ if(isset($_GET["user"])) {
 	if ($_GET["user"] == "aranzer") {
 		echo '<div id="tlacitka"><ul>';
 		echo "<li><a href='add_song'>Pøidat skladbu</a></li>";
-		echo "<li><a href='edit_song'>Upravit skladbu</a></li>";
-		echo "<li><a href='delete_song'>Odstranit skladbu</a></li>";
 		echo "</ul><div>";
 	}
 	if ($_GET["user"] == "personalista") {
 		echo '<div id="tlacitka"><ul>';
 		echo "<ul><li><a href='add_human'>Pøidat zamìstnance</a></li>";
-		echo "<li><a href='edit_human'>Upravit zamìstnance</a></li>";
-		echo "<li><a href='delete_human'>Odstranit zamìstnance</a></li>";
 		echo "</ul><div>";
 	}
 	if ($_GET["user"] == "nastrojar") {
@@ -30,7 +26,6 @@ if(isset($_GET["user"])) {
 		// $buttons->addTextArea('vymena', 'Vymìnit èásti');
 		echo "<li><a href='vymena_casti'>Zadat výmìnu èástí</a></li>";
 		echo "<li><a href='revize'>Zaznamenat revizi</a></li>";
-		echo "<li><a href='delete_instrument'>Odstranit nástroj</a></li>";
 		echo "</ul><div>";
 	}
 	if ($_GET["user"] == "hudebnik") {
@@ -41,7 +36,6 @@ if(isset($_GET["user"])) {
 	if ($_GET["user"] == "manazer") {
 		echo '<div id="tlacitka"><ul>';
 		echo "<li><a href='naplanuj_koncert'>Naplánuj koncert</a></li>";
-		echo "<li><a href='stornuj_koncert'>Stornuj koncert</a></li>";
 		echo "</ul><div>";
 	}
 
@@ -80,7 +74,7 @@ if(isset($_GET["user"])) {
 <html>
 <head>
 <link rel="stylesheet" type="text/css" href="css/styl.css">
-<? header("Content-Type: text/html; charset=iso-8859-2");?>
+<meta charset="iso-8859-2">
 <script src="js/filter.js"></script>
 <title>Filharmonie Liptákov</title>
 </head>
@@ -161,11 +155,9 @@ if(isset($_GET["user"])) {
 					# code...
 					break;
 			}
-
 			echo "</span>";
-			echo "<tr>";
-			echo '<td class="hlavicka" id="check">Výbì›r</td>';
 
+			echo "<tr>";
 			$vyber = "moznosti_".$_GET["user"];
 			$count=0;
 			
@@ -173,7 +165,7 @@ if(isset($_GET["user"])) {
 				echo "<td class=\"hlavicka\">". $value ."</td>";
 				$count++;
 			}
-				
+
 			echo "</tr>";
 			echo "<tr>";
 
@@ -206,10 +198,12 @@ if(isset($_GET["user"])) {
 				for ($i=0; $i < mysql_num_rows($vysledek); $i++) { 
 				  $row = mysql_fetch_row($vysledek);
 				  echo "<tr>";
-				  echo "<td><input type=\"checkbox\"></td>";
 				  for ($j=0; $j < mysql_num_fields($vysledek); $j++) { 
 				    echo "<td>".$row[$j];"</td>";
 				  }
+					// TODO udelat nasledujici js funkce pro dane operace:
+					echo "<td id=edit_btn><a href='javascript:alert(\"Edit\");'>Upravit</a></td>";
+					echo "<td id=delete_btn><a href='javascript:alert(\"Delete\");'>Odstranit</a></td>";
 				  echo "</tr>";
 				}
 
