@@ -1,6 +1,6 @@
 <?php
-$db = mysql_connect('localhost:/var/run/mysql/mysql.sock', 'xnovot0m', 'obaci4fa');
+$db = mysql_connect('localhost:/var/run/mysql/mysql.sock', 'xhudzi01', 'ompur5an');
 if (!$db) die('nelze se pripojit '.mysql_error());
-if (!mysql_select_db('xnovot0m', $db)) die('database neni dostupna '.mysql_error());
-
+if (!mysql_select_db('xhudzi01', $db)) die('database neni dostupna '.mysql_error());
+mysql_query("SET CHARACTER SET latin2");
 ?>
