@@ -9,7 +9,7 @@ use Nette\Forms\Form;
 	include "connect.php";
 
 if(isset($_GET["user"])) {
-	// $buttons->addButton('logout', 'Odhlásit');
+	echo "<div id=logout_btn><a href='?page=index.php'>Odhlásit se</a></div>";
 	switch($_GET["user"]) {
 		case "aranzer":
 			$tabulka = "Skladba";
@@ -17,7 +17,7 @@ if(isset($_GET["user"])) {
 			$nazvy_sloupcu = array('ID_skladby', 'nazev', 'delka', 'ID_autora');
 			$pk = "ID_skladby";
 			$nadpis_vysledku = "Seznam skladeb";
-			echo '<div id="tlacitka"><ul>';
+			echo '<div id="menu"><ul>';
 			echo "<li><a href='add_song'>Pøidat skladbu</a></li>";
 			echo "</ul><div>";
 			break;
@@ -27,7 +27,7 @@ if(isset($_GET["user"])) {
 			$nazvy_sloupcu = array('rodne_cislo', 'jmeno', 'prijmeni');
 			$pk = "rodne_cislo";
 			$nadpis_vysledku = "Seznam hudebniku";
-			echo '<div id="tlacitka"><ul>';
+			echo '<div id="menu"><ul>';
 			echo "<ul><li><a href='add_human'>Pøidat zamìstnance</a></li>";
 			echo "</ul><div>";
 			break;
@@ -37,7 +37,7 @@ if(isset($_GET["user"])) {
 			$nazvy_sloupcu = array('datum_vyroby', 'vyrobce', 'dat_posl_revize', 'dat_posl_vymeny', 'vymeneno', 'vyrobni_cislo', 'ttype');
 			$pk = "vyrobni_cislo";
 			$nadpis_vysledku = "Seznam nástrojù";
-			echo '<div id="tlacitka"><ul>';
+			echo '<div id="menu"><ul>';
 			echo "<li><a href='add_instrument'>Pøidat nástroj</a></li>";
 			// $buttons->addTextArea('vymena', 'Vymìnit èásti');
 			echo "<li><a href='vymena_casti'>Zadat výmìnu èástí</a></li>";
@@ -50,7 +50,7 @@ if(isset($_GET["user"])) {
 			$nazvy_sloupcu = array('ID_koncertu', 'datum_a_cas', 'mesto', 'adresa');
 			$pk = "ID_koncertu";
 			$nadpis_vysledku = "Seznam koncertù";
-			echo '<div id="tlacitka"><ul>';
+			echo '<div id="menu"><ul>';
 			echo "<li><a href='first_concert'>Zobraz nejbli¾¹í koncert</a></li>";
 			echo "</ul><div>";
 			break;
@@ -60,7 +60,7 @@ if(isset($_GET["user"])) {
 			$nazvy_sloupcu = array('ID_koncertu', 'datum_a_cas', 'mesto', 'adresa');
 			$pk = "ID_koncertu";
 			$nadpis_vysledku = "Seznam koncertù";
-			echo '<div id="tlacitka"><ul>';
+			echo '<div id="menu"><ul>';
 			echo "<li><a href='naplanuj_koncert'>Naplánuj koncert</a></li>";
 			echo "</ul><div>";
 			break;
@@ -137,7 +137,7 @@ if(isset($_GET["user"])) {
 			echo "</tr>";
 			echo "<tr>";
 
-			foreach ($nadpisy_sloupcu as $value) {
+			foreach ($nazvy_sloupcu as $value) {
 				echo "<td> <input type=\"text\" class=\"form-control filter_". $value ."\"></td>";
 			}
 
@@ -153,7 +153,7 @@ if(isset($_GET["user"])) {
 			
 			$count=0;
 			
-			foreach ($nazvy_sloupcu as $value) {
+			foreach ($nadpisy_sloupcu as $value) {
 				echo "<td class=\"hlavicka\">". $value ."</td>";
 				$count++;
 			}
@@ -190,7 +190,7 @@ if(isset($_GET["user"])) {
 
 				echo "</tr>";
 				echo "</table>";
-				echo '<div id="tlacitka">';
+				echo '<div id="menu">';
 
 			}
 
@@ -198,7 +198,7 @@ if(isset($_GET["user"])) {
 			//prihlasit se jako: manazer, hudebnik, personalista, nastrojar, aranzer
 			else {
 				echo "Vítejte v informaèním systému Filharmonie Liptákov!<br>";
-      	echo '<div id="tlacitka"><ul>
+      	echo '<div id="menu"><ul>
         <li><a href="?user=manazer">Mana¾er</a></li>
         <li><a href="?user=personalista">Personalista</a></li>
         <li><a href="?user=hudebnik">Hudebník</a></li>

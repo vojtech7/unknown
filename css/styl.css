@@ -5,14 +5,21 @@ input[type="button"] { width: 150px;
 table, th, td {
    border: 1px solid black;
 }
-#tlacitka ul {
+#menu ul {
 	list-style-type: none;
 }
-#tlacitka li a {
+#menu li {
+	width: 100px;
+	margin-bottom: 1em;
+	position: relative;
+	top: 160px;
+	left: -20px;
+}
+#menu li a {
 	border: powderblue solid thick;
 	background-color: dodgerblue;
   display: block;
-	text-align: center;
+	/*text-align: center;*/
 	width: 10em;
 	padding-top: 1em;
 	padding-bottom: 1em;
@@ -20,16 +27,9 @@ table, th, td {
   text-align: center;
   color: white;
 }
-#tlacitka li a:hover {
+#menu li a:hover {
 	background-color: powderblue;
 	color: dodgerblue;
-}
-#tlacitka li {
-	width: 100px;
-	margin-bottom: 1em;
-	position: relative;
-	top: 160px;
-	left: -20px;
 }
 #edit_btn a {
 	border: powderblue solid;
@@ -54,6 +54,21 @@ table, th, td {
   color: white;
 }
 #delete_btn a:hover {
+	background-color: orange;
+	color: black;
+}
+#logout_btn a {
+	border: red solid;
+	background-color: red;
+	text-align: center;
+  text-decoration: none;
+  text-align: center;
+  color: white;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+}
+#logout_btn a:hover {
 	background-color: orange;
 	color: black;
 }
