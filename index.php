@@ -66,7 +66,7 @@ if(isset($_GET["user"])) {
 			break;
 	}
 
-
+/****************************
 	$select = new Form;
 
 	$select->addText('value_1');
@@ -83,6 +83,7 @@ if(isset($_GET["user"])) {
 		dump($select->getValues());
 		exit;
 	}
+*****************************/
 }
 ?>
 
@@ -96,6 +97,7 @@ if(isset($_GET["user"])) {
 <head>
 <link rel="stylesheet" type="text/css" href="css/styl.css">
 <meta charset="iso-8859-2">
+<script src="js/libs/jquery-2.1.1.js"></script>
 <script src="js/filter.js"></script>
 <title>Filharmonie Liptákov</title>
 </head>
@@ -151,7 +153,7 @@ if(isset($_GET["user"])) {
 			
 			$count=0;
 			
-			foreach ($nadpisy_sloupcu as $value) {
+			foreach ($nazvy_sloupcu as $value) {
 				echo "<td class=\"hlavicka\">". $value ."</td>";
 				$count++;
 			}
