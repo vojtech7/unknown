@@ -165,12 +165,13 @@ if(isset($_GET["user"])) {
 				/*tahání dat z databáze*/
 				$sql = "select * from ".$tabulka;
 				$vysledek = mysql_query($sql);
+				$columns_count = count($nazvy_sloupcu);
 
-        while($row = mysql_fetch_array($r)){
+        while($row = mysql_fetch_array($vysledek)){
 				  echo "<tr>";
-				  // for ($i=0; $i < ; $i++) { 
-      //     	echo "<td class='filter_id_lek'>{$row['id_lek']}</td>";
-				  // }
+				  for ($i=0; $i < $columns_count; $i++) { 
+          	echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$i]}</td>";
+				  }
 
 					echo "<td id=edit_btn><a href='?edit=$pk'>Upravit</a></td>";
 					echo "<td id=delete_btn><a href='javascript:alert(\"Delete\");'>Odstranit</a></td>";
