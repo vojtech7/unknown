@@ -24,7 +24,7 @@ for ($i=0; $i < mysql_num_rows($hudebnici); $i++) {
 <?php
                        $query = "select * from Hudebnik";
                         
-                       $r mysql_query($query);
+                       $r = mysql_query($query);
                         
                         while($row = mysql_fetch_array($r)){
                             echo "<tr>

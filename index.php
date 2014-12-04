@@ -13,7 +13,8 @@ if(isset($_GET["user"])) {
 	switch($_GET["user"]) {
 		case "aranzer":
 			$tabulka = "Skladba";
-			$nazvy_sloupcu = array('ID skladby', 'Název','Délka','ID autora' );
+			$nadpisy_sloupcu = array('ID skladby', 'Název','Délka','ID autora');
+			$nazvy_sloupcu = array('ID_skladby', 'nazev', 'delka', 'ID_autora');
 			$pk = "ID_skladby";
 			$nadpis_vysledku = "Seznam skladeb";
 			echo '<div id="tlacitka"><ul>';
@@ -22,7 +23,8 @@ if(isset($_GET["user"])) {
 			break;
 		case "personalista":
 			$tabulka = "Hudebnik";
-			$nazvy_sloupcu = array('Rodné èíslo', 'Jméno', 'Pøíjmení');
+			$nadpisy_sloupcu = array('Rodné èíslo', 'Jméno', 'Pøíjmení');
+			$nazvy_sloupcu = array('rodne_cislo', 'jmeno', 'prijmeni');
 			$pk = "rodne_cislo";
 			$nadpis_vysledku = "Seznam hudebniku";
 			echo '<div id="tlacitka"><ul>';
@@ -31,7 +33,8 @@ if(isset($_GET["user"])) {
 			break;
 		case "nastrojar":
 			$tabulka = "Nastroj";
-			$nazvy_sloupcu = array( 'Datum výroby', 'Výrobce', 'Datum poslední revize', 'Datum poslední výmì›ny', 'Vymìnìno', 'Výrobní èíslo', "Typ");
+			$nadpisy_sloupcu = array('Datum výroby', 'Výrobce', 'Datum poslední revize', 'Datum poslední výmì›ny', 'Vymìnìno', 'Výrobní èíslo', "Typ");
+			$nazvy_sloupcu = array('datum_vyroby', 'vyrobce', 'dat_posl_revize', 'dat_posl_vymeny', 'vymeneno', 'vyrobni_cislo', 'ttype');
 			$pk = "vyrobni_cislo";
 			$nadpis_vysledku = "Seznam nástrojù";
 			echo '<div id="tlacitka"><ul>';
@@ -43,7 +46,8 @@ if(isset($_GET["user"])) {
 			break;
 		case "hudebnik":
 			$tabulka = "Koncert";
-			$nazvy_sloupcu = array('ID koncertu', 'Datum a èas', 'Mìsto', 'Adresa');
+			$nadpisy_sloupcu = array('ID koncertu', 'Datum a èas', 'Mìsto', 'Adresa');
+			$nazvy_sloupcu = array('ID_koncertu', 'datum_a_cas', 'mesto', 'adresa');
 			$pk = "ID_koncertu";
 			$nadpis_vysledku = "Seznam koncertù";
 			echo '<div id="tlacitka"><ul>';
@@ -52,7 +56,8 @@ if(isset($_GET["user"])) {
 			break;
 		case "manazer":
 			$tabulka = "Koncert";
-			$nazvy_sloupcu = array('ID koncertu', 'Datum a èas', 'Mìsto', 'Adresa');
+			$nadpisy_sloupcu = array('ID koncertu', 'Datum a èas', 'Mìsto', 'Adresa');
+			$nazvy_sloupcu = array('ID_koncertu', 'datum_a_cas', 'mesto', 'adresa');
 			$pk = "ID_koncertu";
 			$nadpis_vysledku = "Seznam koncertù";
 			echo '<div id="tlacitka"><ul>';
@@ -124,7 +129,7 @@ if(isset($_GET["user"])) {
 			echo "<tr>";
 
 			$count=0;
-			foreach ($nazvy_sloupcu as $value) {
+			foreach ($nadpisy_sloupcu as $value) {
 				echo "<td>". $value ."</td>";
 				$count++;
 			}
@@ -149,7 +154,7 @@ if(isset($_GET["user"])) {
 			
 			$count=0;
 			
-			foreach ($nazvy_sloupcu as $value) {
+			foreach ($nadpisy_sloupcu as $value) {
 				echo "<td class=\"hlavicka\">". $value ."</td>";
 				$count++;
 			}
@@ -161,13 +166,12 @@ if(isset($_GET["user"])) {
 				$sql = "select * from ".$tabulka;
 				$vysledek = mysql_query($sql);
 
-				for ($i=0; $i < mysql_num_rows($vysledek); $i++) { 
-				  $row = mysql_fetch_row($vysledek);
+        while($row = mysql_fetch_array($r)){
 				  echo "<tr>";
-				  for ($j=0; $j < mysql_num_fields($vysledek); $j++) { 
-				    echo "<td>".$row[$j];"</td>";
-				  }
-				  //
+				  // for ($i=0; $i < ; $i++) { 
+      //     	echo "<td class='filter_id_lek'>{$row['id_lek']}</td>";
+				  // }
+
 					echo "<td id=edit_btn><a href='?edit=$pk'>Upravit</a></td>";
 					echo "<td id=delete_btn><a href='javascript:alert(\"Delete\");'>Odstranit</a></td>";
 				  echo "</tr>";
