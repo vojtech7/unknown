@@ -30,6 +30,32 @@ table, th, td {
 	position: relative;
 	top: 160px;
 }
+#edit_btn a {
+	border: powderblue solid;
+	background-color: dodgerblue;
+	text-align: center;
+	width: 2em;
+  text-decoration: none;
+  text-align: center;
+  color: white;
+}
+#edit_btn a:hover {
+	background-color: powderblue;
+	color: dodgerblue;
+}
+#delete_btn a {
+	border: red solid;
+	background-color: red;
+	text-align: center;
+	width: 2em;
+  text-decoration: none;
+  text-align: center;
+  color: white;
+}
+#delete_btn a:hover {
+	background-color: orange;
+	color: black;
+}
 span.nadpis {font: italic 150/1.5 arial;
 			 font-size: 20;
 			 font-style: italic;
