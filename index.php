@@ -128,18 +128,15 @@ if(isset($_GET["user"])) {
 			echo "</span>";
 			echo "<tr>";
 
-			$count=0;
 			foreach ($nadpisy_sloupcu as $value) {
 				echo "<td>". $value ."</td>";
-				$count++;
 			}
 
 			echo "</tr>";
 			echo "<tr>";
 
-			for ($i=1; $i <= $count ; $i++) { 
-				$vypis="value_".$i;
-				echo "<td>".$select[$vypis]->control."</td>";
+			foreach ($nadpisy_sloupcu as $value) {
+				echo "<td> <input type=\"text\" class=\"form-control filter_". $value ."\"></td>";
 			}
 
 			echo "</tr>";
