@@ -29,6 +29,7 @@ table, th, td {
 	margin-bottom: 1em;
 	position: relative;
 	top: 160px;
+	left: -20px;
 }
 #edit_btn a {
 	border: powderblue solid;

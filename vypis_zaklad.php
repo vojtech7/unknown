@@ -19,3 +19,26 @@ for ($i=0; $i < mysql_num_rows($hudebnici); $i++) {
   echo "<br>";
 }
 ?>
+
+
+<?php
+                       $query = "select * from Hudebnik";
+                        
+                       $r mysql_query($query);
+                        
+                        while($row = mysql_fetch_array($r)){
+                            echo "<tr>
+                                    <td class='filter_rodne_cislo'>{$row['rodne_cislo']}</td>
+                                    <td class='filter_jmeno'>{$row['jmeno']}</td>
+                                    <td class='filter_prijmeni'>{$row['prijmeni']}</td>";
+                                    /*********************************
+                                    if($row['na_predpis']) echo "<td class='filter_predpis'>ano</td>";
+                                    else echo "<td class='filter_predpis'>ne</td>
+                          
+                                    <form method='post'><td class='btn_pridavani'><input type='number' size='4' min='1' name='mnozstvi'></td>
+                                    <td class='btn_objednat'><input type='hidden' value='{$row['id_lek']}' name='objednavka'><input type='hidden' value='{$row['id_dodavatel']}' name='dodavatel'><button class='btn btn-primary' type='submit'>Objednat léky</button></td></form>
+                                    <td class='btn_odebrat'><button class='btn btn-danger' value='{$row['id_lek']}' onclick='document.getElementById(\"mazanec\").value = this.value;' data-toggle='modal' data-target='#myModal2' type='button'>Odebrat léky</button></td>
+                                  ***********************/
+                            echo "</tr>";                            
+                        }          
+                    ?>
