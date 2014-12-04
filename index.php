@@ -137,8 +137,8 @@ if(isset($_GET["user"])) {
 			echo "</tr>";
 			echo "<tr>";
 
-			foreach ($nadpisy_sloupcu as $value) {
-				echo "<td> <input type=\"text\" class=\"form-control filter_". $value ."\"></td>";
+			foreach ($nazvy_sloupcu as $value) {
+				echo "<td> <input type=\"text\" class=\"form-control filter_".$value ."\"></td>";
 			}
 
 			echo "</tr>";
@@ -153,23 +153,13 @@ if(isset($_GET["user"])) {
 			
 			$count=0;
 			
-			foreach ($nazvy_sloupcu as $value) {
+			foreach ($nadpisy_sloupcu as $value) {
 				echo "<td class=\"hlavicka\">". $value ."</td>";
 				$count++;
 			}
 
 			echo "</tr>";
 			echo "<tr>";
-
-      //odstraneni radku z tabulky
-      if(isset($_GET['delete'])) {
-        if($_GET['user'] == "personalista")  //pk je string(presneji CHAR(11))
-          $delete_row = "DELETE FROM ".$tabulka." WHERE ".$pk.'="'.$_GET['delete'].'"';
-        else  //pk je int
-          $delete_row = "DELETE FROM ".$tabulka." WHERE ".$pk."=".$_GET['delete'];
-        $delete_success = mysql_query($delete_row);
-        if(!$delete_success) echo "nepodarilo se odstranit radek polozku";
-      }
 
 				/*tahání dat z databáze*/
 				$sql = "select * from ".$tabulka;
@@ -182,9 +172,8 @@ if(isset($_GET["user"])) {
           	echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$i]}</td>";
 				  }
 
-          //predam si PK do url parametru edit nebo delete
-          echo "<td id=edit_btn><a href='?user={$_GET['user']}&edit={$row[$pk]}'>Upravit</a></td>";
-          echo "<td id=delete_btn><a href='?user={$_GET['user']}&delete={$row[$pk]}'>Odstranit</a></td>";
+					echo "<td id=edit_btn><a href='?edit=$pk'>Upravit</a></td>";
+					echo "<td id=delete_btn><a href='javascript:alert(\"Delete\");'>Odstranit</a></td>";
 				  echo "</tr>";
 				}
 
