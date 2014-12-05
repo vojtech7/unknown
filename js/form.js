@@ -7,10 +7,10 @@ alert("Form Submitted Successfully...");
 }
 }
 //Function To Display Popup
-function div_show() {
-document.getElementById('abc').style.display = "block";
+function P_add_form_show() {
+document.getElementById('P_add_form').style.display = "block";
 }
 //Function to Hide Popup
-function div_hide(){
-document.getElementById('abc').style.display = "none";
+function P_add_form_hide(){
+document.getElementById('P_add_form').style.display = "none";
 }

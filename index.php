@@ -2,11 +2,7 @@
 
 <?php
 
-
-require 'Nette/loader.php';
-use Nette\Forms\Form;
-
-	include "connect.php";
+include "connect.php";
 
 if(isset($_GET["user"])) {
 	echo "<div id=logout_btn><a href='?page=index.php'>Odhlásit se</a></div>";
@@ -21,16 +17,16 @@ if(isset($_GET["user"])) {
 			echo "<li><a href='add_song'>Pøidat skladbu</a></li>";
 			echo "</ul><div>";
 			break;
-		case "personalista":
-			$tabulka = "Hudebnik";
-			$nadpisy_sloupcu = array('Rodné èíslo', 'Jméno', 'Pøíjmení');
-			$nazvy_sloupcu = array('rodne_cislo', 'jmeno', 'prijmeni');
-			$pk = "rodne_cislo";
-			$nadpis_vysledku = "Seznam hudebníkù";
-			echo '<div id="menu"><ul>';
-			echo "<ul><li><a href='addform.php'>Pøidat zamìstnance</a></li>";
-			echo "</ul><div>";
-			break;
+		// case "personalista":
+		// 	$tabulka = "Hudebnik";
+		// 	$nadpisy_sloupcu = array('Rodné èíslo', 'Jméno', 'Pøíjmení');
+		// 	$nazvy_sloupcu = array('rodne_cislo', 'jmeno', 'prijmeni');
+		// 	$pk = "rodne_cislo";
+		// 	$nadpis_vysledku = "Seznam hudebníkù";
+		// 	echo '<div id="menu"><ul>';
+		// 	echo "<ul><li><a href='addform.php'>Pøidat zamìstnance</a></li>";
+		// 	echo "</ul><div>";
+		// 	break;
 		case "nastrojar":
 			$tabulka = "Nastroj";
 			$nadpisy_sloupcu = array('Datum výroby', 'Výrobce', 'Datum poslední revize', 'Datum poslední výmì›ny', 'Vymìnìno', 'Výrobní èíslo', "Typ");
@@ -66,158 +62,38 @@ if(isset($_GET["user"])) {
 			break;
 	}
 
-/****************************
-	$select = new Form;
-
-	$select->addText('value_1');
-	$select->addText('value_2');
-	$select->addText('value_3');
-	$select->addText('value_4');
-	$select->addText('value_5');
-	$select->addText('value_6');
-	$select->addText('value_7');
-	// $select->addSubmit('find_song', 'Vyhledat skladbu');
-
-	if ($select->isSuccess()) {
-		echo 'Form was submitted and successfully validated';
-		dump($select->getValues());
-		exit;
-	}
-*****************************/
 }
 ?>
 
-
-
 <!-- vvvvvvvvvvvvvvvvvvvvvvvv HTML vvvvvvvvvvvvvvvvvvvvvvvv -->
-
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
-<head>
-<link rel="stylesheet" type="text/css" href="css/styl.css">
-<meta charset="iso-8859-2">
-<script src="js/libs/jquery-2.1.1.js"></script>
-<script src="js/filter.js"></script>
-<title>Filharmonie Liptákov</title>
-</head>
+	<head>
+		<link rel="stylesheet" type="text/css" href="css/styl.css">
+		<meta charset="iso-8859-2">
+		<script src="js/libs/jquery-2.1.1.js"></script>
+		<script src="js/filter.js"></script>
+		<title>Filharmonie Liptákov</title>
+	</head>
 
-<body>
-	<?php
-	//jestlize je vybran uzivatel
-		if(isset($_GET["user"])) {
-			echo '<div id="logout" class="buttons">';
-			// $buttons['logout']->control;	
-			echo "</div>";
-			echo '<table id="hledani" class="pattern">';
-			echo '<span class="nadpis" id="nadpis_vyhledavani">';
-
-			switch ($_GET["user"]) {
-				case "aranzer" :
-					echo "Filtry pro vyhledávání skladeb";
-					break;
-				case "personalista" :
-					echo "Filtry pro vyhledávání zamìstnancù";
-					break;
-				case "nastrojar" :
-					echo "Filtry pro vyhledávání nástrojù";
-					break;
-				default:
-					# code...
-					break;
+	<body>
+		<?php
+			//jestlize je vybran uzivatel
+			if(isset($_GET["page"])) {
+	      include $_GET['page'];
 			}
-
-			echo "</span>";
-			echo "<tr>";
-
-			foreach ($nadpisy_sloupcu as $value) {
-				echo "<td>". $value ."</td>";
+			//neni vybran zadny uzivatel; obrazovka pro vyber role uzivatele
+			//prihlasit se jako: manazer, hudebnik, personalista, nastrojar, aranzer
+			else {
+				echo "Vítejte v informaèním systému Filharmonie Liptákov!<br>";
+	    	echo '<div id="menu"><ul>
+	      <li><a href="?page=manazer.php">Mana¾er</a></li>
+	      <li><a href="?page=personalista.php">Personalista</a></li>
+	      <li><a href="?page=hudebnik.php">Hudebník</a></li>
+	      <li><a href="?page=aranzer.php">Aran¾ér</a></li>
+	      <li><a href="?page=nastrojar.php">Nástrojáø</a></li></ul></div>';
 			}
+	?>
 
-			echo "</tr>";
-			echo "<tr>";
-
-			foreach ($nazvy_sloupcu as $value) {
-				echo "<td> <input type=\"text\" class=\"form-control filter_". $value ."\"></td>";
-			}
-
-			echo "</tr>";
-			echo "</table>";
-
-			echo '<table id="prehled" class="data">';
-			echo '<span class="nadpis" id="nadpis_vysledku">';
-			echo $nadpis_vysledku;
-			echo "</span>";
-
-			echo "<tr>";
-			
-			$count=0;
-			
-			foreach ($nadpisy_sloupcu as $value) {
-				echo "<td class=\"hlavicka\">". $value ."</td>";
-				$count++;
-			}
-
-			echo "</tr>";
-			echo "<tr>";
-
-      //odstraneni radku z tabulky
-      if(isset($_GET['delete'])) {
-        if($_GET['user'] == "personalista")  //pk je string(presneji CHAR(11))
-          $delete_row = "DELETE FROM ".$tabulka." WHERE ".$pk.'="'.$_GET['delete'].'";';
-        else  //pk je int
-          $delete_row = "DELETE FROM ".$tabulka." WHERE ".$pk."=".$_GET['delete'].";";
-        $delete_success = mysql_query($delete_row);
-        if(!$delete_success) echo "nepodarilo se odstranit polozku";
-      }
-		  //pridani radku do tabulky
-		  if(isset($_GET["jmeno"]) and isset($_GET["prijmeni"]) and isset($_GET["rodne_cislo"])) {
-		      $jmeno = $_GET["jmeno"];
-		      $prijmeni = $_GET["prijmeni"];
-		      $rodne_cislo = $_GET["rodne_cislo"];
-		      $insert_row = "INSERT INTO ".$tabulka." VALUES (\"".$rodne_cislo."\", \"".$jmeno."\", \"".$prijmeni."\");";
-		      $insert_success = mysql_query($insert_row);
-	        if(!$insert_success) echo "nepodarilo se vlozit polozku";
-		  }
-
-			/*tahání dat z databáze*/
-			$sql = "select * from ".$tabulka;
-			$vysledek = mysql_query($sql);
-			$columns_count = count($nazvy_sloupcu);
-
-      while($row = mysql_fetch_array($vysledek)){
-			  echo "<tr>";
-			  for ($i=0; $i < $columns_count; $i++) { 
-        	echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$i]}</td>";
-			  }
-
-        //predam si PK do url parametru edit nebo delete
-        echo "<td id=edit_btn><a href='?user={$_GET['user']}&edit={$row[$pk]}'>Upravit</a></td>";
-        echo "<td id=delete_btn><a href='?user={$_GET['user']}&delete={$row[$pk]}'>Odstranit</a></td>";
-			  echo "</tr>";
-			}
-
-			echo "</tr>";
-			echo "</table>";
-			echo '<div id="menu">';
-
-		}
-
-		//neni vybran zadny uzivatel; obrazovka pro vyber role uzivatele
-		//prihlasit se jako: manazer, hudebnik, personalista, nastrojar, aranzer
-		else {
-			echo "Vítejte v informaèním systému Filharmonie Liptákov!<br>";
-    	echo '<div id="menu"><ul>
-      <li><a href="?user=manazer">Mana¾er</a></li>
-      <li><a href="?user=personalista">Personalista</a></li>
-      <li><a href="?user=hudebnik">Hudebník</a></li>
-      <li><a href="?user=aranzer">Aran¾ér</a></li>
-      <li><a href="?user=nastrojar">Nástrojáø</a></li></ul></div>';
-		}
-
-		 ?>
-
-		</div>
-	
-</body>
+	</body>
 </html>
