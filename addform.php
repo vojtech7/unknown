@@ -29,12 +29,18 @@ select {
   color: #808080;
 }
 -->
-<!-- <img id="close" src="images/3.png" onclick ="div_hide()"> -->
+<img id="close" src="images/3.png" onclick ="history.back(-1)">
+
 <?php
 $form = new Latin2Form;
 $form->setAction('index.php?user=personalista');
 $form->setMethod('GET');
 
+/*****************************************************************/
+/*  Formular pro personalistu, pro pridani hudebnika.            *
+ *  Slo by ho dat do index.php, pres css display:none/block.     *
+ *  Nevim ale, jestli by se po submitu skryl.                    *
+ */
 // switch ($_GET['user']) {
 //   case 'personalista':
     $form->addText('jmeno', 'Jméno:')
