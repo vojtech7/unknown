@@ -8,7 +8,7 @@ height:100%;
 opacity:.95;
 top:0;
 left:0;
-display:none;
+/*display:none;*/
 position:fixed;
 background-color:#313131;
 overflow:auto

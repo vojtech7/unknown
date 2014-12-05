@@ -482,7 +482,7 @@ class Form extends Container implements Nette\Utils\IHtmlString
 			$maxSize <<= $units[$ch];
 		}
 		if ($maxSize > 0 && $maxSize < $_SERVER['CONTENT_LENGTH']) {
-			$this->addError(sprintf(Rules::$defaultMessages[self::MAX_FILE_SIZE], $maxSize));
+			$this->addError(sprintf(Validator::$messages[self::MAX_FILE_SIZE], $maxSize));
 		}
 	}
 
@@ -600,7 +600,7 @@ class Form extends Container implements Nette\Utils\IHtmlString
 
 	/**
 	 * Renders form to string.
-	 * @return can throw exceptions? (hidden parameter)
+	 * @param can throw exceptions? (hidden parameter)
 	 * @return string
 	 */
 	public function __toString()

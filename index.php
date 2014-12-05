@@ -26,9 +26,9 @@ if(isset($_GET["user"])) {
 			$nadpisy_sloupcu = array('Rodné èíslo', 'Jméno', 'Pøíjmení');
 			$nazvy_sloupcu = array('rodne_cislo', 'jmeno', 'prijmeni');
 			$pk = "rodne_cislo";
-			$nadpis_vysledku = "Seznam hudebniku";
+			$nadpis_vysledku = "Seznam hudebníkù";
 			echo '<div id="menu"><ul>';
-			echo "<ul><li><a href='add_human'>Pøidat zamìstnance</a></li>";
+			echo "<ul><li><a href='addform.php'>Pøidat zamìstnance</a></li>";
 			echo "</ul><div>";
 			break;
 		case "nastrojar":
@@ -164,47 +164,56 @@ if(isset($_GET["user"])) {
       //odstraneni radku z tabulky
       if(isset($_GET['delete'])) {
         if($_GET['user'] == "personalista")  //pk je string(presneji CHAR(11))
-          $delete_row = "DELETE FROM ".$tabulka." WHERE ".$pk.'="'.$_GET['delete'].'"';
+          $delete_row = "DELETE FROM ".$tabulka." WHERE ".$pk.'="'.$_GET['delete'].'";';
         else  //pk je int
-          $delete_row = "DELETE FROM ".$tabulka." WHERE ".$pk."=".$_GET['delete'];
+          $delete_row = "DELETE FROM ".$tabulka." WHERE ".$pk."=".$_GET['delete'].";";
         $delete_success = mysql_query($delete_row);
-        if(!$delete_success) echo "nepodarilo se odstranit radek polozku";
+        if(!$delete_success) echo "nepodarilo se odstranit polozku";
       }
+		  //pridani radku do tabulky
+		  if(isset($_GET["jmeno"]) and isset($_GET["prijmeni"]) and isset($_GET["rodne_cislo"])) {
+		      $jmeno = $_GET["jmeno"];
+		      $prijmeni = $_GET["prijmeni"];
+		      $rodne_cislo = $_GET["rodne_cislo"];
+		      $insert_row = "INSERT INTO ".$tabulka." VALUES (\"".$rodne_cislo."\", \"".$jmeno."\", \"".$prijmeni."\");";
+		      $insert_success = mysql_query($insert_row);
+	        if(!$insert_success) echo "nepodarilo se vlozit polozku";
+		  }
 
-				/*tahání dat z databáze*/
-				$sql = "select * from ".$tabulka;
-				$vysledek = mysql_query($sql);
-				$columns_count = count($nazvy_sloupcu);
+			/*tahání dat z databáze*/
+			$sql = "select * from ".$tabulka;
+			$vysledek = mysql_query($sql);
+			$columns_count = count($nazvy_sloupcu);
 
-        while($row = mysql_fetch_array($vysledek)){
-				  echo "<tr>";
-				  for ($i=0; $i < $columns_count; $i++) { 
-          	echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$i]}</td>";
-				  }
+      while($row = mysql_fetch_array($vysledek)){
+			  echo "<tr>";
+			  for ($i=0; $i < $columns_count; $i++) { 
+        	echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$i]}</td>";
+			  }
 
-          //predam si PK do url parametru edit nebo delete
-          echo "<td id=edit_btn><a href='?user={$_GET['user']}&edit={$row[$pk]}'>Upravit</a></td>";
-          echo "<td id=delete_btn><a href='?user={$_GET['user']}&delete={$row[$pk]}'>Odstranit</a></td>";
-				  echo "</tr>";
-				}
-
-				echo "</tr>";
-				echo "</table>";
-				echo '<div id="menu">';
-
+        //predam si PK do url parametru edit nebo delete
+        echo "<td id=edit_btn><a href='?user={$_GET['user']}&edit={$row[$pk]}'>Upravit</a></td>";
+        echo "<td id=delete_btn><a href='?user={$_GET['user']}&delete={$row[$pk]}'>Odstranit</a></td>";
+			  echo "</tr>";
 			}
 
-			//neni vybran zadny uzivatel; obrazovka pro vyber role uzivatele
-			//prihlasit se jako: manazer, hudebnik, personalista, nastrojar, aranzer
-			else {
-				echo "Vítejte v informaèním systému Filharmonie Liptákov!<br>";
-      	echo '<div id="menu"><ul>
-        <li><a href="?user=manazer">Mana¾er</a></li>
-        <li><a href="?user=personalista">Personalista</a></li>
-        <li><a href="?user=hudebnik">Hudebník</a></li>
-        <li><a href="?user=aranzer">Aran¾ér</a></li>
-        <li><a href="?user=nastrojar">Nástrojáø</a></li></ul></div>';
-			}
+			echo "</tr>";
+			echo "</table>";
+			echo '<div id="menu">';
+
+		}
+
+		//neni vybran zadny uzivatel; obrazovka pro vyber role uzivatele
+		//prihlasit se jako: manazer, hudebnik, personalista, nastrojar, aranzer
+		else {
+			echo "Vítejte v informaèním systému Filharmonie Liptákov!<br>";
+    	echo '<div id="menu"><ul>
+      <li><a href="?user=manazer">Mana¾er</a></li>
+      <li><a href="?user=personalista">Personalista</a></li>
+      <li><a href="?user=hudebnik">Hudebník</a></li>
+      <li><a href="?user=aranzer">Aran¾ér</a></li>
+      <li><a href="?user=nastrojar">Nástrojáø</a></li></ul></div>';
+		}
 
 		 ?>
 
