@@ -17,18 +17,19 @@
   <?php  
     include "connect.php";
 
-     //získání jmen autorù pro dalsí práci
-    $sql = "select jmeno, prijmeni from Autor";
+     //získání jmen autoru pro dalsí práci
+    $sql = "select jmeno from Autor";
     $autori = mysql_query($sql);
 
     for ($i=0; $i < mysql_num_rows($autori); $i++) { 
       $row = mysql_fetch_array($autori, MYSQL_ASSOC);
-      $seznam_jmen[$i] = $row["jmeno"]."  ".$row["prijmeni"];
+      $seznam_jmen[$i] = $row["jmeno"];
     }
 
-    $tabulka = "Skladba";
+    $tabulka_vypis = "Autor natural join Skladba ";
+    $tabulka_upravy = "Skladba";
     $nadpisy_sloupcu = array('ID skladby', 'Název', 'Délka', 'Jméno autora');
-    $nazvy_sloupcu = array('ID_skladby', 'nazev', 'delka', 'ID_autora');
+    $nazvy_sloupcu = array('ID_skladby', 'nazev', 'delka', 'jmeno');
     $pk = "ID_skladby";
     $nadpis_vysledku = "Seznam skladeb";
     echo "<div id=logout_btn><a href='index.php'>Odhlásit se</a></div>";
@@ -52,11 +53,11 @@
         echo "</tr>";
         echo "<tr>";
         foreach ($nazvy_sloupcu as $value) {
-          if ($value !== "ID_autora") {
+          if ($value !== "jmeno") {
              echo "<td> <input type=\"text\" class=\"form-control filter_". $value ."\"></td>";
             }
           else
-            { echo "<td><select class=\"filter_predpis form-control\">";
+            { echo "<td><select class=\"filter_jmeno form-control\">";
               echo "<option value=\"\" selected=\"selected\"></option>";
               foreach ($seznam_jmen as $key) {
                 echo "<option value=\"".$key."\">".$key."</option>";
@@ -66,6 +67,7 @@
             
         }
 
+          
           
         
         echo "</tr>";
@@ -88,24 +90,23 @@
         echo "<tr>";
 
         //pred zobrazenim radku se provedou pripadne SQL dotazy nad tabulkou
-        //odstraneni hudebnika z tabulky
+        //odstraneni skladby z tabulky
         if(isset($_GET['delete'])) {
-          $delete_row = "DELETE FROM ".$tabulka." WHERE ".$pk.'="'.$_GET['delete'].'";';
+          $delete_row = "DELETE FROM ".$tabulka_upravy." WHERE ".$pk.'="'.$_GET['delete'].'";';
           $delete_success = mysql_query($delete_row);
           if(!$delete_success) echo "nepodarilo se odstranit polozku";
         }
         //pridani radku do tabulky
         if(isset($_GET["jmeno"]) and isset($_GET["prijmeni"]) and isset($_GET["rodne_cislo"])) {
           $jmeno = $_GET["jmeno"];
-          $prijmeni = $_GET["prijmeni"];
-          $rodne_cislo = $_GET["rodne_cislo"];
-          $insert_row = "INSERT INTO ".$tabulka." VALUES (\"".$rodne_cislo."\", \"".$jmeno."\", \"".$prijmeni."\");";
+          //$prijmeni = $_GET["prijmeni"];
+          $insert_row = "INSERT INTO ".$tabulka_upravy." VALUES (\"".$jmeno."\", \"".$prijmeni."\");";
           $insert_success = mysql_query($insert_row);
           if(!$insert_success) echo "nepodarilo se vlozit polozku";
         }
 
         /*tahani dat z databaze*/
-        $sql = "select * from ".$tabulka;
+        $sql = "select ID_skladby, nazev, delka, jmeno from   ".$tabulka_vypis;
         
         $vysledek = mysql_query($sql);
         $columns_count = count($nazvy_sloupcu);
@@ -115,13 +116,10 @@
         //je slozitejsi kvuli datum z jine tabulky
         while($row = mysql_fetch_array($vysledek)){
           echo "<tr>";
-          for ($i=0; $i < $columns_count-1; $i++) { 
+          for ($i=0; $i < $columns_count; $i++) { 
             echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$i]}</td>";
           }
-          $dotaz = "select jmeno, prijmeni from Autor where ID_autora=".$row[3];
-          $jmeno = mysql_fetch_array(mysql_query($dotaz));
-          echo "<td class='filter_{$nazvy_sloupcu[$i]}'>".$jmeno[0]." ".$jmeno[1]."</td>";
-
+          
           //predam si PK do url parametru delete
           echo "<td id=delete_btn><a href='#?page={$_GET['page']}&delete={$row[$pk]}'>Odstranit</a></td>";
           echo "</tr>";
