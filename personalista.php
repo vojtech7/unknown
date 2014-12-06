@@ -126,22 +126,22 @@
   <?php
   require 'Nette/loader.php';
 
-  use Nette\Forms\Latin2Form;
-  require_once 'Nette/Forms/Latin2Form.php';
+  use Nette\Forms\Form;
+  require_once 'Nette/Forms/Form.php';
   ?>
 
   <?php
-    $form = new Latin2Form;
+    $form = new Form;
     $form->setAction('index.php?page=personalista.php');
     $form->setMethod('GET');
 
-    $form->addText('jmeno', 'Jméno:')
-      ->addRule(Latin2Form::FILLED, 'Zadejte jméno');
-    $form->addText('prijmeni', 'Pøíjmení:')
-      ->addRule(Latin2Form::FILLED, 'Zadejte pøíjmení');
-    $form->addText('rodne_cislo', 'Rodné èíslo:')
-      ->addRule(Latin2Form::FILLED, 'Zadejte rodné èíslo');
-    $form->addSubmit('send', 'Pøidat');
+    $form->addText('jmeno', 'Jmeno:')
+      ->addRule(Form::FILLED, 'Zadejte jméno');
+    $form->addText('prijmeni', 'Prijmeni:')
+      ->addRule(Form::FILLED, 'Zadejte pøíjmení');
+    $form->addText('rodne_cislo', 'Rodne cislo:')
+      ->addRule(Form::FILLED, 'Zadejte rodné èíslo');
+    $form->addSubmit('send', 'Pridat');
   ?>
 
   <script src="netteForms.js"></script>
@@ -159,7 +159,7 @@
   }
 
   ?>
-  <!-- ^^^^^^^^^^^^^ Nette Latin2Form  ^^^^^^^^^^^^^ -->
+  <!-- ^^^^^^^^^^^^^ Nette Form  ^^^^^^^^^^^^^ -->
 
 </div>
 <!-- Popup Div Ends Here -->

@@ -29,7 +29,7 @@
     $tabulka_vypis = "Autor natural join Skladba ";
     $tabulka_upravy = "Skladba";
     $nadpisy_sloupcu = array('Název', 'Délka', 'Jméno autora');
-    $nazvy_sloupcu = array('nazev', 'delka', 'jmeno');
+    $nazvy_sloupcu = array('ID_skladby', 'nazev', 'delka', 'jmeno');
     $pk = "ID_skladby";
     $nadpis_vysledku = "Seznam skladeb";
     echo "<div id=logout_btn><a href='index.php'>Odhlásit se</a></div>";
@@ -53,6 +53,7 @@
         echo "</tr>";
         echo "<tr>";
         foreach ($nazvy_sloupcu as $value) {
+          if ($value === "ID_skladby") continue; 
           if ($value !== "jmeno") {
              echo "<td> <input type=\"text\" class=\"form-control filter_". $value ."\"></td>";
             }
@@ -122,7 +123,8 @@
         //je slozitejsi kvuli datum z jine tabulky
         while($row = mysql_fetch_array($vysledek)){
           echo "<tr>";
-          for ($i=0; $i < $columns_count; $i++) { 
+          for ($i=0; $i < $columns_count; $i++) {
+            if($i==0) continue;
             echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$i]}</td>";
           }
           
@@ -158,23 +160,23 @@
   <?php
   require 'Nette/loader.php';
 
-    use Nette\Forms\Latin2Form;
-    require_once 'Nette/Forms/Latin2Form.php';
+    use Nette\Forms\Form;
+    require_once 'Nette/Forms/Form.php';
   ?>
 
   <?php
-    $form = new Latin2Form;
+    $form = new Form;
     $form->setAction('index.php?page=aranzer.php');
     $form->setMethod('GET');
 
 
-    $form->addSelect('jmeno', 'Jméno autora', $seznam_jmen)
+    $form->addSelect('jmeno', 'Jmeno autora', $seznam_jmen)
       ->setPrompt( 'Zadejte jméno autora');
-    $form->addText('nazev', 'Název:')
-      ->addRule(Latin2Form::FILLED, 'Zadejte název skladby');
+    $form->addText('nazev', 'Nazev:')
+      ->addRule(Form::FILLED, 'Zadejte nazev skladby');
     $form->addText('delka', 'Délka')
-      ->addRule(Latin2Form::FILLED, 'Zadejte délku skladby');
-    $form->addSubmit('send', 'Pøidat');
+      ->addRule(Form::FILLED, 'Zadejte delku skladby');
+    $form->addSubmit('send', 'Pridat');
   ?>
 
   <script src="netteForms.js"></script>
@@ -192,7 +194,7 @@
   }
 
   ?>
-  <!-- ^^^^^^^^^^^^^ Nette Latin2Form  ^^^^^^^^^^^^^ -->
+  <!-- ^^^^^^^^^^^^^ Nette Form  ^^^^^^^^^^^^^ -->
 
 </div>
 <!-- Popup Div Ends Here -->
