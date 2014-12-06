@@ -28,8 +28,8 @@
 
     $tabulka_vypis = "Autor natural join Skladba ";
     $tabulka_upravy = "Skladba";
-    $nadpisy_sloupcu = array('ID skladby', 'Název', 'Délka', 'Jméno autora');
-    $nazvy_sloupcu = array('ID_skladby', 'nazev', 'delka', 'jmeno');
+    $nadpisy_sloupcu = array('Název', 'Délka', 'Jméno autora');
+    $nazvy_sloupcu = array('nazev', 'delka', 'jmeno');
     $pk = "ID_skladby";
     $nadpis_vysledku = "Seznam skladeb";
     echo "<div id=logout_btn><a href='index.php'>Odhlásit se</a></div>";
@@ -97,10 +97,16 @@
           if(!$delete_success) echo "nepodarilo se odstranit polozku";
         }
         //pridani radku do tabulky
-        if(isset($_GET["jmeno"]) and isset($_GET["prijmeni"]) and isset($_GET["rodne_cislo"])) {
-          $jmeno = $_GET["jmeno"];
-          //$prijmeni = $_GET["prijmeni"];
-          $insert_row = "INSERT INTO ".$tabulka_upravy." VALUES (\"".$jmeno."\", \"".$prijmeni."\");";
+        if(isset($_GET["nazev"]) and isset($_GET["delka"]) and isset($_GET["jmeno"])) {
+          $nazev = $_GET["nazev"];
+          $delka = $_GET["delka"];
+          $sql = "select max(ID_skladby) from  Skladba";
+          $cislo = mysql_fetch_row(mysql_query($sql));
+          $ID_skladby = 1 + $cislo[0];
+
+          $ID_autora = $_GET['jmeno']+1;
+          
+          $insert_row = "INSERT INTO ".$tabulka_upravy." VALUES (\"".$ID_skladby."\", \"".$nazev."\", \"".$delka."\", \"".$ID_autora."\");";
           $insert_success = mysql_query($insert_row);
           if(!$insert_success) echo "nepodarilo se vlozit polozku";
         }
@@ -121,7 +127,7 @@
           }
           
           //predam si PK do url parametru delete
-          echo "<td id=delete_btn><a href='#?page={$_GET['page']}&delete={$row[$pk]}'>Odstranit</a></td>";
+          echo "<td id=delete_btn><a href='?page={$_GET['page']}&delete={$row[$pk]}'>Odstranit</a></td>";
           echo "</tr>";
         }
 
@@ -158,15 +164,16 @@
 
   <?php
     $form = new Latin2Form;
-    $form->setAction('index.php?page=personalista.php');
+    $form->setAction('index.php?page=aranzer.php');
     $form->setMethod('GET');
 
-    $form->addText('jmeno', 'Jméno:')
-      ->addRule(Latin2Form::FILLED, 'Zadejte jméno');
-    $form->addText('prijmeni', 'Pøíjmení:')
-      ->addRule(Latin2Form::FILLED, 'Zadejte pøíjmení');
-    $form->addText('rodne_cislo', 'Rodné èíslo:')
-      ->addRule(Latin2Form::FILLED, 'Zadejte rodné èíslo');
+
+    $form->addSelect('jmeno', 'Jméno autora', $seznam_jmen)
+      ->setPrompt( 'Zadejte jméno autora');
+    $form->addText('nazev', 'Název:')
+      ->addRule(Latin2Form::FILLED, 'Zadejte název skladby');
+    $form->addText('delka', 'Délka')
+      ->addRule(Latin2Form::FILLED, 'Zadejte délku skladby');
     $form->addSubmit('send', 'Pøidat');
   ?>
 
