@@ -85,13 +85,16 @@ if(isset($_GET["user"])) {
 			//neni vybran zadny uzivatel; obrazovka pro vyber role uzivatele
 			//prihlasit se jako: manazer, hudebnik, personalista, nastrojar, aranzer
 			else {
-				echo "Vítejte v informaèním systému Filharmonie Liptákov!<br>";
-	    	echo '<div id="menu"><ul>
-	      <li><a href="?page=manazer.php">Mana¾er</a></li>
-	      <li><a href="?page=personalista.php">Personalista</a></li>
-	      <li><a href="?page=hudebnik.php">Hudebník</a></li>
-	      <li><a href="?page=aranzer.php">Aran¾ér</a></li>
-	      <li><a href="?page=nastrojar.php">Nástrojáø</a></li></ul></div>';
+				// echo "Vítejte v informaèním systému Filharmonie Liptákov!<br>";
+	    	echo '<div id="rightPanel">
+					    	<div id="menu"><ul>
+						      <li><a href="?page=manazer.php">Mana¾er</a></li>
+						      <li><a href="?page=personalista.php">Personalista</a></li>
+						      <li><a href="?page=hudebnik.php">Hudebník</a></li>
+						      <li><a href="?page=aranzer.php">Aran¾ér</a></li>
+						      <li><a href="?page=nastrojar.php">Nástrojáø</a></li></ul>
+					      </div>
+				      </div>';
 			}
 	?>
 
