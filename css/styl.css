@@ -8,7 +8,7 @@ input[type="button"] { width: 150px;
 table, th, td {
    border: 1px solid black;
 }
-#rightPanel {
+#leftPanel {
   margin: 0;
   float: left;
   width: 25%;
@@ -16,40 +16,63 @@ table, th, td {
   position: absolute;
   left: 0;
   top: 0;
+  bottom: 0;
   background-color: rgb(77,0,4);
+  color: white;
+}
+#IS {
+  text-align: center;
+  font-size: 24pt;
+}
+#prihlasit {
+  text-align: center;
+  font-size: 22pt;
 }
 #menu ul {
-	list-style-type: none;
+  list-style-type: none;
   width: 100%;
-  position: relative;
-  top: 50%;
-  left: -50px;
+  position: absolute;
+  top: 40%;
+  left: -40px;
 }
 #menu li {
-	width: 100%;
+  width: 100%;
   height: 60px;
-	/*margin-bottom: 1em;*/
-	/*left: -20px;*/
+  /*margin-bottom: 1em;*/
+  /*left: -20px;*/
 }
 #menu li a {
-  display: block;
-	/*text-align: center;*/
-	width: 100%;
-/*	padding-top: 1em;
-	padding-bottom: 1em;
-*/
+  display: inline-block;
+  /*text-align: center;*/
+  width: 100%;
   height: 100%;
   font-size: 20pt;
   /*vertical-align: middle;*/
   text-decoration: none;
   text-align: center;
-  margin-top:auto;
-  margin-bottom:auto;
   color: white;
 }
 #menu li a:hover {
 	background-color: rgb(121,6,12);
 	color: white;
+}
+#rightArea {
+  width: 75%;
+  height: 100%;
+  float: right;
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: black;
+  background: url("../img/filharmonie.jpg") no-repeat; /*bottom fixed;*/
+  /*background-size: contain; nemeni se pomer stran obrazku, ale pak je na strance kousek bileho mista*/
+  background-size: 100% 100%;  /*obrazek se presne kopiruje velikost okna, i za cenu zmeny pomeru stran*/
+}
+#FL {
+  font-size: 50pt;
+  color: yellow;
+  position: absolute;
+  left: 80px;
 }
 #edit_btn a {
 	border: powderblue solid;

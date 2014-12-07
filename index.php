@@ -86,7 +86,9 @@ if(isset($_GET["user"])) {
 			//prihlasit se jako: manazer, hudebnik, personalista, nastrojar, aranzer
 			else {
 				// echo "Vítejte v informaèním systému Filharmonie Liptákov!<br>";
-	    	echo '<div id="rightPanel">
+	    	echo '<div id="leftPanel">
+								<span id="IS"><p>Informaèní systém</p></span><br>
+								<span id="prihlasit"><p>Pøihlásit se jako:</p></span><br>
 					    	<div id="menu"><ul>
 						      <li><a href="?page=manazer.php">Mana¾er</a></li>
 						      <li><a href="?page=personalista.php">Personalista</a></li>
@@ -95,8 +97,14 @@ if(isset($_GET["user"])) {
 						      <li><a href="?page=nastrojar.php">Nástrojáø</a></li></ul>
 					      </div>
 				      </div>';
+				echo '<div id="rightArea">
+								<span id="FL"><p>Filharmonie Liptákov</p></span>
+								<!-- <img src="img/filharmonie.jpg" alt=""> -->
+
+							</div>';
 			}
-	?>
+		?>
+
 
 	</body>
 </html>
