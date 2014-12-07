@@ -127,6 +127,8 @@
   require 'Nette/loader.php';
 
   use Nette\Forms\Form;
+  //use Tracy\Debugger;
+  //Debugger::enable(); // aktivujeme Ladìnku
   require_once 'Nette/Forms/Form.php';
   ?>
 
@@ -135,12 +137,12 @@
     $form->setAction('index.php?page=personalista.php');
     $form->setMethod('GET');
 
-    $form->addText('jmeno', 'Jmeno:')
-      ->addRule(Form::FILLED, 'Zadejte jméno');
-    $form->addText('prijmeni', 'Prijmeni:')
-      ->addRule(Form::FILLED, 'Zadejte pøíjmení');
-    $form->addText('rodne_cislo', 'Rodne cislo:')
-      ->addRule(Form::FILLED, 'Zadejte rodné èíslo');
+    $form->addText('jmeno', 'Jmeno:');
+      //->addRule(Form::FILLED, 'Zadejte jméno');
+    $form->addText('prijmeni', 'Prijmeni:');
+      //->addRule(Form::FILLED, 'Zadejte pøíjmení');
+    $form->addText('rodne_cislo', 'Rodne cislo:');
+      //->addRule(Form::FILLED, 'Zadejte rodné èíslo');
     $form->addSubmit('send', 'Pridat');
   ?>
 
