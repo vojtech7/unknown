@@ -6,6 +6,7 @@
     <meta charset="iso-8859-2">
     <script type="text/javascript" src="netteForms.js"></script>
     <script src="js/libs/jquery-2.1.1.js"></script>
+    <style> .required label { color: maroon } </style>
     <script src="js/filter.js"></script>
     <script src="js/form.js"></script>
     <title>Aranžér Filharmonie Liptákov</title>
@@ -16,7 +17,21 @@
 
   <?php  
     include "connect.php";
+    use Nette\Forms\Form;
 
+    session_start();
+    $ses_id = session_id();
+    //uzivatel neni prihlasen
+     if(!isset($_SESSION['id'])) {
+      echo '
+      <form action="login.php?page=aranzer.php" method="post" enctype="multipart/form-data">
+        <h3>Přihlášení</h3>
+        Login:<input type="text" name="login"><br>
+        Heslo:<input type="password" name="heslo">
+        <input type="submit" value="Přihlásit">         
+      </form>';
+    }
+    else {
      //získání jmen autoru pro dalsí práci
     $sql = "select jmeno from Autor";
     $autori = mysql_query($sql);
@@ -25,28 +40,23 @@
       $row = mysql_fetch_array($autori, MYSQL_ASSOC);
       $seznam_jmen[$i] = $row["jmeno"];
     }
-
     $tabulka_vypis = "Autor natural join Skladba ";
     $tabulka_upravy = "Skladba";
     $nadpisy_sloupcu = array('Název', 'Délka', 'Jméno autora');
     $nazvy_sloupcu = array('ID_skladby', 'nazev', 'delka', 'jmeno');
     $pk = "ID_skladby";
     $nadpis_vysledku = "Seznam skladeb";
-    echo "<div id=logout_btn><a href='index.php'>Odhlásit se</a></div>";
+    $page = "aranzer.php";
+    echo "<div id=logout_btn><a href='logout.php'>Odhlásit se</a></div>";
     echo '<div id="menu"><ul>';
      // echo "<ul><li><a href='P_add_form_show()'>Přidat zaměstnance</a></li>";
     echo "<button onclick='P_add_form_show()'>Přidat skladbu</button>";
     echo "</ul><div>";
 
-  ?>
-
-    <!-- <div id="logout" class="buttons"> </div> -->
-
-    <!-- tabulka se vstupy pro hledani -->
-    <table id="hledani" class="pattern">
-    <span class="nadpis" id="nadpis_vyhledavani">Filtry pro vyhledávání skladeb</span>
-    <tr>
-    <?php
+    //tabulka se vstupy pro hledani
+      echo '<table id="hledani" class="pattern">
+            <span class="nadpis" id="nadpis_vyhledavani">Filtry pro vyhledávání nástrojů</span>
+            <tr>';
         foreach ($nadpisy_sloupcu as $value) {
           echo "<td>". $value ."</td>";
         }
@@ -68,9 +78,6 @@
             
         }
 
-          
-          
-        
         echo "</tr>";
         echo "</table>";
 
@@ -129,42 +136,26 @@
           }
           
           //predam si PK do url parametru delete
-          echo "<td id=delete_btn><a href='?page={$_GET['page']}&delete={$row[$pk]}'>Odstranit</a></td>";
+          echo "<td id=delete_btn><a href='?page={$page}&delete={$row[$pk]}'>Odstranit</a></td>";
           echo "</tr>";
         }
 
         echo "</tr>";
         echo "</table>";
 
-       ?>
+      echo '</div>
+            <!-- formular pro pridani -->
+            <div id="P_add_form" class="abc">
+            <!-- Popup Div Starts Here -->
+            <div id="popupContact">
+            <!-- Contact Us Form -->
+            <img id="close" src="img/close-icon.png" onclick ="P_add_form_hide()">
 
-      </div>
-  <!-- formular pro pridani -->
-  <div id="P_add_form" class="abc">
-  <!-- Popup Div Starts Here -->
-  <div id="popupContact">
-  <!-- Contact Us Form -->
-  <img id="close" src="images/3.png" onclick ="P_add_form_hide()">
-  <!--
-  select {
-    background-color: #FDFBFB;
-    border: 1px #BBBBBB solid;
-    padding: 2px;
-    margin: 1px;
-    font-size: 14px;
-    color: #808080;
-  }
-  -->
-
-  <!-- vvvvvvvvvvvvv Nette Form  vvvvvvvvvvvvv -->
-  <?php
+            <!-- vvvvvvvvvvvvv Nette Form  vvvvvvvvvvvvv -->';
   require 'Nette/loader.php';
 
-    use Nette\Forms\Form;
     require_once 'Nette/Forms/Form.php';
-  ?>
 
-  <?php
     $form = new Form;
     $form->setAction('index.php?page=aranzer.php');
     $form->setMethod('GET');
@@ -177,12 +168,7 @@
     $form->addText('delka', 'Délka')
       ->addRule(Form::FILLED, 'Zadejte delku skladby');
     $form->addSubmit('send', 'Pridat');
-  ?>
 
-  <script src="netteForms.js"></script>
-  <style> .required label { color: maroon } </style>
-
-  <?php
   echo $form; // vykresli formular
 
   $sub1 = $form->addContainer('first');
@@ -193,14 +179,14 @@
     dump($values);
   }
 
+  echo '
+  </div>
+  <!-- Popup Div Ends Here -->
+  </div>
+  <!-- Display Popup Button -->
+  <!-- <button id="popup" onclick="P_add_form_show()">Popup</button> -->';
+  }//uzivatel je prihlasen
   ?>
-  <!-- ^^^^^^^^^^^^^ Nette Form  ^^^^^^^^^^^^^ -->
-
-</div>
-<!-- Popup Div Ends Here -->
-</div>
-<!-- Display Popup Button -->
-<!-- <button id="popup" onclick="P_add_form_show()">Popup</button> -->
     
   </body>
 </html>

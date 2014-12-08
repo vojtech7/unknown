@@ -8,6 +8,7 @@
     <script src="js/libs/jquery-2.1.1.js"></script>
     <script src="js/filter.js"></script>
     <script src="js/form.js"></script>
+    <style> .required label { color: maroon } </style>
     <title>Aran¾ér Filharmonie Liptákov</title>
   </head>
 <body>
@@ -16,26 +17,41 @@
 
   <?php  
     include "connect.php";
+    use Nette\Forms\Form;
 
+    session_start();
+    $ses_id = session_id();
+    //uzivatel neni prihlasen
+    if(!isset($_SESSION['id'])) {
+      echo '
+      <form action="login.php?page=manazer.php" method="post" enctype="multipart/form-data">
+        <h3>Pøihlá¹ení</h3>
+        Login:<input type="text" name="login"><br>
+        Heslo:<input type="password" name="heslo">
+        <input type="submit" value="Pøihlásit">         
+      </form>';
+    }
+
+    //uzivatel je prihlasen, tohle else je az do konce souboru
+    else {
     $tabulka = "Koncert";
     $nadpisy_sloupcu = array('ID koncertu', 'Datum a èas', 'Mìsto', 'Adresa');
     $nazvy_sloupcu = array('ID_koncertu', 'datum_a_cas', 'mesto', 'adresa');
     $pk = "ID_koncertu";
     $nadpis_vysledku = "Seznam koncertù";
+    $page = "manazer.php";
     echo '<div id="menu"><ul>';
     echo "<button onclick='P_add_form_show()'>Naplánuj koncert</button>";
     echo "</ul><div>";
-    echo "<div id=logout_btn><a href='index.php'>Odhlásit se</a></div>";
+    echo "<div id=logout_btn><a href='logout.php'>Odhlásit se</a></div>";
     echo '<div id="menu"><ul>';
     echo "</ul><div>";
 
-  ?>
 
-    <!-- tabulka se vstupy pro hledani -->
-    <table id="hledani" class="pattern">
-    <span class="nadpis" id="nadpis_vyhledavani">Filtry pro vyhledávání skladeb</span>
-    <tr>
-    <?php
+    //tabulka se vstupy pro hledani
+      echo '<table id="hledani" class="pattern">
+            <span class="nadpis" id="nadpis_vyhledavani">Filtry pro vyhledávání nástrojù</span>
+            <tr>';
         foreach ($nadpisy_sloupcu as $value) {
           if ($value === "ID koncertu") continue; 
           echo "<td>". $value ."</td>";
@@ -104,42 +120,26 @@
           }
           
           //predam si PK do url parametru delete
-          echo "<td id=delete_btn><a href='?page={$_GET['page']}&delete={$row[$pk]}'>Odstranit</a></td>";
+          echo "<td id=delete_btn><a href='?page={$page}&delete={$row[$pk]}'>Odstranit</a></td>";
           echo "</tr>";
         }
 
         echo "</tr>";
         echo "</table>";
 
-       ?>
+      echo '</div>
+            <!-- formular pro pridani -->
+            <div id="P_add_form" class="abc">
+            <!-- Popup Div Starts Here -->
+            <div id="popupContact">
+            <!-- Contact Us Form -->
+            <img id="close" src="img/close-icon.png" onclick ="P_add_form_hide()">
 
-      </div>
-  <!-- formular pro pridani -->
-  <div id="P_add_form" class="abc">
-  <!-- Popup Div Starts Here -->
-  <div id="popupContact">
-  <!-- Contact Us Form -->
-  <img id="close" src="images/3.png" onclick ="P_add_form_hide()">
-  <!--
-  select {
-    background-color: #FDFBFB;
-    border: 1px #BBBBBB solid;
-    padding: 2px;
-    margin: 1px;
-    font-size: 14px;
-    color: #808080;
-  }
-  -->
-
-  <!-- vvvvvvvvvvvvv Nette Form  vvvvvvvvvvvvv -->
-  <?php
+            <!-- vvvvvvvvvvvvv Nette Form  vvvvvvvvvvvvv -->';
   require 'Nette/loader.php';
 
-    use Nette\Forms\Form;
     require_once 'Nette/Forms/Form.php';
-  ?>
 
-  <?php
     $form = new Form;
     $form->setAction('index.php?page=aranzer.php');
     $form->setMethod('GET');
@@ -149,12 +149,7 @@
     $form->addText('delka', 'Délka')
       ->addRule(Form::FILLED, 'Zadejte delku skladby');
     $form->addSubmit('send', 'Pridat');
-  ?>
 
-  <script src="netteForms.js"></script>
-  <style> .required label { color: maroon } </style>
-
-  <?php
   echo $form; // vykresli formular
 
   $sub1 = $form->addContainer('first');
@@ -165,14 +160,14 @@
     dump($values);
   }
 
+  echo '
+  </div>
+  <!-- Popup Div Ends Here -->
+  </div>
+  <!-- Display Popup Button -->
+  <!-- <button id="popup" onclick="P_add_form_show()">Popup</button> -->';
+  }//uzivatel je prihlasen
   ?>
-  <!-- ^^^^^^^^^^^^^ Nette Form  ^^^^^^^^^^^^^ -->
-
-</div>
-<!-- Popup Div Ends Here -->
-</div>
-<!-- Display Popup Button -->
-<!-- <button id="popup" onclick="P_add_form_show()">Popup</button> -->
     
   </body>
 </html>

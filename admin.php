@@ -158,7 +158,6 @@
 
     $roles = array('manazer', 'personalista', 'hudebnik', 'aranzer', 'nastrojar');
     $form->addSelect('role', 'Role:', $roles)
-      ->setPrompt('Zadejte roli')
       ->setItems($roles, FALSE);
     $form->addText('info', 'Rodné èíslo pro hudebníka:');
     $form->addSubmit('send', 'Pridat');
