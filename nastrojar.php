@@ -21,7 +21,7 @@
     session_start();
     $ses_id = session_id();
     //uzivatel neni prihlasen
-    if(empty($ses_id)) {
+    if(!isset($_SESSION['id'])) {
       echo '
       <form action="login.php?page=nastrojar.php" method="post" enctype="multipart/form-data">
         <h3>Pøihlá¹ení</h3>
@@ -38,7 +38,7 @@
       $nazvy_sloupcu = array('datum_vyroby', 'vyrobce','dat_posl_revize', 'dat_posl_vymeny', 'vymeneno', 'vyrobni_cislo', 'ttype');
       $pk = "vyrobni_cislo";
       $nadpis_vysledku = "Seznam nástrojù";
-      echo "<div id=logout_btn><a href='index.php'>Odhlásit se</a></div>";
+      echo "<div id=logout_btn><a href='logout.php'>Odhlásit se</a></div>";
       echo '<div id="menu"><ul>';
       // echo "<ul><li><a href='P_add_form_show()'>Pridat zamestnance</a></li>";
       echo "<button onclick='P_add_form_show()'>Pøidat nástroj</button>";
