@@ -15,9 +15,8 @@
   <!-- uvodni inicializace -->
   <?php
     // require 'Nette/loader.php';
-    // use Nette\Forms\Form;
     include "connect.php";
-    use Nette\Forms\Latin2Form;
+    use Nette\Forms\Form;
 
     session_start();
     $ses_id = session_id();
@@ -131,35 +130,45 @@
             <!-- Popup Div Starts Here -->
             <div id="popupContact">
             <!-- Contact Us Form -->
-            <img id="close" src="images/3.png" onclick ="P_add_form_hide()">
+            <img id="close" src="img/close-icon.png" onclick ="P_add_form_hide()">
 
             <!-- vvvvvvvvvvvvv Nette Form  vvvvvvvvvvvvv -->';
   require 'Nette/loader.php';
 
-  require_once 'Nette/Forms/Latin2Form.php';
+  require_once 'Nette/Forms/Form.php';
 
-    $form = new Latin2Form;
+    $form = new Form;
     $form->setAction('index.php?page=nastrojar.php');
     $form->setMethod('GET');
 
      $nadpisy_sloupcu = array('', '', '', '', '', '', 'Typ');
      $nazvy_sloupcu = array('', '','', '', '', '', 'ttype');
      
+    $sql = "select * from Typ";
+    $typy = mysql_query($sql);
 
+    for ($i=0; $i < mysql_num_rows($typy); $i++) { 
+      $row = mysql_fetch_array($typy);
+      $seznam_typu[$i] = $row["ttype"];
+    }
+
+    $form->addSelect('ttype','Typ', $seznam_typu)
+         ->setPrompt('Zadejte typ nástroje');
     $form->addText('datum_vyroby', 'Datum výroby')
-      ->addRule(Latin2Form::FILLED, 'Zadejte datum výroby');
+      ->addRule(Form::FILLED, 'Zadejte datum vyroby')
+      ->setAttribute('placeholder', 'rrrr-mm-dd');
     $form->addText('vyrobce', 'Výrobce')
-      ->addRule(Latin2Form::FILLED, 'Zadejte výrobce');
+      ->addRule(Form::FILLED, 'Zadejte vyrobce');
     $form->addText('dat_posl_revize', 'Datum poslední revize')
-      ->addRule(Latin2Form::FILLED, 'Zadejte datum poslední revize');
+      ->addRule(Form::FILLED, 'Zadejte datum posledni revize')
+      ->setAttribute('placeholder', 'rrrr-mm-dd');
     $form->addText('dat_posl_vymeny','Datum poslední výmìny')
-        ->addRule(Latin2Form::FILLED, 'Zadejte datum poslední výmìny');
+        ->addRule(Form::FILLED, 'Zadejte datum posledni vymeny')
+        ->setAttribute('placeholder', 'rrrr-mm-dd');
     $form->addText('vymeneno','Vymìnìno')
-        ->addRule(Latin2Form::FILLED, 'Zadejte, co bylo vymìnìno');
+        ->addRule(Form::FILLED, 'Zadejte, co bylo vymeneno');
     $form->addText('vyrobni_cislo','Výrobní èíslo')
-        ->addRule(Latin2Form::FILLED, 'Zadejte výrobní èíslo');
-    $form->addText('ttype','Typ')
-        ->addRule(Latin2Form::FILLED, 'Zadejte typ');
+        ->addRule(Form::FILLED, 'Zadejte vyrobni cislo');
     $form->addSubmit('send', 'Pøidat');
 
   echo $form; // vykresli formular

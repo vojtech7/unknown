@@ -13,14 +13,12 @@
       echo $hash_zadane_admin;
       if($login == "cimrman"and $hash_zadane_admin == 'c856676e7c7aa3b1217c8c809b6e5c9cf77427a6') {
         session_start();
-        $_SESSION["rolepage"] = $page;
+        $_SESSION["id"] = $page;
         $_SESSION["time"] = time();
+        var_dump($_SESSION['id']);
+        var_dump($_SESSION['time']);
         echo "Autentizace probìhla úspì¹nì.";
         echo "<a href='{$page}'>Pokraèovat >></a><br>";
-        echo $_SESSION["rolepage"];
-        echo $_SESSION["time"];
-        $ses_id = session_id();
-        var_dump($ses_id);
       }
       else {
         echo "ani banan kamo :P<br>";

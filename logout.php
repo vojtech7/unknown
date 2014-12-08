@@ -4,13 +4,11 @@
   //jeste nefunguje, ale verim, ze to zprovoznim
 
   session_start();
-  $id = session_id();
-  print_r($id);
-  echo "";
-  print_r($_SESSION);
-  session_unset();
-  session_destroy();
-  $_SESSION = array();
+  unset($_SESSION['id']);
+  var_dump($_SESSION['id']);
+  // session_unset();
+  // session_destroy();
+  // $_SESSION = array();
 
   echo "Odhlá¹ení probìhlo úspì¹nì.";
   echo "<a href='index.php'>Úvodní stránka >></a><br>";

@@ -16,17 +16,16 @@
   <!-- uvodni inicializace -->
 
   <?php  
-    include "connect.php";
+    // include "connect.php";
     include "login.php";
     use Nette\Forms\Form;
 
     session_start();
-    $ses_id = session_id();
+    // var_dump($ses_id);
+    // echo $_SESSION["rolepage"];
+    // echo $_SESSION["time"];
     //uzivatel neni prihlasen
-    var_dump($ses_id);
-    echo $_SESSION["rolepage"];
-    echo $_SESSION["time"];
-    if(empty($ses_id)) {
+    if(!isset($_SESSION['id'])) {
       echo '
       <form action="login.php?page=admin.php" method="post" enctype="multipart/form-data">
         <h3>Pøihlá¹ení</h3>
@@ -40,10 +39,10 @@
     else {
       $tabulka = "Uzivatel";
       $nadpisy_sloupcu = array('Login', 'Role', 'Info');
-      $nazvy_sloupcu = array('login', 'role', 'info');
+      $nazvy_sloupcu = array('login', 'heslo_hash', 'role', 'info');
       $pk = "login";
       $nadpis_vysledku = "Seznam u¾ivatelù";
-      echo "<div id=logout_btn><a href='index.php'>Odhlásit se</a></div>";
+      echo "<div id=logout_btn><a href='logout.php'>Odhlásit se</a></div>";
       echo '<div id="menu"><ul>';
       echo "<button onclick='P_add_form_show()'>Pøidat u¾ivatele</button>";
       echo "</ul><div>";
@@ -58,6 +57,7 @@
         echo "</tr>";
         echo "<tr>";
         foreach ($nazvy_sloupcu as $value) {
+          if($value == "heslo_hash") continue;
           echo "<td> <input type=\"text\" class=\"form-control filter_". $value ."\"></td>";
         }
 
@@ -86,7 +86,8 @@
         //pred zobrazenim radku se provedou pripadne SQL dotazy nad tabulkou
         //odstraneni skladby z tabulky
         if(isset($_GET['delete'])) {
-          $delete_row = "DELETE FROM {$tabulka} WHERE {$pk}={$_GET['delete']};";
+          $delete_row = "DELETE FROM {$tabulka} WHERE {$pk}='{$_GET['delete']}';";
+          // echo "<br><br><br><br>budu mazat: ".$delete_row;
           $delete_success = mysql_query($delete_row);
           if(!$delete_success) echo "nepodarilo se odstranit polozku";
         }
@@ -95,11 +96,14 @@
           $login = $_GET["login"];
           $heslo = $_GET["heslo"];
           $role = $_GET["role"];
+          $info = '""';
+          if($_GET["info"] != "")
+            $info = '"'.$_GET["info"].'"';
 
           $hash_heslo = sha1($heslo);
 
-          $insert_row = 'INSERT INTO $tabulka VALUES ("$login", "$hash_heslo", "$role", "$_GET[\'info\']");';
-
+          $insert_row = 'INSERT INTO '.$tabulka.' VALUES ("'.$login.'", "'.$hash_heslo.'", "'.$role.'", '.$info.');';
+          echo "<br><br><br><br><br>insert_row: $insert_row<br>";
           $insert_success = mysql_query($insert_row);
           if(!$insert_success) echo "nepodarilo se vlozit polozku";
         }
@@ -116,7 +120,7 @@
         while($row = mysql_fetch_array($vysledek)){
           echo "<tr>";
           for ($i=0; $i < $columns_count; $i++) {
-            if($i==0) continue;
+            if($i==1) continue;
             echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$i]}</td>";
           }
           
@@ -146,13 +150,13 @@
     $form->setMethod('GET');
 
 
-    $form->addText('nazev', 'Login:')
+    $form->addText('login', 'Login:')
       ->addRule(Form::FILLED, 'Zadejte login');
-    $form->addPassword('password', 'Heslo:')
+    $form->addPassword('heslo', 'Heslo:')
       ->addRule(Form::MIN_LENGTH, 'Zadejte heslo', 1)
-      ->addRule(Form::MIN_LENGTH,'Heslo musí mít alespoò %d znaky', 4);
+      ->addRule(Form::MIN_LENGTH,'Heslo musi mit alespon %d znaky', 4);
 
-    $roles = array('mana¾er', 'personalista', 'hudebník', 'aran¾ér', 'nástrojáø');
+    $roles = array('manazer', 'personalista', 'hudebnik', 'aranzer', 'nastrojar');
     $form->addSelect('role', 'Role:', $roles)
       ->setPrompt('Zadejte roli')
       ->setItems($roles, FALSE);

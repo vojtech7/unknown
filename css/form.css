@@ -15,8 +15,8 @@ overflow:auto
 }
 img#close {
 position:absolute;
-right:-14px;
-top:-14px;
+right:-20px;
+top:-20px;
 cursor:pointer
 }
 div#popupContact {
