@@ -96,9 +96,22 @@ table, th, td {
   text-align: center;
   color: white;
 }
+#alter_btn a {
+  border: blue solid;
+  background: blue;
+  text-align: center;
+  width: 2em;
+  text-decoration: none;
+  text-align: center;
+  color: white;
+}
 #delete_btn a:hover {
 	background-color: orange;
 	color: black;
+}
+#alter_btn a:hover {
+  background: orange;
+  color: black;
 }
 #logout_btn a {
 	border: red solid;

@@ -15,6 +15,7 @@
   <!-- uvodni inicializace -->
   <?php
     // require 'Nette/loader.php';
+    // use Nette\Forms\Form;
     include "connect.php";
     use Nette\Forms\Form;
 
@@ -78,11 +79,32 @@
         echo "<tr>";
 
         //pred zobrazenim radku se provedou pripadne SQL dotazy nad tabulkou
-        //odstraneni hudebnika z tabulky
+        //odstraneni nastroje z tabulky
         if(isset($_GET['delete'])) {
           $delete_row = "DELETE FROM ".$tabulka." WHERE ".$pk.'="'.$_GET['delete'].'";';
           $delete_success = mysql_query($delete_row);
           if(!$delete_success) echo "nepodarilo se odstranit polozku";
+        }
+        
+        //upraveni nastroje z tabulky
+        if(isset($_GET['alter'])) {
+
+        	$alter_row = "SELECT FROM ".$tabulka." WHERE ".$pk.'="'.$_GET['alter'].'";';
+        	$alter_success = mysql_query($alter_row);
+        	if (!$alter_success) {
+        		echo $_GET['alter'];
+        	}
+        	else{
+        		$alter_row = mysql_fetch_array($alter_row, MYSQL_ASSOC);
+        		$form->setDefaults(array(
+        		    'datum_vyroby' => $alter_row['datum_vyroby'],
+        		    'vyrobce' => $alter_row['vyrobce'],
+        		    'dat_posl_revize' => $alter_row['dat_posl_revize'],
+        		    'vymeneno' => $alter_row['vymeneno'],
+        		    'vyrobni_cislo' => $alter_row['vyrobni_cislo'],
+        		    'ttype' => $alter_row['ttype']
+        		));
+        	}
         }
         //pridani radku do tabulky
         
@@ -117,6 +139,7 @@
           }
           //predam si PK do url parametru delete
           echo "<td id=delete_btn><a href='?page={$_GET['page']}&delete={$row[$pk]}'>Odstranit</a></td>";
+          echo "<td id=alter_btn onclick='P_add_form_show()'><a href='?page={$_GET['page']}&alter={$row[$pk]}'>Upravit</a></td>";
           echo "</tr>";
         }
 
@@ -130,7 +153,7 @@
             <!-- Popup Div Starts Here -->
             <div id="popupContact">
             <!-- Contact Us Form -->
-            <img id="close" src="img/close-icon.png" onclick ="P_add_form_hide()">
+            <img id="close" src="images/3.png" onclick ="P_add_form_hide()">
 
             <!-- vvvvvvvvvvvvv Nette Form  vvvvvvvvvvvvv -->';
   require 'Nette/loader.php';
@@ -144,31 +167,21 @@
      $nadpisy_sloupcu = array('', '', '', '', '', '', 'Typ');
      $nazvy_sloupcu = array('', '','', '', '', '', 'ttype');
      
-    $sql = "select * from Typ";
-    $typy = mysql_query($sql);
 
-    for ($i=0; $i < mysql_num_rows($typy); $i++) { 
-      $row = mysql_fetch_array($typy);
-      $seznam_typu[$i] = $row["ttype"];
-    }
-
-    $form->addSelect('ttype','Typ', $seznam_typu)
-         ->setPrompt('Zadejte typ nástroje');
-    $form->addText('datum_vyroby', 'Datum výroby')
-      ->addRule(Form::FILLED, 'Zadejte datum vyroby')
-      ->setAttribute('placeholder', 'rrrr-mm-dd');
-    $form->addText('vyrobce', 'Výrobce')
-      ->addRule(Form::FILLED, 'Zadejte vyrobce');
-    $form->addText('dat_posl_revize', 'Datum poslední revize')
-      ->addRule(Form::FILLED, 'Zadejte datum posledni revize')
-      ->setAttribute('placeholder', 'rrrr-mm-dd');
-    $form->addText('dat_posl_vymeny','Datum poslední výmìny')
-        ->addRule(Form::FILLED, 'Zadejte datum posledni vymeny')
-        ->setAttribute('placeholder', 'rrrr-mm-dd');
-    $form->addText('vymeneno','Vymìnìno')
-        ->addRule(Form::FILLED, 'Zadejte, co bylo vymeneno');
-    $form->addText('vyrobni_cislo','Výrobní èíslo')
-        ->addRule(Form::FILLED, 'Zadejte vyrobni cislo');
+    $form->addText('datum_vyroby', 'Datum výroby');
+      //->addRule(Form::FILLED, 'Zadejte datum výroby');
+    $form->addText('vyrobce', 'Výrobce');
+      //->addRule(Form::FILLED, 'Zadejte výrobce');
+    $form->addText('dat_posl_revize', 'Datum poslední revize');
+      //->addRule(Form::FILLED, 'Zadejte datum poslední revize');
+    $form->addText('dat_posl_vymeny','Datum poslední výmìny');
+        //->addRule(Form::FILLED, 'Zadejte datum poslední výmìny');
+    $form->addText('vymeneno','Vymìnìno');
+        //->addRule(Form::FILLED, 'Zadejte, co bylo vymìnìno');
+    $form->addText('vyrobni_cislo','Výrobní èíslo');
+        //->addRule(Form::FILLED, 'Zadejte výrobní èíslo');
+    $form->addText('ttype','Typ');
+        //->addRule(Form::FILLED, 'Zadejte typ');
     $form->addSubmit('send', 'Pøidat');
 
   echo $form; // vykresli formular
