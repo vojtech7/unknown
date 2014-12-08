@@ -137,12 +137,12 @@
     $form->setAction('index.php?page=personalista.php');
     $form->setMethod('GET');
 
-    $form->addText('jmeno', 'Jmeno:');
-      //->addRule(Form::FILLED, 'Zadejte jméno');
-    $form->addText('prijmeni', 'Prijmeni:');
-      //->addRule(Form::FILLED, 'Zadejte pøíjmení');
-    $form->addText('rodne_cislo', 'Rodne cislo:');
-      //->addRule(Form::FILLED, 'Zadejte rodné èíslo');
+    $form->addText('jmeno', 'Jmeno:')
+      ->addRule(Form::FILLED, 'Zadejte jmeno');
+    $form->addText('prijmeni', 'Prijmeni:')
+      ->addRule(Form::FILLED, 'Zadejte prijmeni');
+    $form->addText('rodne_cislo', 'Rodne cislo:')
+      ->addRule(Form::FILLED, 'Zadejte rodne cislo');
     $form->addSubmit('send', 'Pridat');
   ?>
 

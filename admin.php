@@ -9,22 +9,26 @@
     <script src="js/filter.js"></script>
     <script src="js/form.js"></script>
     <style> .required label { color: maroon } </style>
-    <title>Nástrojáø Filharmonie Liptákov</title>
+    <title>Aran¾ér Filharmonie Liptákov</title>
   </head>
 <body>
+
   <!-- uvodni inicializace -->
-  <?php
-    // require 'Nette/loader.php';
-    // use Nette\Forms\Form;
+
+  <?php  
     include "connect.php";
-    use Nette\Forms\Latin2Form;
+    include "login.php";
+    use Nette\Forms\Form;
 
     session_start();
     $ses_id = session_id();
     //uzivatel neni prihlasen
+    var_dump($ses_id);
+    echo $_SESSION["rolepage"];
+    echo $_SESSION["time"];
     if(empty($ses_id)) {
       echo '
-      <form action="login.php?page=nastrojar.php" method="post" enctype="multipart/form-data">
+      <form action="login.php?page=admin.php" method="post" enctype="multipart/form-data">
         <h3>Pøihlá¹ení</h3>
         Login:<input type="text" name="login"><br>
         Heslo:<input type="password" name="heslo">
@@ -32,20 +36,17 @@
       </form>';
     }
 
-    //uzivatel je prihlasen, tohle else je az do konce souboru
+    //uzivatel je prihlasen
     else {
-      $tabulka = "Nastroj";
-      $nadpisy_sloupcu = array('Datum výroby', 'Výrobce', 'Datum poslední revize', 'Datum poslední výmìny', 'Vymìnìno', 'Výrobní èíslo', 'Typ');
-      $nazvy_sloupcu = array('datum_vyroby', 'vyrobce','dat_posl_revize', 'dat_posl_vymeny', 'vymeneno', 'vyrobni_cislo', 'ttype');
-      $pk = "vyrobni_cislo";
-      $nadpis_vysledku = "Seznam nástrojù";
+      $tabulka = "Uzivatel";
+      $nadpisy_sloupcu = array('Login', 'Role', 'Info');
+      $nazvy_sloupcu = array('login', 'role', 'info');
+      $pk = "login";
+      $nadpis_vysledku = "Seznam u¾ivatelù";
       echo "<div id=logout_btn><a href='index.php'>Odhlásit se</a></div>";
       echo '<div id="menu"><ul>';
-      // echo "<ul><li><a href='P_add_form_show()'>Pridat zamestnance</a></li>";
-      echo "<button onclick='P_add_form_show()'>Pøidat nástroj</button>";
+      echo "<button onclick='P_add_form_show()'>Pøidat u¾ivatele</button>";
       echo "</ul><div>";
-
-
 
     //tabulka se vstupy pro hledani
       echo '<table id="hledani" class="pattern">
@@ -59,6 +60,10 @@
         foreach ($nazvy_sloupcu as $value) {
           echo "<td> <input type=\"text\" class=\"form-control filter_". $value ."\"></td>";
         }
+
+          
+          
+        
         echo "</tr>";
         echo "</table>";
 
@@ -79,43 +84,42 @@
         echo "<tr>";
 
         //pred zobrazenim radku se provedou pripadne SQL dotazy nad tabulkou
-        //odstraneni hudebnika z tabulky
+        //odstraneni skladby z tabulky
         if(isset($_GET['delete'])) {
-          $delete_row = "DELETE FROM ".$tabulka." WHERE ".$pk.'="'.$_GET['delete'].'";';
+          $delete_row = "DELETE FROM {$tabulka} WHERE {$pk}={$_GET['delete']};";
           $delete_success = mysql_query($delete_row);
           if(!$delete_success) echo "nepodarilo se odstranit polozku";
         }
         //pridani radku do tabulky
-        
-        if(isset($_GET["datum_vyroby"]) and isset($_GET["vyrobce"]) and isset($_GET["dat_posl_revize"])
-             and isset($_GET["dat_posl_vymeny"]) and isset($_GET["vymeneno"]) and isset($_GET["vyrobni_cislo"])
-              and isset($_GET["ttype"])) {
+        if(isset($_GET["login"]) and isset($_GET["heslo"]) and isset($_GET["role"])) {
+          $login = $_GET["login"];
+          $heslo = $_GET["heslo"];
+          $role = $_GET["role"];
 
-          $datum_vyroby = $_GET['datum_vyroby'];
-          $vyrobce = $_GET['vyrobce'];
-          $dat_posl_revize = $_GET['dat_posl_revize'];
-          $dat_posl_vymeny = $_GET['dat_posl_vymeny'];
-          $vymeneno = $_GET['vymeneno'];
-          $vyrobni_cislo = $_GET['vyrobni_cislo'];
-          $ttype = $_GET['ttype'];
-          
-          $insert_row = "INSERT INTO ".$tabulka." VALUES (\"".$datum_vyroby."\", \"".$vyrobce."\", \"".$dat_posl_revize."\",
-             \"".$dat_posl_vymeny."\", \"".$vymeneno."\", \"".$vyrobni_cislo."\", \"".$ttype."\");";
+          $hash_heslo = sha1($heslo);
+
+          $insert_row = 'INSERT INTO $tabulka VALUES ("$login", "$hash_heslo", "$role", "$_GET[\'info\']");';
+
           $insert_success = mysql_query($insert_row);
           if(!$insert_success) echo "nepodarilo se vlozit polozku";
         }
 
         /*tahani dat z databaze*/
-        $sql = "select * from ".$tabulka;
+        $sql = "select * from $tabulka";
+        
         $vysledek = mysql_query($sql);
         $columns_count = count($nazvy_sloupcu);
 
         //vykresleni radku a sloupcu s vysledky
+        //posledni sloupec se vykresluje zvlast,
+        //je slozitejsi kvuli datum z jine tabulky
         while($row = mysql_fetch_array($vysledek)){
           echo "<tr>";
-          for ($i=0; $i < $columns_count; $i++) { 
+          for ($i=0; $i < $columns_count; $i++) {
+            if($i==0) continue;
             echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$i]}</td>";
           }
+          
           //predam si PK do url parametru delete
           echo "<td id=delete_btn><a href='?page={$_GET['page']}&delete={$row[$pk]}'>Odstranit</a></td>";
           echo "</tr>";
@@ -123,7 +127,6 @@
 
         echo "</tr>";
         echo "</table>";
-
 
       echo '</div>
             <!-- formular pro pridani -->
@@ -134,33 +137,27 @@
             <img id="close" src="images/3.png" onclick ="P_add_form_hide()">
 
             <!-- vvvvvvvvvvvvv Nette Form  vvvvvvvvvvvvv -->';
-  require 'Nette/loader.php';
 
-  require_once 'Nette/Forms/Latin2Form.php';
-
-    $form = new Latin2Form;
-    $form->setAction('index.php?page=nastrojar.php');
+    require 'Nette/loader.php';
+    require_once 'Nette/Forms/Form.php';
+    
+    $form = new Form;
+    $form->setAction('index.php?page=admin.php');
     $form->setMethod('GET');
 
-     $nadpisy_sloupcu = array('', '', '', '', '', '', 'Typ');
-     $nazvy_sloupcu = array('', '','', '', '', '', 'ttype');
-     
 
-    $form->addText('datum_vyroby', 'Datum výroby')
-      ->addRule(Latin2Form::FILLED, 'Zadejte datum výroby');
-    $form->addText('vyrobce', 'Výrobce')
-      ->addRule(Latin2Form::FILLED, 'Zadejte výrobce');
-    $form->addText('dat_posl_revize', 'Datum poslední revize')
-      ->addRule(Latin2Form::FILLED, 'Zadejte datum poslední revize');
-    $form->addText('dat_posl_vymeny','Datum poslední výmìny')
-        ->addRule(Latin2Form::FILLED, 'Zadejte datum poslední výmìny');
-    $form->addText('vymeneno','Vymìnìno')
-        ->addRule(Latin2Form::FILLED, 'Zadejte, co bylo vymìnìno');
-    $form->addText('vyrobni_cislo','Výrobní èíslo')
-        ->addRule(Latin2Form::FILLED, 'Zadejte výrobní èíslo');
-    $form->addText('ttype','Typ')
-        ->addRule(Latin2Form::FILLED, 'Zadejte typ');
-    $form->addSubmit('send', 'Pøidat');
+    $form->addText('nazev', 'Login:')
+      ->addRule(Form::FILLED, 'Zadejte login');
+    $form->addPassword('password', 'Heslo:')
+      ->addRule(Form::MIN_LENGTH, 'Zadejte heslo', 1)
+      ->addRule(Form::MIN_LENGTH,'Heslo musí mít alespoò %d znaky', 4);
+
+    $roles = array('mana¾er', 'personalista', 'hudebník', 'aran¾ér', 'nástrojáø');
+    $form->addSelect('role', 'Role:', $roles)
+      ->setPrompt('Zadejte roli')
+      ->setItems($roles, FALSE);
+    $form->addText('info', 'Rodné èíslo pro hudebníka:');
+    $form->addSubmit('send', 'Pridat');
 
   echo $form; // vykresli formular
 
@@ -183,5 +180,3 @@
     
   </body>
 </html>
-
-
