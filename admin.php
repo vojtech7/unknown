@@ -42,6 +42,7 @@
       $nazvy_sloupcu = array('login', 'heslo_hash', 'role', 'info');
       $pk = "login";
       $nadpis_vysledku = "Seznam u¾ivatelù";
+      $page = "admin.php";
       echo "<div id=logout_btn><a href='logout.php'>Odhlásit se</a></div>";
       echo '<div id="menu"><ul>';
       echo "<button onclick='P_add_form_show()'>Pøidat u¾ivatele</button>";
@@ -125,7 +126,7 @@
           }
           
           //predam si PK do url parametru delete
-          echo "<td id=delete_btn><a href='?page={$_GET['page']}&delete={$row[$pk]}'>Odstranit</a></td>";
+          echo "<td id=delete_btn><a href='?page={$page}&delete={$row[$pk]}'>Odstranit</a></td>";
           echo "</tr>";
         }
 
