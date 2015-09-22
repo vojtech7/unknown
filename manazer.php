@@ -82,23 +82,23 @@
         echo "<tr>";
 
         //pred zobrazenim radku se provedou pripadne SQL dotazy nad tabulkou
-        //odstraneni koncertu z tabulky
+        //odstraneni skladby z tabulky
         if(isset($_GET['delete'])) {
-          $delete_row = "DELETE FROM ".$tabulka." WHERE ".$pk.'="'.$_GET['delete'].'";';
+          $delete_row = "DELETE FROM ".$tabulka_upravy." WHERE ".$pk.'="'.$_GET['delete'].'";';
           $delete_success = mysql_query($delete_row);
           if(!$delete_success) echo "nepodarilo se odstranit polozku";
         }
         //pridani radku do tabulky
-        if(isset($_GET["mesto"]) and isset($_GET["adresa"]) and isset($_GET["datum_a_cas"])) {
-          $datum_a_cas = $_GET["datum_a_cas"];
-          $mesto = $_GET["mesto"];
-          $adresa = $_GET["adresa"];
-          $sql = "select max(ID_koncertu) from  Koncert";
+        if(isset($_GET["nazev"]) and isset($_GET["delka"]) and isset($_GET["jmeno"])) {
+          $nazev = $_GET["nazev"];
+          $delka = $_GET["delka"];
+          $sql = "select max(ID_skladby) from  Skladba";
           $cislo = mysql_fetch_row(mysql_query($sql));
-          $ID_koncertu = 1 + $cislo[0];
+          $ID_skladby = 1 + $cislo[0];
 
-          $insert_row = "INSERT INTO $tabulka VALUES ($ID_koncertu, STR_TO_DATE('$datum_a_cas', '%d.%m.%Y %T'), \"$mesto\", \"$adresa\");";
-          // echo $insert_row;
+          $ID_autora = $_GET['jmeno']+1;
+          
+          $insert_row = "INSERT INTO ".$tabulka_upravy." VALUES (\"".$ID_skladby."\", \"".$nazev."\", \"".$delka."\", \"".$ID_autora."\");";
           $insert_success = mysql_query($insert_row);
           if(!$insert_success) echo "nepodarilo se vlozit polozku";
         }
@@ -141,16 +141,13 @@
     require_once 'Nette/Forms/Form.php';
 
     $form = new Form;
-    $form->setAction('index.php?page=manazer.php');
+    $form->setAction('index.php?page=aranzer.php');
     $form->setMethod('GET');
 
-    $form->addText('mesto', 'Mesto:')
-      ->addRule(Form::FILLED, 'Zadejte mesto, ve kterem bude koncert');
-    $form->addText('adresa', 'Adresa')
-      ->addRule(Form::FILLED, 'Zadejte presnou adresu koncertu');
-    $form->addText('datum_a_cas', 'Datum a cas')
-      ->setAttribute('placeholder', 'dd-mm-rrrr hh:mm:ss')
-      ->addRule(Form::FILLED, 'Zadejte datum a cas koncertu');
+    $form->addText('nazev', 'Nazev:')
+      ->addRule(Form::FILLED, 'Zadejte nazev skladby');
+    $form->addText('delka', 'Délka')
+      ->addRule(Form::FILLED, 'Zadejte delku skladby');
     $form->addSubmit('send', 'Pridat');
 
   echo $form; // vykresli formular
