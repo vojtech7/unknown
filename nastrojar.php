@@ -39,12 +39,12 @@
       $nazvy_sloupcu = array('datum_vyroby', 'vyrobce','dat_posl_revize', 'dat_posl_vymeny', 'vymeneno', 'vyrobni_cislo', 'ttype');
       $pk = "vyrobni_cislo";
       $nadpis_vysledku = "Seznam nástrojù";
+      $page = "nastrojar.php";
       echo "<div id=logout_btn><a href='logout.php'>Odhlásit se</a></div>";
       echo '<div id="menu"><ul>';
       // echo "<ul><li><a href='P_add_form_show()'>Pridat zamestnance</a></li>";
       echo "<button onclick='P_add_form_show()'>Pøidat nástroj</button>";
       echo "</ul><div>";
-
 
 
     //tabulka se vstupy pro hledani
@@ -138,13 +138,21 @@
             echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$i]}</td>";
           }
           //predam si PK do url parametru delete
-          echo "<td id=delete_btn><a href='?page={$_GET['page']}&delete={$row[$pk]}'>Odstranit</a></td>";
-          echo "<td id=alter_btn onclick='P_add_form_show()'><a href='?page={$_GET['page']}&alter={$row[$pk]}'>Upravit</a></td>";
+          echo "<td id=delete_btn><a href='?page={$page}&delete={$row[$pk]}'>Odstranit</a></td>";
+          echo "<td id=alter_btn onclick='P_add_form_show()'><a href='?page={$page}&alter={$row[$pk]}'>Upravit</a></td>";
           echo "</tr>";
         }
 
         echo "</tr>";
         echo "</table>";
+
+      $sql = "select * from Typ";
+      $typy = mysql_query($sql);
+
+      for ($i=0; $i < mysql_num_rows($typy); $i++) { 
+        $row = mysql_fetch_array($typy, MYSQL_ASSOC);
+        $seznam_typu[$i] = $row["ttype"];
+      }
 
 
       echo '</div>
@@ -168,20 +176,18 @@
      $nazvy_sloupcu = array('', '','', '', '', '', 'ttype');
      
 
-    $form->addText('datum_vyroby', 'Datum výroby');
-      //->addRule(Form::FILLED, 'Zadejte datum výroby');
-    $form->addText('vyrobce', 'Výrobce');
-      //->addRule(Form::FILLED, 'Zadejte výrobce');
-    $form->addText('dat_posl_revize', 'Datum poslední revize');
-      //->addRule(Form::FILLED, 'Zadejte datum poslední revize');
-    $form->addText('dat_posl_vymeny','Datum poslední výmìny');
-        //->addRule(Form::FILLED, 'Zadejte datum poslední výmìny');
+    $form->addSelect('ttype', 'Zadejte typ', $seznam_typu);
+    $form->addText('vyrobce', 'Výrobce')
+      ->addRule(Form::FILLED, 'Zadejte vyrobce');
+    $form->addText('vyrobni_cislo','Vyrobni cislo')
+        ->addRule(Form::FILLED, 'Zadejte vyrobni cislo');
+    $form->addText('datum_vyroby', 'Datum výroby')
+         ->setAttribute('placeholder', 'rrrr-mm-dd');
+    $form->addText('dat_posl_revize', 'Datum poslední revize')
+         ->setAttribute('placeholder', 'rrrr-mm-dd');
+    $form->addText('dat_posl_vymeny','Datum poslední výmìny')
+         ->setAttribute('placeholder', 'rrrr-mm-dd');
     $form->addText('vymeneno','Vymìnìno');
-        //->addRule(Form::FILLED, 'Zadejte, co bylo vymìnìno');
-    $form->addText('vyrobni_cislo','Výrobní èíslo');
-        //->addRule(Form::FILLED, 'Zadejte výrobní èíslo');
-    $form->addText('ttype','Typ');
-        //->addRule(Form::FILLED, 'Zadejte typ');
     $form->addSubmit('send', 'Pøidat');
 
   echo $form; // vykresli formular
