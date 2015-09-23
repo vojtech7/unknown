@@ -2,3 +2,5 @@ hudebnici_vypis.php
 new_mysqli.php
 connect.php
 connect.php
+*.sublime-workspace
+*.sublime-project
