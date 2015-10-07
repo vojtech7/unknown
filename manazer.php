@@ -97,8 +97,9 @@
           $cislo = mysql_fetch_row(mysql_query($sql));
           $ID_koncertu = 1 + $cislo[0];
 
+          // datum ve formatu "dd.mm.rrrr hh:mm:ss"
           $insert_row = "INSERT INTO $tabulka VALUES ($ID_koncertu, STR_TO_DATE('$datum_a_cas', '%d.%m.%Y %T'), \"$mesto\", \"$adresa\");";
-          // echo $insert_row;
+          echo $insert_row;
           $insert_success = mysql_query($insert_row);
           if(!$insert_success) echo "nepodarilo se vlozit polozku";
         }
