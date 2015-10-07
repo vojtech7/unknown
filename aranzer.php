@@ -4,12 +4,14 @@
     <link rel="stylesheet" type="text/css" href="css/styl.css">
     <link href="css/form.css" rel="stylesheet">
     <meta charset="iso-8859-2">
+    <meta http-equiv="cache-control" content="no-cache">
+    <meta http-equiv="pragma" content="no-cache">
     <script type="text/javascript" src="netteForms.js"></script>
     <script src="js/libs/jquery-2.1.1.js"></script>
     <style> .required label { color: maroon } </style>
     <script src="js/filter.js"></script>
     <script src="js/form.js"></script>
-    <title>Aranžér Filharmonie Liptákov</title>
+    <title>AranÂžĂŠr Filharmonie LiptĂĄkov</title>
   </head>
 <body>
 
@@ -25,14 +27,14 @@
      if(!isset($_SESSION['id'])) {
       echo '
       <form action="login.php?page=aranzer.php" method="post" enctype="multipart/form-data">
-        <h3>Přihlášení</h3>
+        <h3>PĂ¸ihlĂĄÂšenĂ­</h3>
         Login:<input type="text" name="login"><br>
         Heslo:<input type="password" name="heslo">
-        <input type="submit" value="Přihlásit">         
+        <input type="submit" value="PĂ¸ihlĂĄsit">         
       </form>';
     }
     else {
-     //získání jmen autoru pro dalsí práci
+     //zĂ­skĂĄnĂ­ jmen autoru pro dalsĂ­ prĂĄci
     $sql = "select jmeno from Autor";
     $autori = mysql_query($sql);
 
@@ -42,20 +44,20 @@
     }
     $tabulka_vypis = "Autor natural join Skladba ";
     $tabulka_upravy = "Skladba";
-    $nadpisy_sloupcu = array('Název', 'Délka', 'Jméno autora');
+    $nadpisy_sloupcu = array('NĂĄzev', 'DĂŠlka [s]', 'JmĂŠno autora');
     $nazvy_sloupcu = array('ID_skladby', 'nazev', 'delka', 'jmeno');
     $pk = "ID_skladby";
     $nadpis_vysledku = "Seznam skladeb";
     $page = "aranzer.php";
-    echo "<div id=logout_btn><a href='logout.php'>Odhlásit se</a></div>";
+    echo "<div id=logout_btn><a href='logout.php'>OdhlĂĄsit se</a></div>";
     echo '<div id="menu"><ul>';
-     // echo "<ul><li><a href='P_add_form_show()'>Přidat zaměstnance</a></li>";
-    echo "<button onclick='P_add_form_show()'>Přidat skladbu</button>";
+     // echo "<ul><li><a href='P_add_form_show()'>PĂ¸idat zamĂŹstnance</a></li>";
+    echo "<button onclick='P_add_form_show()'>PĂ¸idat skladbu</button>";
     echo "</ul><div>";
 
     //tabulka se vstupy pro hledani
       echo '<table id="hledani" class="pattern">
-            <span class="nadpis" id="nadpis_vyhledavani">Filtry pro vyhledávání nástrojů</span>
+            <span class="nadpis" id="nadpis_vyhledavani">Filtry pro vyhledĂĄvĂĄnĂ­ nĂĄstrojĂš</span>
             <tr>';
         foreach ($nadpisy_sloupcu as $value) {
           echo "<td>". $value ."</td>";
@@ -125,18 +127,29 @@
         $vysledek = mysql_query($sql);
         $columns_count = count($nazvy_sloupcu);
 
+        /*
+			$alter = hodnoty vĹĄech sloupcĹŻ tabulky oddÄlenĂŠ vlnovkou ~
+			pĹedĂĄvĂĄ se do formulĂĄĹe pro Ăşpravu skladby
+        */
+		$alter="";
         //vykresleni radku a sloupcu s vysledky
         //posledni sloupec se vykresluje zvlast,
         //je slozitejsi kvuli datum z jine tabulky
         while($row = mysql_fetch_array($vysledek)){
           echo "<tr>";
           for ($i=0; $i < $columns_count; $i++) {
+            $alter = $alter.$row[$i]."~";
             if($i==0) continue;
             echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$i]}</td>";
           }
           
           //predam si PK do url parametru delete
           echo "<td id=delete_btn><a href='?page={$page}&delete={$row[$pk]}'>Odstranit</a></td>";
+          //dĂĄm $alter do uvozovek
+          $alter="\"".$alter."\"";
+          echo "<td class=edit_btn><button onclick='P_alter_form_show({$alter})'>Upravit</button></td>";
+          $alter="";
+
           echo "</tr>";
         }
 
@@ -151,31 +164,34 @@
             <!-- Contact Us Form -->
             <img id="close" src="img/close-icon.png" onclick ="P_add_form_hide()">
 
+
+
             <!-- vvvvvvvvvvvvv Nette Form  vvvvvvvvvvvvv -->';
   require 'Nette/loader.php';
 
     require_once 'Nette/Forms/Form.php';
 
-    $form = new Form;
-    $form->setAction('index.php?page=aranzer.php');
-    $form->setMethod('GET');
+    $add = new Form;
+    $add->setAction('index.php?page=aranzer.php');
+    $add->setMethod('GET');
 
 
-    $form->addSelect('jmeno', 'Jmeno autora', $seznam_jmen)
-      ->setPrompt( 'Zadejte jméno autora');
-    $form->addText('nazev', 'Nazev:')
+    $add->addSelect('jmeno', 'Jmeno autora', $seznam_jmen)
+      ->setPrompt( 'Zadejte jmĂŠno autora');
+    $add->addText('nazev', 'Nazev:')
       ->addRule(Form::FILLED, 'Zadejte nazev skladby');
-    $form->addText('delka', 'Délka')
+    $add->addText('delka', 'DĂŠlka [s]')
       ->addRule(Form::FILLED, 'Zadejte delku skladby');
-    $form->addSubmit('send', 'Pridat');
+    $add->addSubmit('send', 'Pridat');
+    //$add->addSubmit('send', 'Ulozit zmÄny');
 
-  echo $form; // vykresli formular
+  echo $add; // vykresli formular
 
-  $sub1 = $form->addContainer('first');
+  $sub1 = $add->addContainer('first');
 
-  if ($form->isSuccess()) {
-    echo 'Formulář byl správně vyplněn a odeslán';
-      $values = $form->getValues();
+  if ($add->isSuccess()) {
+    echo 'FormulĂĄĂ¸ byl sprĂĄvnĂŹ vyplnĂŹn a odeslĂĄn';
+      $values = $add->getValues();
     dump($values);
   }
 
