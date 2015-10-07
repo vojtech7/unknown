@@ -116,8 +116,15 @@
         while($row = mysql_fetch_array($vysledek)){
           echo "<tr>";
           for ($i=0; $i < $columns_count; $i++) {
-            if($i==0) continue;
-            echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$i]}</td>";
+            if($i==0) continue;   //ID_koncertu
+            if($i==1) {  // datum koncertu
+              $date = date_create($row[$i]);
+              $mydate = date_format($date, "d.m.Y H:i:s");
+              echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$mydate}</td>";
+            }
+            else {
+              echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$i]}</td>";
+            }
           }
           
           //predam si PK do url parametru delete
@@ -150,7 +157,7 @@
     $form->addText('adresa', 'Adresa')
       ->addRule(Form::FILLED, 'Zadejte presnou adresu koncertu');
     $form->addText('datum_a_cas', 'Datum a cas')
-      ->setAttribute('placeholder', 'dd-mm-rrrr hh:mm:ss')
+      ->setAttribute('placeholder', 'dd.mm.rrrr hh:mm:ss')
       ->addRule(Form::FILLED, 'Zadejte datum a cas koncertu');
     $form->addSubmit('send', 'Pridat');
 
