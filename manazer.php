@@ -20,26 +20,35 @@
     use Nette\Forms\Form;
 
     session_start();
-    $ses_id = session_id();
+    $role = 'manazer';
+    // $ses_id = session_id();
     //uzivatel neni prihlasen
-    if(!isset($_SESSION['id'])) {
-      echo '
-      <form action="login.php?page=manazer.php" method="post" enctype="multipart/form-data">
+    if(!isset($_SESSION['id']) or $_SESSION['role'] != $role) {
+      echo "
+      <form action='login.php?page=$role.php' method='post' enctype='multipart/form-data'>
         <h3>Pøihlá¹ení</h3>
-        Login:<input type="text" name="login"><br>
-        Heslo:<input type="password" name="heslo">
-        <input type="submit" value="Pøihlásit">         
-      </form>';
+        Login:<input type='text' name='login'><br>
+        Heslo:<input type='password' name='heslo'>
+        <input type='submit' value='Pøihlásit'>         
+      </form>";
+    }
+
+    //timeout
+    elseif(time() - $_SESSION['timestamp'] > 15) {
+      // alert("15 seconds over!");
+      session_destroy();
+      header("Location:timeout.php");
     }
 
     //uzivatel je prihlasen, tohle else je az do konce souboru
     else {
+    $_SESSION['timestamp'] = time();
     $tabulka = "Koncert";
     $nadpisy_sloupcu = array('ID koncertu', 'Datum a èas', 'Mìsto', 'Adresa');
     $nazvy_sloupcu = array('ID_koncertu', 'datum_a_cas', 'mesto', 'adresa');
     $pk = "ID_koncertu";
     $nadpis_vysledku = "Seznam koncertù";
-    $page = "manazer.php";
+    $page = $role.".php";
     echo '<div id="menu"><ul>';
     echo "<button onclick='P_add_form_show()'>Naplánuj koncert</button>";
     echo "</ul><div>";
