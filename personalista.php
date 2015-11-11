@@ -86,6 +86,7 @@
           $delete_row = "DELETE FROM ".$tabulka." WHERE ".$pk.'="'.$_GET['delete'].'";';
           $delete_success = mysql_query($delete_row);
           if(!$delete_success) echo "nepodarilo se odstranit polozku";
+          header("Location:personalista.php");
         }
         //pridani radku do tabulky
         if(isset($_GET["jmeno"]) and isset($_GET["prijmeni"]) and isset($_GET["rodne_cislo"])) {
@@ -95,6 +96,7 @@
           $insert_row = "INSERT INTO ".$tabulka." VALUES (\"".$rodne_cislo."\", \"".$jmeno."\", \"".$prijmeni."\");";
           $insert_success = mysql_query($insert_row);
           if(!$insert_success) echo "nepodarilo se vlozit polozku";
+          header("Location:personalista.php");
         }
 
         /*tahani dat z databaze*/

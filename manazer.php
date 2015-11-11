@@ -87,6 +87,7 @@
           $delete_row = "DELETE FROM ".$tabulka." WHERE ".$pk.'="'.$_GET['delete'].'";';
           $delete_success = mysql_query($delete_row);
           if(!$delete_success) echo "nepodarilo se odstranit polozku";
+          header("Location:manazer.php");
         }
         //pridani radku do tabulky
         if(isset($_GET["mesto"]) and isset($_GET["adresa"]) and isset($_GET["datum_a_cas"])) {
@@ -102,6 +103,7 @@
           echo $insert_row;
           $insert_success = mysql_query($insert_row);
           if(!$insert_success) echo "nepodarilo se vlozit polozku";
+          header("Location:manazer.php");
         }
 
         /*tahani dat z databaze*/

@@ -40,7 +40,7 @@
 
     for ($i=0; $i < mysql_num_rows($autori); $i++) { 
       $row = mysql_fetch_array($autori, MYSQL_ASSOC);
-      $seznam_jmen[$i] = $row["jmeno"];
+      $seznam_jmen[$row["jmeno"]] = $row["jmeno"];
     }
     $tabulka_vypis = "Autor natural join Skladba ";
     $tabulka_upravy = "Skladba";
@@ -105,20 +105,23 @@
           $delete_row = "DELETE FROM ".$tabulka_upravy." WHERE ".$pk.'="'.$_GET['delete'].'";';
           $delete_success = mysql_query($delete_row);
           if(!$delete_success) echo "nepodarilo se odstranit polozku";
+          header("Location:aranzer.php");
         }
         //pridani radku do tabulky
         if(isset($_GET["nazev"]) and isset($_GET["delka"]) and isset($_GET["jmeno"])) {
-          $nazev = $_GET["nazev"];
-          $delka = $_GET["delka"];
-          $sql = "select max(ID_skladby) from  Skladba";
-          $cislo = mysql_fetch_row(mysql_query($sql));
-          $ID_skladby = 1 + $cislo[0];
+    		echo $_GET["edit"];
+        	$nazev = $_GET["nazev"];
+			$delka = $_GET["delka"];
+			$sql = "select max(ID_skladby) from  Skladba";
+			$cislo = mysql_fetch_row(mysql_query($sql));
+			$ID_skladby = 1 + $cislo[0];
 
-          $ID_autora = $_GET['jmeno']+1;
-          
-          $insert_row = "INSERT INTO ".$tabulka_upravy." VALUES (\"".$ID_skladby."\", \"".$nazev."\", \"".$delka."\", \"".$ID_autora."\");";
-          $insert_success = mysql_query($insert_row);
-          if(!$insert_success) echo "nepodarilo se vlozit polozku";
+			$ID_autora = $_GET['jmeno']+1;
+
+			$insert_row = "INSERT INTO ".$tabulka_upravy." VALUES (\"".$ID_skladby."\", \"".$nazev."\", \"".$delka."\", \"".$ID_autora."\");";
+			$insert_success = mysql_query($insert_row);
+			if(!$insert_success) echo "nepodarilo se vlozit polozku";
+        header("Location:aranzer.php");
         }
 
         /*tahani dat z databaze*/
@@ -182,8 +185,10 @@
       ->addRule(Form::FILLED, 'Zadejte nazev skladby');
     $add->addText('delka', 'Délka [s]')
       ->addRule(Form::FILLED, 'Zadejte delku skladby');
+    $add->addHidden('edit')
+    	->setDefaultValue('add');
     $add->addSubmit('send', 'Pridat');
-    //$add->addSubmit('send', 'Ulozit změny');
+
 
   echo $add; // vykresli formular
 

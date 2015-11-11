@@ -84,6 +84,7 @@
           $delete_row = "DELETE FROM ".$tabulka." WHERE ".$pk.'="'.$_GET['delete'].'";';
           $delete_success = mysql_query($delete_row);
           if(!$delete_success) echo "nepodarilo se odstranit polozku";
+          header("Location:nastrojar.php");
         }
         
         //upraveni nastroje z tabulky
@@ -105,6 +106,7 @@
         		    'ttype' => $alter_row['ttype']
         		));
         	}
+          header("Location:nastrojar.php");
         }
         //pridani radku do tabulky
         
@@ -124,6 +126,7 @@
              \"".$dat_posl_vymeny."\", \"".$vymeneno."\", \"".$vyrobni_cislo."\", \"".$ttype."\");";
           $insert_success = mysql_query($insert_row);
           if(!$insert_success) echo "nepodarilo se vlozit polozku";
+          header("Location:nastrojar.php");
         }
 
         /*tahani dat z databaze*/

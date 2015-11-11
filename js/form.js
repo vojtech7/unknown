@@ -10,6 +10,7 @@ function check_empty() {
 
 //Function To Display Popup
 function P_add_form_show() {
+	document.getElementById('frm-edit').value = "add";
 	document.getElementById('frm-jmeno').value = "";
 	document.getElementById('frm-nazev').value = "";
 	document.getElementById('frm-delka').value = "";
@@ -26,18 +27,19 @@ function P_add_form_hide(){
 //Function To Display Alert
 function P_alter_form_show(params) {
 	res=params.split("~");
-	
+	document.getElementById("frm-edit").value = "edit";
+	/*
 	for (var i = 0; i < res.length; i++) {
 		alert(res[i])
-	};
-	/*
+	};*/
+	document.getElementById('frm-jmeno').value
 	document.getElementById('P_add_form').style.display = "block";
-	document.getElementById('frm-jmeno').value = res[1];
-	document.getElementById('frm-nazev').value = res[2];
-	document.getElementById('frm-delka').value = res[3];
+	document.getElementById('frm-nazev').value = res[1];
+	document.getElementById('frm-delka').value = res[2];
+	document.getElementById('frm-jmeno').value = res[3];
 	document.getElementById('frm-send').value = "Ulozit zmeny"
 	document.getElementById('P_add_form').style.display = "block";		
-	*/
+	
 }
 
 //Function to Hide Alert

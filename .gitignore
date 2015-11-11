@@ -4,3 +4,4 @@ connect.php
 connect.php
 *.sublime-workspace
 *.sublime-project
+sftp-config.json
