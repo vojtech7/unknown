@@ -9,7 +9,7 @@
     <script src="js/filter.js"></script>
     <script src="js/form.js"></script>
     <style> .required label { color: maroon } </style>
-    <title>Aran¾ér Filharmonie Liptákov</title>
+    <title>Administrátor Filharmonie Liptákov</title>
   </head>
 <body>
 
@@ -21,18 +21,23 @@
     use Nette\Forms\Form;
 
     session_start();
-    // var_dump($ses_id);
-    // echo $_SESSION["rolepage"];
+    $role = 'admin';
     // echo $_SESSION["time"];
     //uzivatel neni prihlasen
-    if(!isset($_SESSION['id'])) {
-      echo '
-      <form action="login.php?page=admin.php" method="post" enctype="multipart/form-data">
+    if(!isset($_SESSION['logged_in']) or $_SESSION['role'] != $role) {
+      echo "
+      <form action='login.php?page=$role.php' method='post' enctype='multipart/form-data'>
         <h3>Pøihlá¹ení</h3>
-        Login:<input type="text" name="login"><br>
-        Heslo:<input type="password" name="heslo">
-        <input type="submit" value="Pøihlásit">         
-      </form>';
+        Login:<input type='text' name='login'><br>
+        Heslo:<input type='password' name='heslo'>
+        <input type='submit' value='Pøihlásit'>         
+      </form>";
+    }
+
+    //timeout
+    elseif(time() - $_SESSION['timestamp'] > 900) {
+      session_destroy();
+      header("Location:timeout.php");
     }
 
     //uzivatel je prihlasen

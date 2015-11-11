@@ -9,7 +9,7 @@
     <script src="js/filter.js"></script>
     <script src="js/form.js"></script>
     <style> .required label { color: maroon } </style>
-    <title>Aran¾ér Filharmonie Liptákov</title>
+    <title>Mana¾er Filharmonie Liptákov</title>
   </head>
 <body>
 
@@ -21,9 +21,8 @@
 
     session_start();
     $role = 'manazer';
-    // $ses_id = session_id();
     //uzivatel neni prihlasen
-    if(!isset($_SESSION['id']) or $_SESSION['role'] != $role) {
+    if(!isset($_SESSION['logged_in']) or $_SESSION['role'] != $role) {
       echo "
       <form action='login.php?page=$role.php' method='post' enctype='multipart/form-data'>
         <h3>Pøihlá¹ení</h3>
@@ -34,8 +33,7 @@
     }
 
     //timeout
-    elseif(time() - $_SESSION['timestamp'] > 15) {
-      // alert("15 seconds over!");
+    elseif(time() - $_SESSION['timestamp'] > 900) {
       session_destroy();
       header("Location:timeout.php");
     }

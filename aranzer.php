@@ -11,7 +11,7 @@
     <style> .required label { color: maroon } </style>
     <script src="js/filter.js"></script>
     <script src="js/form.js"></script>
-    <title>AranÂ¾Ã©r Filharmonie LiptÃ¡kov</title>
+    <title>Aran¾ér Filharmonie Liptákov</title>
   </head>
 <body>
 
@@ -22,19 +22,26 @@
     use Nette\Forms\Form;
 
     session_start();
-    $ses_id = session_id();
+    $role = 'aranzer';
     //uzivatel neni prihlasen
-     if(!isset($_SESSION['id'])) {
-      echo '
-      <form action="login.php?page=aranzer.php" method="post" enctype="multipart/form-data">
-        <h3>PÃ¸ihlÃ¡Â¹enÃ­</h3>
-        Login:<input type="text" name="login"><br>
-        Heslo:<input type="password" name="heslo">
-        <input type="submit" value="PÃ¸ihlÃ¡sit">         
-      </form>';
+    if(!isset($_SESSION['logged_in']) or $_SESSION['role'] != $role) {
+      echo "
+      <form action='login.php?page=$role.php' method='post' enctype='multipart/form-data'>
+        <h3>Pøihlá¹ení</h3>
+        Login:<input type='text' name='login'><br>
+        Heslo:<input type='password' name='heslo'>
+        <input type='submit' value='Pøihlásit'>         
+      </form>";
     }
+
+    //timeout
+    elseif(time() - $_SESSION['timestamp'] > 900) {
+      session_destroy();
+      header("Location:timeout.php");
+    }
+
     else {
-     //zÃ­skÃ¡nÃ­ jmen autoru pro dalsÃ­ prÃ¡ci
+     //ziskani jmen autoru pro dalsi praci
     $sql = "select jmeno from Autor";
     $autori = mysql_query($sql);
 
@@ -44,20 +51,20 @@
     }
     $tabulka_vypis = "Autor natural join Skladba ";
     $tabulka_upravy = "Skladba";
-    $nadpisy_sloupcu = array('NÃ¡zev', 'DÃ©lka [s]', 'JmÃ©no autora');
+    $nadpisy_sloupcu = array('Název', 'Délka [s]', 'Jméno autora');
     $nazvy_sloupcu = array('ID_skladby', 'nazev', 'delka', 'jmeno');
     $pk = "ID_skladby";
     $nadpis_vysledku = "Seznam skladeb";
     $page = "aranzer.php";
-    echo "<div id=logout_btn><a href='logout.php'>OdhlÃ¡sit se</a></div>";
+    echo "<div id=logout_btn><a href='logout.php'>Odhlásit se</a></div>";
     echo '<div id="menu"><ul>';
-     // echo "<ul><li><a href='P_add_form_show()'>PÃ¸idat zamÃ¬stnance</a></li>";
-    echo "<button onclick='P_add_form_show()'>PÃ¸idat skladbu</button>";
+     // echo "<ul><li><a href='P_add_form_show()'>Pøidat zamìstnance</a></li>";
+    echo "<button onclick='P_add_form_show()'>Pøidat skladbu</button>";
     echo "</ul><div>";
 
     //tabulka se vstupy pro hledani
       echo '<table id="hledani" class="pattern">
-            <span class="nadpis" id="nadpis_vyhledavani">Filtry pro vyhledÃ¡vÃ¡nÃ­ nÃ¡strojÃ¹</span>
+            <span class="nadpis" id="nadpis_vyhledavani">Filtry pro vyhledávání nástrojé</span>
             <tr>';
         foreach ($nadpisy_sloupcu as $value) {
           echo "<td>". $value ."</td>";
@@ -131,8 +138,8 @@
         $columns_count = count($nazvy_sloupcu);
 
         /*
-			$alter = hodnoty vÅ¡ech sloupcÅ¯ tabulky oddÄ›lenÃ© vlnovkou ~
-			pÅ™edÃ¡vÃ¡ se do formulÃ¡Å™e pro Ãºpravu skladby
+			$alter = hodnoty v¹ech sloupcù tabulky oddìlené vlnovkou ~
+			pøedává se do formuláøe pro úpravu skladby
         */
 		$alter="";
         //vykresleni radku a sloupcu s vysledky
@@ -148,7 +155,7 @@
           
           //predam si PK do url parametru delete
           echo "<td id=delete_btn><a href='?page={$page}&delete={$row[$pk]}'>Odstranit</a></td>";
-          //dÃ¡m $alter do uvozovek
+          //dám $alter do uvozovek
           $alter="\"".$alter."\"";
           echo "<td class=edit_btn><button onclick='P_alter_form_show({$alter})'>Upravit</button></td>";
           $alter="";
@@ -180,10 +187,10 @@
 
 
     $add->addSelect('jmeno', 'Jmeno autora', $seznam_jmen)
-      ->setPrompt( 'Zadejte jmÃ©no autora');
+      ->setPrompt( 'Zadejte jméno autora');
     $add->addText('nazev', 'Nazev:')
       ->addRule(Form::FILLED, 'Zadejte nazev skladby');
-    $add->addText('delka', 'DÃ©lka [s]')
+    $add->addText('delka', 'Délka [s]')
       ->addRule(Form::FILLED, 'Zadejte delku skladby');
     $add->addHidden('edit')
     	->setDefaultValue('add');
@@ -195,7 +202,7 @@
   $sub1 = $add->addContainer('first');
 
   if ($add->isSuccess()) {
-    echo 'FormulÃ¡Ã¸ byl sprÃ¡vnÃ¬ vyplnÃ¬n a odeslÃ¡n';
+    echo 'Formuláø byl správnì vyplnìn a odeslán';
       $values = $add->getValues();
     dump($values);
   }

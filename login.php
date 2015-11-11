@@ -9,8 +9,7 @@
     if($page == "admin.php") {  //admin
       if($login == "cimrman" and sha1($heslo) == 'c856676e7c7aa3b1217c8c809b6e5c9cf77427a6') {
         session_start();
-        //TODO change id to logged_in
-        $_SESSION['id'] = true;
+        $_SESSION['logged_in'] = true;
         $_SESSION['timestamp'] = time();
         $_SESSION['role'] = "admin";
         echo "Autentizace probìhla úspì¹nì.";
@@ -27,7 +26,7 @@
 
       //dotaz nic nevratil
       if ($vysledek == false or mysql_num_rows($vysledek) == 0) {
-        echo "U¾ivatel $login neni zaznamenán v databázi.<br>";
+        echo "U¾ivatel $login není zaznamenán v databázi.<br>";
       }
       //dotaz vratil radek
       else {
@@ -45,7 +44,7 @@
           // print_r($hash_zadane);
           if($hash_prave == $hash_zadane) {   //spravne heslo
             session_start();
-            $_SESSION['id'] = true;
+            $_SESSION['logged_in'] = true;
             $_SESSION['timestamp'] = time();
             $_SESSION['role'] = $role;
             $_SESSION['user_login'] = $login;

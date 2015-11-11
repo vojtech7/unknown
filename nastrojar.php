@@ -20,16 +20,22 @@
     use Nette\Forms\Form;
 
     session_start();
-    $ses_id = session_id();
+    $role = 'nastrojar';
     //uzivatel neni prihlasen
-    if(!isset($_SESSION['id'])) {
-      echo '
-      <form action="login.php?page=nastrojar.php" method="post" enctype="multipart/form-data">
+    if(!isset($_SESSION['logged_in']) or $_SESSION['role'] != $role) {
+      echo "
+      <form action='login.php?page=$role.php' method='post' enctype='multipart/form-data'>
         <h3>Pøihlá¹ení</h3>
-        Login:<input type="text" name="login"><br>
-        Heslo:<input type="password" name="heslo">
-        <input type="submit" value="Pøihlásit">         
-      </form>';
+        Login:<input type='text' name='login'><br>
+        Heslo:<input type='password' name='heslo'>
+        <input type='submit' value='Pøihlásit'>         
+      </form>";
+    }
+
+    //timeout
+    elseif(time() - $_SESSION['timestamp'] > 900) {
+      session_destroy();
+      header("Location:timeout.php");
     }
 
     //uzivatel je prihlasen, tohle else je az do konce souboru
