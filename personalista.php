@@ -1,174 +1,199 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <html>
-  <head>
-    <link rel="stylesheet" type="text/css" href="css/styl.css">
-    <link href="css/form.css" rel="stylesheet">
-    <meta charset="iso-8859-2">
-    <script type="text/javascript" src="netteForms.js"></script>
-    <script src="js/libs/jquery-2.1.1.js"></script>
-    <script src="js/filter.js"></script>
-    <script src="js/form.js"></script>
-    <style> .required label { color: maroon } </style>
-    <title>Personalista Filharmonie Liptákov</title>
-  </head>
+	<head>
+		<link rel="stylesheet" type="text/css" href="css/styl.css">
+		<link href="css/form.css" rel="stylesheet">
+		<meta charset="iso-8859-2">
+		<script type="text/javascript" src="netteForms.js"></script>
+		<script src="js/libs/jquery-2.1.1.js"></script>
+		<script src="js/filter.js"></script>
+		<script src="js/form.js"></script>
+		<style> .required label { color: maroon } </style>
+		<title>Personalista Filharmonie LiptĂĄkov</title>
+	</head>
 <body>
 
-  <!-- uvodni inicializace -->
-  <?php
-    // require 'Nette/loader.php';
-    // use Nette\Forms\Form;
+	<!-- uvodni inicializace -->
+	<?php
+		// require 'Nette/loader.php';
+		// use Nette\Forms\Form;
 
-    include "connect.php";
-    use Nette\Forms\Form;
+		include "connect.php";
+		use Nette\Forms\Form;
 
-    session_start();
-    $role = 'personalista';
-    //uzivatel neni prihlasen
-    if(!isset($_SESSION['logged_in']) or $_SESSION['role'] != $role) {
-      echo "
-      <form action='login.php?page=$role.php' method='post' enctype='multipart/form-data'>
-        <h3>Přihlášení</h3>
-        Login:<input type='text' name='login'><br>
-        Heslo:<input type='password' name='heslo'>
-        <input type='submit' value='Přihlásit'>         
-      </form>";
-    }
+		session_start();
+		$role = 'personalista';
+		//uzivatel neni prihlasen
+		if(!isset($_SESSION['logged_in']) or $_SESSION['role'] != $role) {
+			echo "
+			<form action='login.php?page=$role.php' method='post' enctype='multipart/form-data'>
+				<h3>PĂ¸ihlĂĄÂšenĂ­</h3>
+				Login:<input type='text' name='login'><br>
+				Heslo:<input type='password' name='heslo'>
+				<input type='submit' value='PĂ¸ihlĂĄsit'>         
+			</form>";
+		}
 
-    //timeout
-    elseif(time() - $_SESSION['timestamp'] > 900) {
-      session_destroy();
-      header("Location:timeout.php");
-    }
+		//timeout
+		elseif(time() - $_SESSION['timestamp'] > 900) {
+			session_destroy();
+			header("Location:timeout.php");
+		}
 
-    //uzivatel je prihlasen, tohle else je az do konce souboru
-    else {
-     $tabulka = "Hudebnik";
-     $nadpisy_sloupcu = array('Rodné číslo', 'Jméno', 'Příjmení');
-     $nazvy_sloupcu = array('rodne_cislo', 'jmeno', 'prijmeni');
-     $pk = "rodne_cislo";
-     $nadpis_vysledku = "Seznam hudebníků";
-     $page = "personalista.php";
-     echo "<div id=logout_btn><a href='logout.php'>Odhlásit se</a></div>";
-     echo '<div id="menu"><ul>';
-     // echo "<ul><li><a href='P_add_form_show()'>Přidat zaměstnance</a></li>";
-     echo "<button onclick='P_add_form_show()'>Přidat zaměstnance</button>";
-     echo "</ul><div>";
+		//uzivatel je prihlasen, tohle else je az do konce souboru
+		else {
+		 $tabulka_uprav = "Hudebnik";
+		 $nadpisy_sloupcu = array('RodnĂŠ Ă¨Ă­slo', 'JmĂŠno', 'PĂ¸Ă­jmenĂ­');
+		 $nazvy_sloupcu = array('rodne_cislo', 'jmeno', 'prijmeni');
+		 $pk = "rodne_cislo";
+		 $nadpis_vysledku = "Seznam hudebnĂ­kĂš";
+		 $page = "personalista.php";
+		 echo "<div id=logout_btn><a href='logout.php'>OdhlĂĄsit se</a></div>";
+		 echo '<div id="menu"><ul>';
+		 // echo "<ul><li><a href='P_add_form_show()'>PĂ¸idat zamĂŹstnance</a></li>";
+		 echo "<button onclick='P_add_form_show(\"$role\")'>PĂ¸idat zamĂŹstnance</button>";
+		 echo "</ul><div>";
 
 
-    //tabulka se vstupy pro hledani
-      echo '<table id="hledani" class="pattern">
-            <span class="nadpis" id="nadpis_vyhledavani">Filtry pro vyhledávání nástrojů</span>
-            <tr>';
-        foreach ($nadpisy_sloupcu as $value) {
-          echo "<td>". $value ."</td>";
-        }
-        echo "</tr>";
-        echo "<tr>";
-        foreach ($nazvy_sloupcu as $value) {
-          echo "<td> <input type=\"text\" class=\"form-control filter_". $value ."\"></td>";
-        }
-        echo "</tr>";
-        echo "</table>";
+		//tabulka se vstupy pro hledani
+			echo '<table id="hledani" class="pattern">
+						<span class="nadpis" id="nadpis_vyhledavani">Filtry pro vyhledĂĄvĂĄnĂ­ nĂĄstrojĂš</span>
+						<tr>';
+				foreach ($nadpisy_sloupcu as $value) {
+					echo "<td>". $value ."</td>";
+				}
+				echo "</tr>";
+				echo "<tr>";
+				foreach ($nazvy_sloupcu as $value) {
+					echo "<td> <input type=\"text\" class=\"form-control filter_". $value ."\"></td>";
+				}
+				echo "</tr>";
+				echo "</table>";
 
-        //tabulka pro zobrazovani vysledku hledani
-        echo '<table id="prehled" class="data">';
-        echo '<span class="nadpis" id="nadpis_vysledku">';
-        echo $nadpis_vysledku;
-        echo "</span>";
+				//tabulka pro zobrazovani vysledku hledani
+				echo '<table id="prehled" class="data">';
+				echo '<span class="nadpis" id="nadpis_vysledku">';
+				echo $nadpis_vysledku;
+				echo "</span>";
 
-        echo "<tr>";
-        $count=0;
-        foreach ($nadpisy_sloupcu as $value) {
-          echo "<td class=\"hlavicka\">". $value ."</td>";
-          $count++;
-        }
-        echo "</tr>";
+				echo "<tr>";
+				$count=0;
+				foreach ($nadpisy_sloupcu as $value) {
+					echo "<td class=\"hlavicka\">". $value ."</td>";
+					$count++;
+				}
+				echo "</tr>";
 
-        echo "<tr>";
+				echo "<tr>";
 
-        //pred zobrazenim radku se provedou pripadne SQL dotazy nad tabulkou
-        //odstraneni hudebnika z tabulky
-        if(isset($_GET['delete'])) {
-          $delete_row = "DELETE FROM ".$tabulka." WHERE ".$pk.'="'.$_GET['delete'].'";';
-          $delete_success = mysql_query($delete_row);
-          if(!$delete_success) echo "nepodarilo se odstranit polozku";
-          header("Location:personalista.php");
-        }
-        //pridani radku do tabulky
-        if(isset($_GET["jmeno"]) and isset($_GET["prijmeni"]) and isset($_GET["rodne_cislo"])) {
-          $jmeno = $_GET["jmeno"];
-          $prijmeni = $_GET["prijmeni"];
-          $rodne_cislo = $_GET["rodne_cislo"];
-          $insert_row = "INSERT INTO ".$tabulka." VALUES (\"".$rodne_cislo."\", \"".$jmeno."\", \"".$prijmeni."\");";
-          $insert_success = mysql_query($insert_row);
-          if(!$insert_success) echo "nepodarilo se vlozit polozku";
-          header("Location:personalista.php");
-        }
+				//pred zobrazenim radku se provedou pripadne SQL dotazy nad tabulkou
+				//odstraneni hudebnika z tabulky
+				if(isset($_GET['delete'])) {
+					$delete_row = "DELETE FROM ".$tabulka_uprav." WHERE ".$pk.'="'.$_GET['delete'].'";';
+					$delete_success = mysql_query($delete_row);
+					if(!$delete_success) echo "nepodarilo se odstranit polozku";
+					header("Location:personalista.php");
+				}
+				//pridani nebo uprava radku tabulky
+				if(isset($_GET["jmeno"]) and isset($_GET["prijmeni"]) and isset($_GET["rodne_cislo"]) and isset($_GET["edit"])) {
+					$jmeno = $_GET["jmeno"];
+					$prijmeni = $_GET["prijmeni"];
+					$rodne_cislo = $_GET["rodne_cislo"];
 
-        /*tahani dat z databaze*/
-        $sql = "select * from ".$tabulka;
-        $vysledek = mysql_query($sql);
-        $columns_count = count($nazvy_sloupcu);
+					if ($_GET["edit"]=="edit") {
+						$sql="UPDATE $tabulka_uprav SET jmeno = '$jmeno', prijmeni ='$prijmeni', rodne_cislo=$rodne_cislo WHERE rodne_cislo='".$_GET["PK_old"]."'";
+						$success = mysql_query($sql);
+						echo $sql;
+						if(!$success) $error = "nepodarilo se upravit polozku";	
+					}
+					else {
+						$sql = "INSERT INTO $tabulka_uprav VALUES ('$rodne_cislo', '$jmeno', '$prijmeni');";
+						$success = mysql_query($sql);
+						if(!$success) $error =  "nepodarilo se vlozit polozku";	
+					}
+					//header("Location:personalista.php");
+					
+					if (isset($error)) {
+						echo $error;
+					}
+				}
 
-        //vykresleni radku a sloupcu s vysledky
-        while($row = mysql_fetch_array($vysledek)){
-          echo "<tr>";
-          for ($i=0; $i < $columns_count; $i++) { 
-            echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$i]}</td>";
-          }
-          //predam si PK do url parametru delete
-          echo "<td id=delete_btn><a href='?page={$page}&delete={$row[$pk]}'>Odstranit</a></td>";
-          echo "</tr>";
-        }
+				/*tahani dat z databaze*/
+				$sql = "select * from ".$tabulka_uprav;
+				$vysledek = mysql_query($sql);
+				$columns_count = count($nazvy_sloupcu);
 
-        echo "</tr>";
-        echo "</table>";
+				/*
+					$alter = hodnoty vĹĄech sloupcĹŻ tabulky oddÄlenĂŠ vlnovkou ~~
+					pĹedĂĄvĂĄ se do formulĂĄĹe pro Ăşpravu skladby
+				*/
+				$alter="";
+				
+				//vykresleni radku a sloupcu s vysledky
+				while($row = mysql_fetch_array($vysledek)){
+					echo "<tr>";
+					for ($i=0; $i < $columns_count; $i++) { 
+						$alter = $alter.$row[$i]."~~";
+						echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$i]}</td>";
+					}
+					//predam si PK do url parametru delete
+					echo "<td id=delete_btn><a href='?page={$page}&delete={$row[$pk]}'>Odstranit</a></td>";
+					$alter="\"".$alter."\"";
+					echo "<td class=alter_btn><button onclick='P_alter_form_show($alter, \"$role\")'>Upravit</button></td>";
+					$alter="";
+					echo "</tr>";
+				}
 
-      echo '</div>
-            <!-- formular pro pridani -->
-            <div id="P_add_form" class="abc">
-            <!-- Popup Div Starts Here -->
-            <div id="popupContact">
-            <!-- Contact Us Form -->
-            <img id="close" src="img/close-icon.png" onclick ="P_add_form_hide()">
+				echo "</tr>";
+				echo "</table>";
 
-            <!-- vvvvvvvvvvvvv Nette Form  vvvvvvvvvvvvv -->';
-  require 'Nette/loader.php';
+			echo '</div>
+						<!-- formular pro pridani -->
+						<div id="P_add_form" class="abc">
+						<!-- Popup Div Starts Here -->
+						<div id="popupContact">
+						<!-- Contact Us Form -->
+						<img id="close" src="img/close-icon.png" onclick ="P_add_form_hide()">
 
-  //use Tracy\Debugger;
-  //Debugger::enable(); // aktivujeme Laděnku
-  require_once 'Nette/Forms/Form.php';
+						<!-- vvvvvvvvvvvvv Nette Form  vvvvvvvvvvvvv -->';
+	require 'Nette/loader.php';
 
-    $form = new Form;
-    $form->setAction('index.php?page=personalista.php');
-    $form->setMethod('GET');
+	//use Tracy\Debugger;
+	//Debugger::enable(); // aktivujeme LadĂŹnku
+	require_once 'Nette/Forms/Form.php';
 
-    $form->addText('jmeno', 'Jmeno:')
-      ->addRule(Form::FILLED, 'Zadejte jmeno');
-    $form->addText('prijmeni', 'Prijmeni:')
-      ->addRule(Form::FILLED, 'Zadejte prijmeni');
-    $form->addText('rodne_cislo', 'Rodne cislo:')
-      ->addRule(Form::FILLED, 'Zadejte rodne cislo');
-    $form->addSubmit('send', 'Pridat');
+		$form = new Form;
+		$form->setAction('index.php?page=personalista.php');
+		$form->setMethod('GET');
 
-  echo $form; // vykresli formular
+		$form->addText('jmeno', 'Jmeno:')
+			->addRule(Form::FILLED, 'Zadejte jmeno');
+		$form->addText('prijmeni', 'Prijmeni:')
+			->addRule(Form::FILLED, 'Zadejte prijmeni');
+		$form->addText('rodne_cislo', 'Rodne cislo:')
+			->addRule(Form::FILLED, 'Zadejte rodne cislo');
+		$form->addHidden('edit');
+		$form->addHidden('PK_old');
+		$form->addSubmit('send', 'Pridat');
 
-  $sub1 = $form->addContainer('first');
+	echo $form; // vykresli formular
 
-  if ($form->isSuccess()) {
-    echo 'Formulář byl správně vyplněn a odeslán';
-      $values = $form->getValues();
-    dump($values);
-  }
+	$sub1 = $form->addContainer('first');
 
-  echo '
-  </div>
-  <!-- Popup Div Ends Here -->
-  </div>
-  <!-- Display Popup Button -->
-  <!-- <button id="popup" onclick="P_add_form_show()">Popup</button> -->';
-  }//uzivatel je prihlasen
-  ?>
-    
-  </body>
+	if ($form->isSuccess()) {
+		echo 'FormulĂĄĂ¸ byl sprĂĄvnĂŹ vyplnĂŹn a odeslĂĄn';
+			$values = $form->getValues();
+		dump($values);
+	}
+
+	echo '
+	</div>
+	<!-- Popup Div Ends Here -->
+	</div>
+	<!-- Display Popup Button -->
+	<!-- <button id="popup" onclick="P_add_form_show()">Popup</button> -->';
+	}//uzivatel je prihlasen
+	?>
+		
+	</body>
 </html>

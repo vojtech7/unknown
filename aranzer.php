@@ -59,7 +59,7 @@
     echo "<div id=logout_btn><a href='logout.php'>Odhlásit se</a></div>";
     echo '<div id="menu"><ul>';
      // echo "<ul><li><a href='P_add_form_show()'>Pøidat zamìstnance</a></li>";
-    echo "<button onclick='P_add_form_show()'>Pøidat skladbu</button>";
+    echo "<button onclick='P_add_form_show(\"$role\")'>Pøidat skladbu</button>";
     echo "</ul><div>";
 
     //tabulka se vstupy pro hledani
@@ -114,21 +114,35 @@
           if(!$delete_success) echo "nepodarilo se odstranit polozku";
           header("Location:aranzer.php");
         }
-        //pridani radku do tabulky
-        if(isset($_GET["nazev"]) and isset($_GET["delka"]) and isset($_GET["jmeno"])) {
-    		echo $_GET["edit"];
-        	$nazev = $_GET["nazev"];
-			$delka = $_GET["delka"];
-			$sql = "select max(ID_skladby) from  Skladba";
-			$cislo = mysql_fetch_row(mysql_query($sql));
-			$ID_skladby = 1 + $cislo[0];
+        //pridani nebo uprava radku tabulky
+        if(isset($_GET["nazev"]) and isset($_GET["delka"]) and isset($_GET["jmeno"]) and isset($_GET["edit"])) {
+          $nazev = $_GET["nazev"];
+          $delka = $_GET["delka"];
+        if ($_GET["edit"]=="edit") {
+              //upravuje se radek
+              $ID_skladby = $_GET["id"];
+              $sql = "select ID_autora from Autor WHERE jmeno= \"".$_GET["jmeno"]."\"";
+              $cislo = mysql_fetch_row(mysql_query($sql));
+              $ID_autora=$cislo[0];
+              $sql = "UPDATE $tabulka_upravy SET ID_skladby = $ID_skladby, nazev ='$nazev', delka=$delka, ID_autora =$ID_autora WHERE ID_skladby =$ID_skladby";
+              mysql_query($sql);
+            }
+            elseif ($_GET["edit"]=="add") {
+        $sql = "select max(ID_skladby) from  $tabulka_upravy.";
+        $cislo = mysql_fetch_row(mysql_query($sql));
+        $ID_skladby = 1 + $cislo[0];
 
-			$ID_autora = $_GET['jmeno']+1;
+        $sql = "select ID_autora from Autor WHERE jmeno= \"".$_GET["jmeno"]."\"";
+        $cislo = mysql_fetch_row(mysql_query($sql));
+        $ID_autora=$cislo[0];
+              
 
-			$insert_row = "INSERT INTO ".$tabulka_upravy." VALUES (\"".$ID_skladby."\", \"".$nazev."\", \"".$delka."\", \"".$ID_autora."\");";
-			$insert_success = mysql_query($insert_row);
-			if(!$insert_success) echo "nepodarilo se vlozit polozku";
-        header("Location:aranzer.php");
+              $insert_row = "INSERT INTO $tabulka_upravy VALUES ('$ID_skladby', '$nazev', '$delka', '$ID_autora');";
+              $insert_success = mysql_query($insert_row);
+              if(!$insert_success) echo "nepodarilo se vlozit polozku";
+            }
+          
+          header("Location:aranzer.php");
         }
 
         /*tahani dat z databaze*/
@@ -138,7 +152,7 @@
         $columns_count = count($nazvy_sloupcu);
 
         /*
-			$alter = hodnoty v¹ech sloupcù tabulky oddìlené vlnovkou ~
+			$alter = hodnoty v¹ech sloupcù tabulky oddìlené vlnovkou ~~
 			pøedává se do formuláøe pro úpravu skladby
         */
 		$alter="";
@@ -148,7 +162,7 @@
         while($row = mysql_fetch_array($vysledek)){
           echo "<tr>";
           for ($i=0; $i < $columns_count; $i++) {
-            $alter = $alter.$row[$i]."~";
+            $alter = $alter.$row[$i]."~~";
             if($i==0) continue;
             echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$i]}</td>";
           }
@@ -157,7 +171,7 @@
           echo "<td id=delete_btn><a href='?page={$page}&delete={$row[$pk]}'>Odstranit</a></td>";
           //dám $alter do uvozovek
           $alter="\"".$alter."\"";
-          echo "<td class=edit_btn><button onclick='P_alter_form_show({$alter})'>Upravit</button></td>";
+          echo "<td class=alter_btn><button onclick='P_alter_form_show($alter, \"$role\")'>Upravit</button></td>";
           $alter="";
 
           echo "</tr>";
@@ -192,8 +206,8 @@
       ->addRule(Form::FILLED, 'Zadejte nazev skladby');
     $add->addText('delka', 'Délka [s]')
       ->addRule(Form::FILLED, 'Zadejte delku skladby');
-    $add->addHidden('edit')
-    	->setDefaultValue('add');
+    $add->addHidden('edit');
+    $add->addHidden('id');
     $add->addSubmit('send', 'Pridat');
 
 

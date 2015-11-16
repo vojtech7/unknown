@@ -50,7 +50,7 @@
       $page = "admin.php";
       echo "<div id=logout_btn><a href='logout.php'>Odhlásit se</a></div>";
       echo '<div id="menu"><ul>';
-      echo "<button onclick='P_add_form_show()'>Pøidat u¾ivatele</button>";
+      echo "<button onclick='P_add_form_show(\"$role\")'>Pøidat u¾ivatele</button>";
       echo "</ul><div>";
 
     //tabulka se vstupy pro hledani
@@ -96,6 +96,7 @@
           // echo "<br><br><br><br>budu mazat: ".$delete_row;
           $delete_success = mysql_query($delete_row);
           if(!$delete_success) echo "nepodarilo se odstranit polozku";
+          header("Location:admin.php");
         }
         //pridani radku do tabulky
         if(isset($_GET["login"]) and isset($_GET["heslo"]) and isset($_GET["role"])) {
@@ -109,9 +110,10 @@
           $hash_heslo = sha1($heslo);
 
           $insert_row = 'INSERT INTO '.$tabulka.' VALUES ("'.$login.'", "'.$hash_heslo.'", "'.$role.'", '.$info.');';
-          echo "<br><br><br><br><br>insert_row: $insert_row<br>";
+          //echo "<br><br><br><br><br>insert_row: $insert_row<br>";
           $insert_success = mysql_query($insert_row);
           if(!$insert_success) echo "nepodarilo se vlozit polozku";
+          header("Location:admin.php");
         }
 
         /*tahani dat z databaze*/

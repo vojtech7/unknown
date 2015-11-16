@@ -9,7 +9,7 @@
     <script src="js/filter.js"></script>
     <script src="js/form.js"></script>
     <style> .required label { color: maroon } </style>
-    <title>Manaæer Filharmonie Lipt·kov</title>
+    <title>Mana¬æer Filharmonie Lipt√°kov</title>
   </head>
 <body>
 
@@ -25,10 +25,10 @@
     if(!isset($_SESSION['logged_in']) or $_SESSION['role'] != $role) {
       echo "
       <form action='login.php?page=$role.php' method='post' enctype='multipart/form-data'>
-        <h3>P¯ihl·πenÌ</h3>
+        <h3>P√∏ihl√°¬πen√≠</h3>
         Login:<input type='text' name='login'><br>
         Heslo:<input type='password' name='heslo'>
-        <input type='submit' value='P¯ihl·sit'>         
+        <input type='submit' value='P√∏ihl√°sit'>         
       </form>";
     }
 
@@ -41,23 +41,23 @@
     //uzivatel je prihlasen, tohle else je az do konce souboru
     else {
     $_SESSION['timestamp'] = time();
-    $tabulka = "Koncert";
-    $nadpisy_sloupcu = array('ID koncertu', 'Datum a Ëas', 'MÏsto', 'Adresa');
+    $tabulka_uprav = "Koncert";
+    $nadpisy_sloupcu = array('ID koncertu', 'Datum a √®as', 'M√¨sto', 'Adresa');
     $nazvy_sloupcu = array('ID_koncertu', 'datum_a_cas', 'mesto', 'adresa');
     $pk = "ID_koncertu";
-    $nadpis_vysledku = "Seznam koncert˘";
+    $nadpis_vysledku = "Seznam koncert√π";
     $page = $role.".php";
     echo '<div id="menu"><ul>';
-    echo "<button onclick='P_add_form_show()'>Napl·nuj koncert</button>";
+    echo "<button onclick='P_add_form_show(\"$role\")'>Napl√°nuj koncert</button>";
     echo "</ul><div>";
-    echo "<div id=logout_btn><a href='logout.php'>Odhl·sit se</a></div>";
+    echo "<div id=logout_btn><a href='logout.php'>Odhl√°sit se</a></div>";
     echo '<div id="menu"><ul>';
     echo "</ul><div>";
 
 
     //tabulka se vstupy pro hledani
       echo '<table id="hledani" class="pattern">
-            <span class="nadpis" id="nadpis_vyhledavani">Filtry pro vyhled·v·nÌ n·stroj˘</span>
+            <span class="nadpis" id="nadpis_vyhledavani">Filtry pro vyhled√°v√°n√≠ n√°stroj√π</span>
             <tr>';
         foreach ($nadpisy_sloupcu as $value) {
           if ($value === "ID koncertu") continue; 
@@ -91,40 +91,56 @@
         //pred zobrazenim radku se provedou pripadne SQL dotazy nad tabulkou
         //odstraneni koncertu z tabulky
         if(isset($_GET['delete'])) {
-          $delete_row = "DELETE FROM ".$tabulka." WHERE ".$pk.'="'.$_GET['delete'].'";';
+          $delete_row = "DELETE FROM ".$tabulka_uprav." WHERE ".$pk.'="'.$_GET['delete'].'";';
           $delete_success = mysql_query($delete_row);
           if(!$delete_success) echo "nepodarilo se odstranit polozku";
           header("Location:manazer.php");
         }
-        //pridani radku do tabulky
-        if(isset($_GET["mesto"]) and isset($_GET["adresa"]) and isset($_GET["datum_a_cas"])) {
-          $datum_a_cas = $_GET["datum_a_cas"];
-          $mesto = $_GET["mesto"];
-          $adresa = $_GET["adresa"];
-          $sql = "select max(ID_koncertu) from  Koncert";
-          $cislo = mysql_fetch_row(mysql_query($sql));
-          $ID_koncertu = 1 + $cislo[0];
+        //pridani nebo uprava radku tabulky
+                if(isset($_GET["mesto"]) and isset($_GET["adresa"]) and isset($_GET["datum_a_cas"]) and isset($_GET["edit"])) {
+              $datum_a_cas = $_GET["datum_a_cas"];
+              $mesto = $_GET["mesto"];
+              $adresa = $_GET["adresa"];
+                  if ($_GET["edit"]=="edit") {
+                // upravuje se radek
+                $ID_koncertu = $_GET["id"];
+                $sql="UPDATE $tabulka_uprav SET datum_a_cas = STR_TO_DATE('$datum_a_cas', '%d.%m.%Y %T'), mesto ='$mesto', adresa='$adresa' WHERE ID_koncertu =$ID_koncertu";
+                $upadte_success = mysql_query($sql);
+                if(!$upadte_success) echo "nepodarilo se uparvit polozku";
+                  }
+                    elseif ($_GET["edit"]=="add") {
+                    //pridava se radek
+                $sql = "select max(ID_koncertu) from  Koncert";
+                $cislo = mysql_fetch_row(mysql_query($sql));
+                $ID_koncertu = 1 + $cislo[0];
 
-          // datum ve formatu "dd.mm.rrrr hh:mm:ss"
-          $insert_row = "INSERT INTO $tabulka VALUES ($ID_koncertu, STR_TO_DATE('$datum_a_cas', '%d.%m.%Y %T'), \"$mesto\", \"$adresa\");";
-          echo $insert_row;
-          $insert_success = mysql_query($insert_row);
-          if(!$insert_success) echo "nepodarilo se vlozit polozku";
-          header("Location:manazer.php");
-        }
+                // datum ve formatu "dd.mm.rrrr hh:mm:ss"
+                $insert_row = "INSERT INTO $tabulka_uprav VALUES ($ID_koncertu, STR_TO_DATE('$datum_a_cas', '%d.%m.%Y %T'), \"$mesto\", \"$adresa\");";
+                //echo $insert_row;
+                $insert_success = mysql_query($insert_row);
+                if(!$insert_success) echo "nepodarilo se vlozit polozku";
+                  }
+                  header("Location:manazer.php");
+                }
 
         /*tahani dat z databaze*/
-        $sql = "select * from ".$tabulka;
+        $sql = "select * from ".$tabulka_uprav;
         
         $vysledek = mysql_query($sql);
         $columns_count = count($nazvy_sloupcu);
-
+        /*
+          $alter = hodnoty v≈°ech sloupc≈Ø tabulky oddƒõlen√© vlnovkou ~
+          p≈ôed√°v√° se do formul√°≈ôe pro √∫pravu skladby
+        */
+        $alter="";
+        
         //vykresleni radku a sloupcu s vysledky
         //posledni sloupec se vykresluje zvlast,
         //je slozitejsi kvuli datum z jine tabulky
         while($row = mysql_fetch_array($vysledek)){
           echo "<tr>";
           for ($i=0; $i < $columns_count; $i++) {
+            $alter = $alter.$row[$i]."~~";
             if($i==0) continue;   //ID_koncertu
             if($i==1) {  // datum koncertu
               $date = date_create($row[$i]);
@@ -138,6 +154,11 @@
           
           //predam si PK do url parametru delete
           echo "<td id=delete_btn><a href='?page={$page}&delete={$row[$pk]}'>Odstranit</a></td>";
+          //d√°m $alter do uvozovek
+          $alter="\"".$alter."\"";
+          echo "<td class=alter_btn><button onclick='P_alter_form_show($alter, \"$role\")'>Upravit</button></td>";
+          $alter="";
+
           echo "</tr>";
         }
 
@@ -168,6 +189,8 @@
     $form->addText('datum_a_cas', 'Datum a cas')
       ->setAttribute('placeholder', 'dd.mm.rrrr hh:mm:ss')
       ->addRule(Form::FILLED, 'Zadejte datum a cas koncertu');
+    $form->addHidden('edit');
+    $form->addHidden('id');
     $form->addSubmit('send', 'Pridat');
 
   echo $form; // vykresli formular
@@ -175,7 +198,7 @@
   $sub1 = $form->addContainer('first');
 
   if ($form->isSuccess()) {
-    echo 'Formul·¯ byl spr·vnÏ vyplnÏn a odesl·n';
+    echo 'Formul√°√∏ byl spr√°vn√¨ vypln√¨n a odesl√°n';
       $values = $form->getValues();
     dump($values);
   }

@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+    <XSSCleaned_tag http-equiv="content-type" content="text/html; charset=utf-8"/>
+    <title>Projekt IIS</title>
+    <style type="text/css">
+    	table { border-collapse: collapse; }
+    	td, th { border: 1px solid black; padding: 0.3em 0.5em; text-align: left; }
+    	dt { font-weight: bold; margin-top: 0.5em; }
+    </style>
+</head>
+<body>
+
+<!-- Zkontrolujte prosím nastavení kódování v hlavičce dokumentu 
+     podle použitého editoru -->
+
+<h1>Filharmonie</h1> <!-- Nahradte názvem svého zadání -->
+
+<dl>
+	<dt>Autoři</dt>
+	<dd>Tomáš Hudziec <!-- Nahraďte skutečným jménem a e-mailem autora a popisem činnosti -->
+	    <a target="_blank" href="mailto:xhudzi01@stud.fit.vutbr.cz">xhudzi01@stud.fit.vutbr.cz</a> -
+		databázový subsystém
+	</dd>
+	<dd>Vojtěch Novotný <!-- Nahraďte skutečným jménem a e-mailem autora a popisem činnosti -->
+	    <a target="_blank" href="mailto:xnovot0m@stud.fit.vutbr.cz">xnovot0m@stud.fit.vutbr.cz</a> - 
+		správa uživatelů a uživatelské rozhraní
+	</dd>
+	<dt>URL aplikace</dt>
+	<dd><a target="_blank" href="https://www.stud.fit.vutbr.cz/~xhudzi01/iis/">https://www.stud.fit.vutbr.cz/~xhudzi01/iis/</a></dd>
+	<dd>(pokud má aplikace více vstupních stránek, napište obdobně další URL)</dd>
+</dl>
+
+<h2>Uživatelé systému pro testování</h2>
+<table>
+<tr><th>Login</th><th>Heslo</th><th>Role</th></tr>
+<tr><td>cimrman</td><td>liptakov</td><td>Administrátor</td></tr>
+<tr><td>manazer</td><td>manazer</td><td>Manažer</td></tr>
+<tr><td>aranzer</td><td>aranzer</td><td>Aranžér</td></tr>
+<tr><td>hudebnik</td><td>hudebnik</td><td>Hudebník</td></tr>
+<tr><td>person</td><td>person</td><td>Personalista</td></tr>
+<tr><td>nastrojar</td><td>nastrojar</td><td>Nástrojář</td></tr>
+</table>
+
+<h2>Implementace</h2>
+<p>Každá role má svůj PHP skript, který implementuje její povolené operace.</p>
+
+
+<h2>Instalace</h2>
+<ul>
+<li>Archiv se zdrojovými soubory se rozbalí na server</li>
+<li>Verze PHP 5.3.29, která je na studentském serveru eva.fit.vutbr.cz</li>
+<li>Inicializační skript pro databázi - filharmonyinit.sql</li>
+<li>Úvodní stránka - index.php</li>
+</ul>
+
+<h2>Známé problémy</h2>
+<p>Není implementováno časované odhlašování z časových důvodů.</p>
+
+</body>
+</html>
