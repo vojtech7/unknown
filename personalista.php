@@ -24,7 +24,8 @@
 		session_start();
 		$role = 'personalista';
 		//uzivatel neni prihlasen
-		if(!isset($_SESSION['logged_in']) or $_SESSION['role'] != $role) {
+		//if(!isset($_SESSION['logged_in']) or $_SESSION['role'] != $role) {
+		if(1){
 			echo "
 			<form action='login.php?page=$role.php' method='post' enctype='multipart/form-data'>
 				<h3>Pøihlá¹ení</h3>
@@ -35,10 +36,10 @@
 		}
 
 		//timeout
-		elseif(time() - $_SESSION['timestamp'] > 900) {
-			session_destroy();
-			header("Location:timeout.php");
-		}
+		// elseif(time() - $_SESSION['timestamp'] > 900) {
+		// 	session_destroy();
+		// 	header("Location:timeout.php");
+		// }
 
 		//uzivatel je prihlasen, tohle else je az do konce souboru
 		else {
