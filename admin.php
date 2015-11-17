@@ -25,7 +25,7 @@
     // echo $_SESSION["time"];
     //uzivatel neni prihlasen
     //if(!isset($_SESSION['logged_in']) or $_SESSION['role'] != $role) {
-    if(1){
+    if(0){
       echo "
       <form action='login.php?page=$role.php' method='post' enctype='multipart/form-data'>
         <h3>Pøihlá¹ení</h3>
