@@ -4,7 +4,7 @@
 		<link rel="stylesheet" type="text/css" href="css/styl.css">
 		<link href="css/form.css" rel="stylesheet">
 		<meta charset="iso-8859-2">
-		<script type="text/javascript" src="netteForms.js"></script>
+		<script type="text/javascript" src="js/netteForms.js"></script>
 		<script src="js/libs/jquery-2.1.1.js"></script>
 		<script src="js/filter.js"></script>
 		<script src="js/form.js"></script>
@@ -102,7 +102,7 @@
 					$rodne_cislo = $_GET["rodne_cislo"];
 
 					if ($_GET["edit"]=="edit") {
-						$sql="UPDATE $tabulka_uprav SET jmeno = '$jmeno', prijmeni ='$prijmeni', rodne_cislo=$rodne_cislo WHERE rodne_cislo='".$_GET["PK_old"]."'";
+						$sql="UPDATE $tabulka_uprav SET jmeno = '$jmeno', prijmeni ='$prijmeni', rodne_cislo='$rodne_cislo' WHERE rodne_cislo='".$_GET["PK_old"]."'";
 						$success = mysql_query($sql);
 						echo $sql;
 						if(!$success) $error = "nepodarilo se upravit polozku";	
@@ -182,9 +182,10 @@
 	$sub1 = $form->addContainer('first');
 
 	if ($form->isSuccess()) {
-		echo 'Formuláø byl správnì vyplnìn a odeslán';
-			$values = $form->getValues();
-		dump($values);
+		header("Location:$page");
+		// echo 'Formuláø byl správnì vyplnìn a odeslán';
+		// 	$values = $form->getValues();
+		// dump($values);
 	}
 
 	echo '

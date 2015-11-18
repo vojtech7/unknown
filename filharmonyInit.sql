@@ -41,7 +41,7 @@ CREATE TABLE IF NOT EXISTS Autor(
 ) ENGINE=INNODB;
 CREATE TABLE IF NOT EXISTS Koncert(
   ID_koncertu INT,
-  datum_a_cas DATE,
+  datum_a_cas DATETIME,
   mesto VARCHAR(30),
   adresa VARCHAR(50),
   PRIMARY KEY (ID_koncertu)
