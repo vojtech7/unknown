@@ -147,7 +147,7 @@
             <!-- Popup Div Starts Here -->
             <div id="popupContact">
             <!-- Contact Us Form -->
-            <img id="close" src="images/3.png" onclick ="P_add_form_hide()">
+            <img id="close" src="img/close-icon.png" onclick ="P_add_form_hide()">
 
             <!-- vvvvvvvvvvvvv Nette Form  vvvvvvvvvvvvv -->';
 

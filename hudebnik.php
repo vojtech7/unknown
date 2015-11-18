@@ -93,7 +93,14 @@
             echo "<tr>";
             for ($i=0; $i < $columns_count; $i++) {
               if($i==0) continue;
-              echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$i]}</td>";
+              if($i==1) {  // datumy
+                $date = date_create($row[$i]);
+                $mydate = date_format($date, "d.m.Y H:i:s");
+                echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$mydate}</td>";
+              }
+              else {
+                echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$i]}</td>";
+              }
             }
             echo "</tr>";
           }

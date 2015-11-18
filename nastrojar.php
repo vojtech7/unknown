@@ -8,6 +8,8 @@
     <script src="js/libs/jquery-2.1.1.js"></script>
     <script src="js/filter.js"></script>
     <script src="js/form.js"></script>
+    <!--<script src="js/netteForms.js"></script>
+    <script src="js/dateValidator.js"></script>-->
     <style> .required label { color: maroon } </style>
     <title>Nástrojáø Filharmonie Liptákov</title>
   </head>
@@ -127,18 +129,19 @@
           $vyrobni_cislo = $_GET['vyrobni_cislo'];
           $ttype = $_GET['ttype'];
           
-        if ($_GET["edit"]=="edit") {
-			//upravujeme radek
-			$sql="UPDATE $tabulka_uprav SET datum_vyroby = $datum_vyroby, vyrobce ='$vyrobce', dat_posl_revize=$dat_posl_revize, dat_posl_vymeny =$dat_posl_vymeny, vymeneno ='$vymeneno', ttype = '$ttype'  WHERE vyrobni_cislo = $vyrobni_cislo";
-        }
-        elseif ($_GET["edit"]=="add") {
-			$sql = "INSERT INTO $tabulka_uprav VALUES ('$datum_vyroby', '$vyrobce', '$dat_posl_revize',
-			'$dat_posl_vymeny', '$vymeneno', '$vyrobni_cislo', '$ttype');"; 
-        }
-        echo 'edit je: '.$_GET["edit"];
-		$insert_success = mysql_query($sql);
-		if(!$insert_success) echo "nepodarilo se vlozit polozku";
-		//header("Location:nastrojar.php");
+          if ($_GET["edit"]=="edit") {
+		        //upravujeme radek
+  	 		    $sql="UPDATE $tabulka_uprav SET datum_vyroby = STR_TO_DATE('$datum_vyroby', '%d.%m.%Y'), vyrobce ='$vyrobce', dat_posl_revize=STR_TO_DATE('$dat_posl_revize', '%d.%m.%Y'), dat_posl_vymeny =STR_TO_DATE('$dat_posl_vymeny', '%d.%m.%Y'), vymeneno ='$vymeneno', ttype = '$ttype'  WHERE vyrobni_cislo = '$vyrobni_cislo'";
+          }
+          elseif ($_GET["edit"]=="add") {
+      			$sql = "INSERT INTO $tabulka_uprav VALUES (STR_TO_DATE('$datum_vyroby', '%d.%m.%Y'), '$vyrobce', STR_TO_DATE('$dat_posl_revize', '%d.%m.%Y'),
+      			STR_TO_DATE('$dat_posl_vymeny', '%d.%m.%Y'), '$vymeneno', '$vyrobni_cislo', '$ttype');"; 
+          }
+          echo 'edit je: '.$_GET["edit"];
+          echo $sql;
+      		// $insert_success = mysql_query($sql);
+      		// if(!$insert_success) echo "nepodarilo se vlozit polozku";
+      		//header("Location:nastrojar.php");
         }
 
         /*tahani dat z databaze*/
@@ -158,7 +161,14 @@
           echo "<tr>";
           for ($i=0; $i < $columns_count; $i++) { 
             $alter = $alter.$row[$i]."~~";
-            echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$i]}</td>";
+            if($i==0 or $i==2 or $i==3) {  // datumy
+              $date = date_create($row[$i]);
+              $mydate = date_format($date, "d.m.Y");
+              echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$mydate}</td>";
+            }
+            else {
+              echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$i]}</td>";
+            }
           }
           //predam si PK do url parametru delete
           echo "<td id=delete_btn><a href='?page={$page}&delete={$row[$pk]}'>Odstranit</a></td>";
@@ -186,7 +196,7 @@
             <!-- Popup Div Starts Here -->
             <div id="popupContact">
             <!-- Contact Us Form -->
-            <img id="close" src="images/3.png" onclick ="P_add_form_hide()">
+            <img id="close" src="img/close-icon.png" onclick ="P_add_form_hide()">
 
             <!-- vvvvvvvvvvvvv Nette Form  vvvvvvvvvvvvv -->';
   require 'Nette/loader.php';
@@ -200,6 +210,10 @@
      $nadpisy_sloupcu = array('', '', '', '', '', '', 'Typ');
      $nazvy_sloupcu = array('', '','', '', '', '', 'ttype');
      
+    function dateValidator($item, $arg) {
+      echo "dateValidator here...";
+      return false;
+    }
 
     $form->addSelect('ttype', 'Zadejte typ', $seznam_typu);
     $form->addText('vyrobce', 'Výrobce')
@@ -207,11 +221,12 @@
     $form->addText('vyrobni_cislo','Vyrobni cislo')
         ->addRule(Form::FILLED, 'Zadejte vyrobni cislo');
     $form->addText('datum_vyroby', 'Datum výroby')
-         ->setAttribute('placeholder', 'rrrr-mm-dd');
+         ->setAttribute('placeholder', 'dd.mm.rrrr')
+         ->addRule('dateValidator', 'Zadejte platne datum');
     $form->addText('dat_posl_revize', 'Datum poslední revize')
-         ->setAttribute('placeholder', 'rrrr-mm-dd');
+         ->setAttribute('placeholder', 'dd.mm.rrrr');
     $form->addText('dat_posl_vymeny','Datum poslední výmìny')
-         ->setAttribute('placeholder', 'rrrr-mm-dd');
+         ->setAttribute('placeholder', 'dd.mm.rrrr');
     $form->addText('vymeneno','Vymìnìno');
     $form->addHidden('edit');
     $form->addHidden('PK_old');

@@ -41,19 +41,19 @@
 
     //uzivatel je prihlasen, tohle else je az do konce souboru
     else {
-    $_SESSION['timestamp'] = time();
-    $tabulka_uprav = "Koncert";
-    $nadpisy_sloupcu = array('ID koncertu', 'Datum a èas', 'Mìsto', 'Adresa');
-    $nazvy_sloupcu = array('ID_koncertu', 'datum_a_cas', 'mesto', 'adresa');
-    $pk = "ID_koncertu";
-    $nadpis_vysledku = "Seznam koncertù";
-    $page = $role.".php";
-    echo '<div id="menu"><ul>';
-    echo "<button onclick='P_add_form_show(\"$role\")'>Naplánuj koncert</button>";
-    echo "</ul><div>";
-    echo "<div id=logout_btn><a href='logout.php'>Odhlásit se</a></div>";
-    echo '<div id="menu"><ul>';
-    echo "</ul><div>";
+      $_SESSION['timestamp'] = time();
+      $tabulka_uprav = "Koncert";
+      $nadpisy_sloupcu = array('ID koncertu', 'Datum a èas', 'Mìsto', 'Adresa');
+      $nazvy_sloupcu = array('ID_koncertu', 'datum_a_cas', 'mesto', 'adresa');
+      $pk = "ID_koncertu";
+      $nadpis_vysledku = "Seznam koncertù";
+      $page = $role.".php";
+      echo '<div id="menu"><ul>';
+      echo "<button onclick='P_add_form_show(\"$role\")'>Naplánuj koncert</button>";
+      echo "</ul><div>";
+      echo "<div id=logout_btn><a href='logout.php'>Odhlásit se</a></div>";
+      echo '<div id="menu"><ul>';
+      echo "</ul><div>";
 
 
     //tabulka se vstupy pro hledani
@@ -98,31 +98,31 @@
           header("Location:manazer.php");
         }
         //pridani nebo uprava radku tabulky
-                if(isset($_GET["mesto"]) and isset($_GET["adresa"]) and isset($_GET["datum_a_cas"]) and isset($_GET["edit"])) {
-              $datum_a_cas = $_GET["datum_a_cas"];
-              $mesto = $_GET["mesto"];
-              $adresa = $_GET["adresa"];
-                  if ($_GET["edit"]=="edit") {
-                // upravuje se radek
-                $ID_koncertu = $_GET["id"];
-                $sql="UPDATE $tabulka_uprav SET datum_a_cas = STR_TO_DATE('$datum_a_cas', '%d.%m.%Y %T'), mesto ='$mesto', adresa='$adresa' WHERE ID_koncertu =$ID_koncertu";
-                $upadte_success = mysql_query($sql);
-                if(!$upadte_success) echo "nepodarilo se uparvit polozku";
-                  }
-                    elseif ($_GET["edit"]=="add") {
-                    //pridava se radek
-                $sql = "select max(ID_koncertu) from  Koncert";
-                $cislo = mysql_fetch_row(mysql_query($sql));
-                $ID_koncertu = 1 + $cislo[0];
+        if(isset($_GET["mesto"]) and isset($_GET["adresa"]) and isset($_GET["datum_a_cas"]) and isset($_GET["edit"])) {
+          $datum_a_cas = $_GET["datum_a_cas"];
+          $mesto = $_GET["mesto"];
+          $adresa = $_GET["adresa"];
+          if ($_GET["edit"]=="edit") {
+            // upravuje se radek
+            $ID_koncertu = $_GET["id"];
+            $sql="UPDATE $tabulka_uprav SET datum_a_cas = STR_TO_DATE('$datum_a_cas', '%d.%m.%Y %T'), mesto ='$mesto', adresa='$adresa' WHERE ID_koncertu =$ID_koncertu";
+            $update_success = mysql_query($sql);
+            if(!$update_success) echo "nepodarilo se uparvit polozku";
+          }
+          elseif ($_GET["edit"]=="add") {
+            //pridava se radek
+            $sql = "select max(ID_koncertu) from  Koncert";
+            $cislo = mysql_fetch_row(mysql_query($sql));
+            $ID_koncertu = 1 + $cislo[0];
 
-                // datum ve formatu "dd.mm.rrrr hh:mm:ss"
-                $insert_row = "INSERT INTO $tabulka_uprav VALUES ($ID_koncertu, STR_TO_DATE('$datum_a_cas', '%d.%m.%Y %T'), \"$mesto\", \"$adresa\");";
-                //echo $insert_row;
-                $insert_success = mysql_query($insert_row);
-                if(!$insert_success) echo "nepodarilo se vlozit polozku";
-                  }
-                  header("Location:manazer.php");
-                }
+            // datum ve formatu "dd.mm.rrrr hh:mm:ss"
+            $insert_row = "INSERT INTO $tabulka_uprav VALUES ($ID_koncertu, STR_TO_DATE('$datum_a_cas', '%d.%m.%Y %T'), \"$mesto\", \"$adresa\");";
+            //echo $insert_row;
+            $insert_success = mysql_query($insert_row);
+            if(!$insert_success) echo "nepodarilo se vlozit polozku";
+          }
+          header("Location:manazer.php");
+        }
 
         /*tahani dat z databaze*/
         $sql = "select * from ".$tabulka_uprav;
