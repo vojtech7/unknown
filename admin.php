@@ -4,7 +4,7 @@
     <link rel="stylesheet" type="text/css" href="css/styl.css">
     <link href="css/form.css" rel="stylesheet">
     <meta charset="iso-8859-2">
-    <script type="text/javascript" src="netteForms.js"></script>
+    <script type="text/javascript" src="js/netteForms.js"></script>
     <script src="js/libs/jquery-2.1.1.js"></script>
     <script src="js/filter.js"></script>
     <script src="js/form.js"></script>
@@ -68,9 +68,6 @@
           echo "<td> <input type=\"text\" class=\"form-control filter_". $value ."\"></td>";
         }
 
-          
-          
-        
         echo "</tr>";
         echo "</table>";
 

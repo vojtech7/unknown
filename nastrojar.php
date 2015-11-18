@@ -4,12 +4,11 @@
     <link rel="stylesheet" type="text/css" href="css/styl.css">
     <link href="css/form.css" rel="stylesheet">
     <meta charset="iso-8859-2">
-    <script type="text/javascript" src="netteForms.js"></script>
+    <script type="text/javascript" src="js/netteForms.js"></script>
+    <script src="js/dateValidator.js"></script>
     <script src="js/libs/jquery-2.1.1.js"></script>
     <script src="js/filter.js"></script>
     <script src="js/form.js"></script>
-    <!--<script src="js/netteForms.js"></script>
-    <script src="js/dateValidator.js"></script>-->
     <style> .required label { color: maroon } </style>
     <title>Nástrojáø Filharmonie Liptákov</title>
   </head>
@@ -160,14 +159,15 @@
         while($row = mysql_fetch_array($vysledek)){
           echo "<tr>";
           for ($i=0; $i < $columns_count; $i++) { 
-            $alter = $alter.$row[$i]."~~";
             if($i==0 or $i==2 or $i==3) {  // datumy
               $date = date_create($row[$i]);
               $mydate = date_format($date, "d.m.Y");
               echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$mydate}</td>";
+              $alter = $alter.$mydate."~~";
             }
             else {
               echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$i]}</td>";
+              $alter = $alter.$row[$i]."~~";
             }
           }
           //predam si PK do url parametru delete
@@ -210,9 +210,8 @@
      $nadpisy_sloupcu = array('', '', '', '', '', '', 'Typ');
      $nazvy_sloupcu = array('', '','', '', '', '', 'ttype');
      
-    function dateValidator($item, $arg) {
-      echo "dateValidator here...";
-      return false;
+    function dateType($item, $arg) {
+      return true;
     }
 
     $form->addSelect('ttype', 'Zadejte typ', $seznam_typu);
@@ -222,11 +221,13 @@
         ->addRule(Form::FILLED, 'Zadejte vyrobni cislo');
     $form->addText('datum_vyroby', 'Datum výroby')
          ->setAttribute('placeholder', 'dd.mm.rrrr')
-         ->addRule('dateValidator', 'Zadejte platne datum');
+         ->addRule('dateType', 'Zadejte platne datum ve formatu dd.mm.rrrr');
     $form->addText('dat_posl_revize', 'Datum poslední revize')
-         ->setAttribute('placeholder', 'dd.mm.rrrr');
+         ->setAttribute('placeholder', 'dd.mm.rrrr')
+         ->addRule('dateType', 'Zadejte platne datum ve formatu dd.mm.rrrr');
     $form->addText('dat_posl_vymeny','Datum poslední výmìny')
-         ->setAttribute('placeholder', 'dd.mm.rrrr');
+         ->setAttribute('placeholder', 'dd.mm.rrrr')
+         ->addRule('dateType', 'Zadejte platne datum ve formatu dd.mm.rrrr');
     $form->addText('vymeneno','Vymìnìno');
     $form->addHidden('edit');
     $form->addHidden('PK_old');

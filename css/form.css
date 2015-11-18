@@ -27,8 +27,8 @@ div#popupContact {
   font-family:'Raleway',sans-serif
 }
 form {
-  max-width:300px;
-  min-width:250px;
+  max-width:400px;
+  min-width:300px;
   padding:10px 50px;
   border:2px solid gray;
   border-radius:10px;

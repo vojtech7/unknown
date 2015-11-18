@@ -6,7 +6,7 @@
     <meta charset="iso-8859-2">
     <meta http-equiv="cache-control" content="no-cache">
     <meta http-equiv="pragma" content="no-cache">
-    <script type="text/javascript" src="netteForms.js"></script>
+    <script type="text/javascript" src="js/netteForms.js"></script>
     <script src="js/libs/jquery-2.1.1.js"></script>
     <style> .required label { color: maroon } </style>
     <script src="js/filter.js"></script>
