@@ -1,3 +1,11 @@
+# TODO list
+<ul>
+  <li>zprovoznit pridavani/upravu nastroju; a taky PK_old u vsech - Vojta</li>
+  <li>operace přiřaď/zobraz/uprav skladby koncertu - Tomáš</li>
+  <li>operace přiřaď/zobraz/uprav hudebníky koncertu</li>
+  <li>další...</li>
+</ul>
+
 Nejdůležitější je plánování koncertů, všechno se točí kolem toho.
 Ideální funkcionalita by byla:
 <ul>
@@ -13,11 +21,3 @@ Jestliže nestihneme implementovat všechno, v TODO listu jsou alespoň nějaké
 Můžem tam dávat různé úkoly a psát k nim, kdo z nás si je vezme na starost.
 Pro jednotlivé úkoly(nebo soubory úkolů) pak můžeme vytvořit samostatné větve(branch) a pracovat na nich nezávisle na sobě.
 Větve se pak sloučí do kořene - master, a v případě kolidujících změn se vyberou ty žádoucí.
-
-# TODO list
-<ul>
-  <li>kontrolovat datumy ve formulářích přes Js - Tomáš</li>
-  <li>operace přiřaď/zobraz/uprav skladby koncertu</li>
-  <li>operace přiřaď/zobraz/uprav hudebníky koncertu</li>
-  <li>další...</li>
-</ul>
