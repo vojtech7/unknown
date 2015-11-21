@@ -52,7 +52,7 @@
     }
     $tabulka_vypis = "Autor natural join Skladba ";
     $tabulka_upravy = "Skladba";
-    $nadpisy_sloupcu = array('Název', 'Délka [s]', 'Jméno autora');
+    $nadpisy_sloupcu = array('Název', 'Délka [min]', 'Jméno autora');
     $nazvy_sloupcu = array('ID_skladby', 'nazev', 'delka', 'jmeno');
     $pk = "ID_skladby";
     $nadpis_vysledku = "Seznam skladeb";
@@ -205,7 +205,7 @@
       ->setPrompt( 'Zadejte jméno autora');
     $add->addText('nazev', 'Nazev:')
       ->addRule(Form::FILLED, 'Zadejte nazev skladby');
-    $add->addText('delka', 'Délka [s]')
+    $add->addText('delka', 'Délka [min]')
       ->addRule(Form::FILLED, 'Zadejte delku skladby');
     $add->addHidden('edit');
     $add->addHidden('id');
