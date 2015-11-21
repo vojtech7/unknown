@@ -136,15 +136,16 @@
       			$sql = "INSERT INTO $tabulka_uprav VALUES (STR_TO_DATE('$datum_vyroby', '%d.%m.%Y'), '$vyrobce', STR_TO_DATE('$dat_posl_revize', '%d.%m.%Y'),
       			STR_TO_DATE('$dat_posl_vymeny', '%d.%m.%Y'), '$vymeneno', '$vyrobni_cislo', '$ttype');"; 
           }
+          // $sql = "INSERT INTO $tabulka_uprav VALUES (NULL, '$vyrobce', NULL, NULL, '$vymeneno', '$vyrobni_cislo', '$ttype');";
           echo 'edit je: '.$_GET["edit"];
           echo $sql;
-      		// $insert_success = mysql_query($sql);
-      		// if(!$insert_success) echo "nepodarilo se vlozit polozku";
-      		//header("Location:nastrojar.php");
+      		$insert_success = mysql_query($sql);
+      		if(!$insert_success) echo "nepodarilo se vlozit polozku";
+      		// header("Location:nastrojar.php");
         }
 
         /*tahani dat z databaze*/
-        $sql = "select * from ".$tabulka_uprav;
+        $sql = "select * from $tabulka_uprav";
         $vysledek = mysql_query($sql);
         $columns_count = count($nazvy_sloupcu);
 
@@ -181,6 +182,7 @@
         echo "</tr>";
         echo "</table>";
 
+      //ziskani typu nastroju pro select ve formulari
       $sql = "select * from Typ";
       $typy = mysql_query($sql);
 

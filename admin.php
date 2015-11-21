@@ -159,13 +159,14 @@
     $form->addText('login', 'Login:')
       ->addRule(Form::FILLED, 'Zadejte login');
     $form->addPassword('heslo', 'Heslo:')
-      ->addRule(Form::MIN_LENGTH, 'Zadejte heslo', 1)
+      ->addRule(Form::FILLED, 'Zadejte heslo')
       ->addRule(Form::MIN_LENGTH,'Heslo musi mit alespon %d znaky', 4);
 
     $roles = array('manazer', 'personalista', 'hudebnik', 'aranzer', 'nastrojar');
     $form->addSelect('role', 'Role:', $roles)
       ->setItems($roles, FALSE);
     $form->addText('info', 'Rodné èíslo pro hudebníka:');
+    $form->addHidden('edit');
     $form->addSubmit('send', 'Pridat');
 
   echo $form; // vykresli formular

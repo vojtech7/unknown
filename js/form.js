@@ -11,6 +11,12 @@ function check_empty() {
 //Function To Display Popup
 function P_add_form_show(role) {
 	
+	if (role=="admin") {
+		document.getElementById('frm-login').value = "";
+		document.getElementById('frm-heslo').value = "";
+		document.getElementById('frm-role').value = "";
+		document.getElementById('frm-info').value = "";
+	};
 	if (role=="aranzer") {
 		document.getElementById('frm-jmeno').value = "";
 		document.getElementById('frm-nazev').value = "";
