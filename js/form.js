@@ -22,7 +22,6 @@ function P_add_form_show(role) {
 		document.getElementById('frm-datum_a_cas').value = "";
 	};
 	if (role=="nastrojar") {
-		alert(role);
 		document.getElementById('frm-ttype').value = "";
 		document.getElementById('frm-vyrobce').value = "";
 		document.getElementById('frm-vyrobni_cislo').value = "";
