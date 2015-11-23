@@ -10,7 +10,7 @@
     <script src="js/filter.js"></script>
     <script src="js/form.js"></script>
     <style> .required label { color: maroon } </style>
-    <title>Nástrojáø Filharmonie Liptákov</title>
+    <title>Filharmonie Liptákov</title>
   </head>
   <body>
     <?php
@@ -23,10 +23,12 @@
 
       $sql_aut = "SELECT ID_autora, jmeno, styl FROM Autor";
       $autori = mysql_query($sql_aut);
-      $sql_skl_zaklad = "SELECT nazev, delka, ID_autora FROM Skladba WHERE ID_autora=";
+      $sql_skl_zaklad = "SELECT ID_skladby, nazev, delka, ID_autora FROM Skladba WHERE ID_autora=";
 
+      echo "<form action='koncert.php' method='post'>";
       while($row_aut = mysql_fetch_array($autori)){
         echo "<table><tr>";
+        //vypis autora
         for ($i=1; $i <= $col_count_aut; $i++) {
           echo "<td>{$row_aut[$i]}</td>";
         }
@@ -36,10 +38,12 @@
         $sql_skl = $sql_skl_zaklad."'$ID_aut'";
         $skladby = mysql_query($sql_skl);
 
+        //vypis skladeb daneho autora
         echo "<table style='margin-left:20px;'>";
         while($row_skl = mysql_fetch_array($skladby)){
           echo "<tr>";
-          for ($i=0; $i < $col_count_skl; $i++) {
+          echo "<td><input type='checkbox' name='skladby[]' value='$row_skl[0]'></td>";
+          for ($i=1; $i < $col_count_skl; $i++) {
             echo "<td>{$row_skl[$i]}</td>";
           }
           echo "</tr>";
@@ -47,7 +51,8 @@
         echo "</table>";
         echo "<br>";
       }
-
+      echo "<input type='submit' name='skl_odeslat' value='Vybrat skladby'>";
+      echo "</form>";
 
     ?>
   </body>

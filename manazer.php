@@ -44,8 +44,8 @@
     else {
       $_SESSION['timestamp'] = time();
       $tabulka_uprav = "Koncert";
-      $nadpisy_sloupcu = array('ID koncertu', 'Datum a èas', 'Mìsto', 'Adresa');
-      $nazvy_sloupcu = array('ID_koncertu', 'datum_a_cas', 'mesto', 'adresa');
+      $nadpisy_sloupcu = array('Název Koncertu', 'ID koncertu', 'Datum a èas', 'Mìsto', 'Adresa');
+      $nazvy_sloupcu = array('nazev_koncertu', 'ID_koncertu', 'datum_a_cas', 'mesto', 'adresa');
       $pk = "ID_koncertu";
       $nadpis_vysledku = "Seznam koncertù";
       $page = $role.".php";
@@ -99,16 +99,17 @@
           header("Location:manazer.php");
         }
         //pridani nebo uprava radku tabulky
-        if(isset($_GET["mesto"]) and isset($_GET["adresa"]) and isset($_GET["datum_a_cas"]) and isset($_GET["edit"])) {
+        if(isset($_GET["nazev_koncertu"]) and isset($_GET["mesto"]) and isset($_GET["adresa"]) and isset($_GET["datum_a_cas"]) and isset($_GET["edit"])) {
+          $nazev_koncertu = $_GET["nazev_koncertu"];
           $datum_a_cas = $_GET["datum_a_cas"];
           $mesto = $_GET["mesto"];
           $adresa = $_GET["adresa"];
           if ($_GET["edit"]=="edit") {
             // upravuje se radek
             $ID_koncertu = $_GET["id"];
-            $sql="UPDATE $tabulka_uprav SET datum_a_cas = STR_TO_DATE('$datum_a_cas', '%d.%m.%Y %H:%i'), mesto ='$mesto', adresa='$adresa' WHERE ID_koncertu =$ID_koncertu";
+            $sql="UPDATE $tabulka_uprav SET nazev_koncertu='$nazev_koncertu', datum_a_cas = STR_TO_DATE('$datum_a_cas', '%d.%m.%Y %H:%i'), mesto ='$mesto', adresa='$adresa' WHERE ID_koncertu =$ID_koncertu";
             $update_success = mysql_query($sql);
-            if(!$update_success) echo "nepodarilo se uparvit polozku";
+            if(!$update_success) echo "nepodarilo se upravit polozku";
           }
           elseif ($_GET["edit"]=="add") {
             //pridava se radek
@@ -117,7 +118,7 @@
             $ID_koncertu = 1 + $cislo[0];
 
             // datum ve formatu "dd.mm.rrrr hh:mm"
-            $insert_row = "INSERT INTO $tabulka_uprav VALUES ($ID_koncertu, STR_TO_DATE('$datum_a_cas', '%d.%m.%Y %H:%i'), \"$mesto\", \"$adresa\");";
+            $insert_row = "INSERT INTO $tabulka_uprav VALUES ($nazev_koncertu, $ID_koncertu, STR_TO_DATE('$datum_a_cas', '%d.%m.%Y %H:%i'), \"$mesto\", \"$adresa\");";
             // echo $insert_row;
             $insert_success = mysql_query($insert_row);
             if(!$insert_success) echo "nepodarilo se vlozit polozku";
@@ -146,7 +147,7 @@
               $alter = $alter.$row[$i]."~~";
               continue;   //ID_koncertu
             }
-            if($i==1) {  // datum koncertu
+            if($i==2) {  // datum koncertu
               $date = date_create($row[$i]);
               $mydate = date_format($date, "d.m.Y H:i");
               echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$mydate}</td>";
@@ -192,6 +193,8 @@
       return true;
     }
 
+    $form->addText('nazev_koncertu', 'Nazev koncertu:')
+      ->addRule(Form::FILLED, 'Zadejte nazev koncertu');
     $form->addText('mesto', 'Mesto:')
       ->addRule(Form::FILLED, 'Zadejte mesto, ve kterem bude koncert');
     $form->addText('adresa', 'Adresa')

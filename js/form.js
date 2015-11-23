@@ -65,9 +65,10 @@ function P_alter_form_show(params, role) {
 	};
 	if (role=="manazer") {
 		document.getElementById('frm-id').value = res[0];
-		document.getElementById('frm-mesto').value = res[2];
-		document.getElementById('frm-adresa').value = res[3];
-		document.getElementById('frm-datum_a_cas').value = res[1];
+		document.getElementById('frm-nazev_koncertu').value = res[1];
+		document.getElementById('frm-mesto').value = res[3];
+		document.getElementById('frm-adresa').value = res[4];
+		document.getElementById('frm-datum_a_cas').value = res[2];
 		//alert(document.getElementById('frm-datum_a_cas').value);
 		//alert(res[1]);
 	};
