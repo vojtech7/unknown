@@ -105,7 +105,7 @@
 					if ($_GET["edit"]=="edit") {
 						$sql="UPDATE $tabulka_uprav SET jmeno = '$jmeno', prijmeni ='$prijmeni', rodne_cislo='$rodne_cislo', heslo_hash='$heslo_hash' WHERE rodne_cislo='".$_GET["PK_old"]."'";
 						$success = mysql_query($sql);
-						echo $sql;
+						//echo $sql;
 						if(!$success) $error = "nepodarilo se upravit polozku";	
 					}
 					else {
@@ -113,7 +113,7 @@
 						$success = mysql_query($sql);
 						if(!$success) $error =  "nepodarilo se vlozit polozku";	
 					}
-					//header("Location:personalista.php");
+					header("Location:personalista.php");
 					
 					if (isset($error)) {
 						echo $error;

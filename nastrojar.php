@@ -141,7 +141,7 @@
           echo $sql;
       		$insert_success = mysql_query($sql);
       		if(!$insert_success) echo "nepodarilo se vlozit polozku";
-      		// header("Location:nastrojar.php");
+      		header("Location:nastrojar.php");
         }
 
         /*tahani dat z databaze*/
@@ -188,7 +188,7 @@
 
       for ($i=0; $i < mysql_num_rows($typy); $i++) { 
         $row = mysql_fetch_array($typy, MYSQL_ASSOC);
-        $seznam_typu[$i] = $row["ttype"];
+        $seznam_typu[$row["ttype"]] = $row["ttype"];
       }
 
 
