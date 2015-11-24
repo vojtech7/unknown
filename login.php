@@ -2,7 +2,8 @@
   include "connect.php";
 
   if(!empty($_POST)) {
-    $login = $_POST['login'];
+    if(isset($_POST['login'])) $login = $_POST['login'];
+    else if(isset($_POST['rodne_cislo'])) $login = $_POST['rodne_cislo'];
     $heslo = $_POST['heslo'];
     $page = $_GET['page'];    //napr. "manazer.php"
 
@@ -12,21 +13,50 @@
         $_SESSION['logged_in'] = true;
         $_SESSION['timestamp'] = time();
         $_SESSION['role'] = "admin";
-        echo "Autentizace probÏhla ˙spÏπnÏ.";
+        echo "Autentizace prob√¨hla √∫sp√¨¬πn√¨.";
         header("Location:$page");
-        echo "<a href='{$page}'>PokraËovat >></a><br>";
+        echo "<a href='{$page}'>Pokra√®ovat >></a><br>";
       }
       else {
-        echo "Nespr·vnÈ administr·torskÈ heslo.<br>";
+        echo "Nespr√°vn√© administr√°torsk√© heslo.<br>";
       }
     }
-    else {  //neadmin
-      $sql = 'select * from Uzivatel where login="'.$login.'"';
+    elseif($page == "hudebnik.php") {   //hudebnik
+      $sql = "select * from Hudebnik where rodne_cislo='$login'";
       $vysledek = mysql_query($sql);
-
       //dotaz nic nevratil
       if ($vysledek == false or mysql_num_rows($vysledek) == 0) {
-        echo "Uæivatel $login nenÌ zaznamen·n v datab·zi.<br>";
+        echo "Hudebn√≠k s rodn√Ωm ƒç√≠slem $login nen√≠ zaznamen√°n v datab√°zi.<br>";
+      }
+      //dotaz vratil radek
+      else {
+        $row = mysql_fetch_array($vysledek);    //dotaz vrati jen jeden radek
+        // var_dump($row);
+        $hash_zadane = sha1($heslo);
+        $hash_prave = $row['heslo_hash'];
+        $login = $row['rodne_cislo'];
+        if($hash_prave == $hash_zadane) {   //spravne heslo
+          session_start();
+          $_SESSION['logged_in'] = true;
+          $_SESSION['timestamp'] = time();
+          $_SESSION['role'] = 'hudebnik';
+          $_SESSION['user_login'] = $login;
+          echo "Autentizace prob√¨hla √∫sp√¨¬πn√¨.";
+          print_r($_SESSION);
+          header("Location:$page");
+          echo "<a href='?page={$page}'>Pokra√®ovat >></a>";
+        }
+        else {
+          echo "Nespr√°vn√© heslo.";
+        }
+      }
+    }
+    else {  //neadmin, nehudebnik
+      $sql = "select * from Uzivatel where login='$login'";
+      $vysledek = mysql_query($sql);
+      //dotaz nic nevratil
+      if ($vysledek == false or mysql_num_rows($vysledek) == 0) {
+        echo "U¬æivatel $login nen√≠ zaznamen√°n v datab√°zi.<br>";
       }
       //dotaz vratil radek
       else {
@@ -37,7 +67,7 @@
         $role = $row['role'];
         $login = $row['login'];
 
-        echo "<br>role: $role, page: $page<br>";
+        // echo "<br>role: $role, page: $page<br>";
         if(($role.'.php') == $page) {  //jestli je spravna role
           // print_r($hash_prave);
           // echo "<br>";
@@ -48,18 +78,18 @@
             $_SESSION['timestamp'] = time();
             $_SESSION['role'] = $role;
             $_SESSION['user_login'] = $login;
-            echo "Autentizace probÏhla ˙spÏπnÏ.";
+            echo "Autentizace prob√¨hla √∫sp√¨¬πn√¨.";
             print_r($_SESSION);
             header("Location:$page");
-            echo "<a href='?page={$page}'>PokraËovat >></a>";
+            echo "<a href='?page={$page}'>Pokra√®ovat >></a>";
           }
           else {
-            echo "Nespr·vnÈ heslo.";
+            echo "Nespr√°vn√© heslo.";
           }
           
         }
         else {  //neni spravna role
-          echo "Jin˝ typ uæivatele.";
+          echo "Jin√Ω typ u¬æivatele.";
         }
 
       }//dotaz vratil radek

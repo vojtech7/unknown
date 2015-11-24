@@ -29,6 +29,7 @@ CREATE TABLE IF NOT EXISTS Hudebnik(
   rodne_cislo CHAR(11),
   jmeno VARCHAR(20),
   prijmeni VARCHAR(20),
+  heslo_hash VARCHAR(125),   
   PRIMARY KEY (rodne_cislo)
 ) ENGINE=INNODB;
 CREATE TABLE IF NOT EXISTS Autor(

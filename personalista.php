@@ -96,19 +96,20 @@
 					header("Location:personalista.php");
 				}
 				//pridani nebo uprava radku tabulky
-				if(isset($_GET["jmeno"]) and isset($_GET["prijmeni"]) and isset($_GET["rodne_cislo"]) and isset($_GET["edit"])) {
+				if(isset($_GET["jmeno"]) and isset($_GET["prijmeni"]) and isset($_GET["rodne_cislo"]) and isset($_GET["heslo"]) and isset($_GET["edit"])) {
 					$jmeno = $_GET["jmeno"];
 					$prijmeni = $_GET["prijmeni"];
 					$rodne_cislo = $_GET["rodne_cislo"];
+					$heslo_hash = sha1($_GET['heslo']);
 
 					if ($_GET["edit"]=="edit") {
-						$sql="UPDATE $tabulka_uprav SET jmeno = '$jmeno', prijmeni ='$prijmeni', rodne_cislo='$rodne_cislo' WHERE rodne_cislo='".$_GET["PK_old"]."'";
+						$sql="UPDATE $tabulka_uprav SET jmeno = '$jmeno', prijmeni ='$prijmeni', rodne_cislo='$rodne_cislo', heslo_hash='$heslo_hash' WHERE rodne_cislo='".$_GET["PK_old"]."'";
 						$success = mysql_query($sql);
 						echo $sql;
 						if(!$success) $error = "nepodarilo se upravit polozku";	
 					}
 					else {
-						$sql = "INSERT INTO $tabulka_uprav VALUES ('$rodne_cislo', '$jmeno', '$prijmeni');";
+						$sql = "INSERT INTO $tabulka_uprav VALUES ('$rodne_cislo', '$jmeno', '$prijmeni', '$heslo_hash');";
 						$success = mysql_query($sql);
 						if(!$success) $error =  "nepodarilo se vlozit polozku";	
 					}
@@ -172,7 +173,12 @@
 		$form->addText('prijmeni', 'Prijmeni:')
 			->addRule(Form::FILLED, 'Zadejte prijmeni');
 		$form->addText('rodne_cislo', 'Rodne cislo:')
-			->addRule(Form::FILLED, 'Zadejte rodne cislo');
+			->addRule(Form::FILLED, 'Zadejte rodne cislo')
+	    ->addRule(Form::PATTERN, 'Rodne cislo musi byt ve tvaru xxxxxx/xxxx', '\d{6}/\d{4}')
+			->setAttribute('placeholder', 'xxxxxx/xxxx');
+    $form->addPassword('heslo', 'Heslo:')
+      ->addRule(Form::FILLED, 'Zadejte heslo')
+      ->addRule(Form::MIN_LENGTH,'Heslo musi mit alespon %d znaky', 4);
 		$form->addHidden('edit');
 		$form->addHidden('PK_old');
 		$form->addSubmit('send', 'Pridat');
@@ -182,7 +188,7 @@
 	$sub1 = $form->addContainer('first');
 
 	if ($form->isSuccess()) {
-		header("Location:$page");
+		// header("Location:$page");
 		// echo 'Formuláø byl správnì vyplnìn a odeslán';
 		// 	$values = $form->getValues();
 		// dump($values);

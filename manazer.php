@@ -44,8 +44,8 @@
     else {
       $_SESSION['timestamp'] = time();
       $tabulka_uprav = "Koncert";
-      $nadpisy_sloupcu = array('Název Koncertu', 'ID koncertu', 'Datum a èas', 'Mìsto', 'Adresa');
-      $nazvy_sloupcu = array('nazev_koncertu', 'ID_koncertu', 'datum_a_cas', 'mesto', 'adresa');
+      $nadpisy_sloupcu = array('ID koncertu', 'Název Koncertu', 'Datum a èas', 'Mìsto', 'Adresa');
+      $nazvy_sloupcu = array('ID_koncertu', 'nazev_koncertu', 'datum_a_cas', 'mesto', 'adresa');
       $pk = "ID_koncertu";
       $nadpis_vysledku = "Seznam koncertù";
       $page = $role.".php";

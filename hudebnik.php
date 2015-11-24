@@ -8,7 +8,7 @@
     <script src="js/libs/jquery-2.1.1.js"></script>
     <script src="js/filter.js"></script>
     <script src="js/form.js"></script>
-    <title>HudebnÌk Filharmonie Lipt·kov</title>
+    <title>Hudebn√≠k Filharmonie Lipt√°kov</title>
   </head>
 <body>
 
@@ -20,14 +20,14 @@
     session_start();
     $role = 'hudebnik';
     //uzivatel neni prihlasen
-    //if(!isset($_SESSION['logged_in']) or $_SESSION['role'] != $role) {
-    if(0){
+    if(!isset($_SESSION['logged_in']) or $_SESSION['role'] != $role) {
+    // if(0){
       echo "
       <form action='login.php?page=$role.php' method='post' enctype='multipart/form-data'>
-        <h3>P¯ihl·πenÌ</h3>
-        Login:<input type='text' name='login'><br>
+        <h3>P√∏ihl√°¬πen√≠</h3>
+        Rodn√© ƒç√≠slo:<input type='text' name='rodne_cislo'><br>
         Heslo:<input type='password' name='heslo'>
-        <input type='submit' value='P¯ihl·sit'>         
+        <input type='submit' value='P√∏ihl√°sit'>         
       </form>";
 
     }
@@ -41,19 +41,19 @@
     //uzivatel je prihlasen, tohle else je az do konce souboru
     else {
       $tabulka = "Koncert";
-      $nadpisy_sloupcu = array('ID koncertu', 'Datum a Ëas', 'MÏsto', 'Adresa');
-      $nazvy_sloupcu = array('ID_koncertu', 'datum_a_cas', 'mesto', 'adresa');
+      $nadpisy_sloupcu = array('ID koncertu', 'N√°zev Koncertu', 'Datum a √®as', 'M√¨sto', 'Adresa');
+      $nazvy_sloupcu = array('ID_koncertu', 'nazev_koncertu', 'datum_a_cas', 'mesto', 'adresa');
       $pk = "ID_koncertu";
-      $nadpis_vysledku = "Seznam koncert˘";
-      echo "<div id=logout_btn><a href='logout.php'>Odhl·sit se</a></div>";
+      $nadpis_vysledku = "Seznam koncert√π";
+      echo "<div id=logout_btn><a href='logout.php'>Odhl√°sit se</a></div>";
       echo '<div id="menu"><ul>';
-      echo "<button onclick='P_add_form_show()'>Zobraz nejbliæπÌ koncert</button>";
+      echo "<button onclick='P_add_form_show()'>Zobraz nejbli¬æ¬π√≠ koncert</button>";
       echo "</ul><div>";
 
 
       // tabulka se vstupy pro hledani
         echo '<table id="hledani" class="pattern">
-              <span class="nadpis" id="nadpis_vyhledavani">Filtry pro vyhled·v·nÌ n·stroj˘</span>
+              <span class="nadpis" id="nadpis_vyhledavani">Filtry pro vyhled√°v√°n√≠ n√°stroj√π</span>
               <tr>';
           foreach ($nadpisy_sloupcu as $value) {
             if ($value === "ID koncertu") continue; 
@@ -92,8 +92,8 @@
           while($row = mysql_fetch_array($vysledek)){
             echo "<tr>";
             for ($i=0; $i < $columns_count; $i++) {
-              if($i==0) continue;
-              if($i==1) {  // datumy
+              if($i==0) continue;  //ID koncertu
+              if($i==2) {  // datum
                 $date = date_create($row[$i]);
                 $mydate = date_format($date, "d.m.Y H:i");
                 echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$mydate}</td>";
