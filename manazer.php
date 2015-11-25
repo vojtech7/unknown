@@ -117,7 +117,7 @@
             $cislo = mysql_fetch_row(mysql_query($sql));
             $ID_koncertu = 1 + $cislo[0];
 
-            // datum ve formatu "dd.mm.rrrr hh:mm"
+            // datum ve formatu "DD.MM.RRRR HH:MM"
             $insert_row = "INSERT INTO $tabulka_uprav VALUES ($ID_koncertu, \"$nazev_koncertu\", STR_TO_DATE('$datum_a_cas', '%d.%m.%Y %H:%i'), \"$mesto\", \"$adresa\");";
             // echo $insert_row;
             $insert_success = mysql_query($insert_row);
@@ -205,8 +205,8 @@
     $form->addText('adresa', 'Adresa')
       ->addRule(Form::FILLED, 'Zadejte adresu koncertu');
     $form->addText('datum_a_cas', 'Datum a cas')
-      ->setAttribute('placeholder', 'dd.mm.rrrr hh:mm')
-      ->addRule('datetimeType', 'Zadejte platne datum a cas ve formatu dd.mm.rrrr hh:mm')
+      ->setAttribute('placeholder', 'DD.MM.RRRR HH:MM')
+      ->addRule('datetimeType', 'Zadejte platne datum a cas ve formatu DD.MM.RRRR HH:MM')
       ->addRule(Form::FILLED, 'Zadejte datum a cas koncertu');
     $form->addHidden('edit');
     $form->addHidden('id');

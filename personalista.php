@@ -44,8 +44,8 @@
 		//uzivatel je prihlasen, tohle else je az do konce souboru
 		else {
 		 $tabulka_uprav = "Hudebnik";
-		 $nadpisy_sloupcu = array('Rodné èíslo', 'Jméno', 'Pøíjmení');
-		 $nazvy_sloupcu = array('rodne_cislo', 'jmeno', 'prijmeni');
+		 $nadpisy_sloupcu = array('Jméno', 'Pøíjmení', 'Rodné èíslo');
+		 $nazvy_sloupcu = array('jmeno', 'prijmeni', 'rodne_cislo');
 		 $pk = "rodne_cislo";
 		 $nadpis_vysledku = "Seznam hudebníkù";
 		 $page = "personalista.php";
@@ -107,13 +107,14 @@
 						$success = mysql_query($sql);
 						//echo $sql;
 						if(!$success) $error = "nepodarilo se upravit polozku";	
+						header("Location:personalista.php");
 					}
 					else {
 						$sql = "INSERT INTO $tabulka_uprav VALUES ('$rodne_cislo', '$jmeno', '$prijmeni', '$heslo_hash');";
 						$success = mysql_query($sql);
 						if(!$success) $error =  "nepodarilo se vlozit polozku";	
+            header("Location:vyber_skladby_hud.php?rc_hud=$rodne_cislo");
 					}
-					header("Location:personalista.php");
 					
 					if (isset($error)) {
 						echo $error;
@@ -135,8 +136,11 @@
 				while($row = mysql_fetch_array($vysledek)){
 					echo "<tr>";
 					for ($i=0; $i < $columns_count; $i++) { 
+						if($nazvy_sloupcu[$i] === "rodne_cislo")							
+							echo "<td class='filter_{$nazvy_sloupcu[$i]}'><a href='hud_detail.php?rc_hud={$row['rodne_cislo']}'>{$row[$nazvy_sloupcu[$i]]}</a></td>";
+						else
+							echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$nazvy_sloupcu[$i]]}</td>";
 						$alter = $alter.$row[$i]."~~";
-						echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$i]}</td>";
 					}
 					//predam si PK do url parametru delete
 					echo "<td id=delete_btn><a href='?page={$page}&delete={$row[$pk]}'>Odstranit</a></td>";
