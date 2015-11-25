@@ -118,12 +118,13 @@
             $ID_koncertu = 1 + $cislo[0];
 
             // datum ve formatu "dd.mm.rrrr hh:mm"
-            $insert_row = "INSERT INTO $tabulka_uprav VALUES ($nazev_koncertu, $ID_koncertu, STR_TO_DATE('$datum_a_cas', '%d.%m.%Y %H:%i'), \"$mesto\", \"$adresa\");";
+            $insert_row = "INSERT INTO $tabulka_uprav VALUES ($ID_koncertu, \"$nazev_koncertu\", STR_TO_DATE('$datum_a_cas', '%d.%m.%Y %H:%i'), \"$mesto\", \"$adresa\");";
             // echo $insert_row;
             $insert_success = mysql_query($insert_row);
             if(!$insert_success) echo "nepodarilo se vlozit polozku";
+            header("Location:vyber_skladby_kon.php?id_kon=$ID_koncertu");
           }
-          header("Location:manazer.php");
+          // header("Location:manazer.php");
         }
 
         /*tahani dat z databaze*/

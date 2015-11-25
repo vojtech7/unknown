@@ -7,7 +7,8 @@
     $heslo = $_POST['heslo'];
     $page = $_GET['page'];    //napr. "manazer.php"
 
-    if($page == "admin.php") {  //admin
+    //admin
+    if($page == "admin.php") {  
       if($login == "cimrman" and sha1($heslo) == 'c856676e7c7aa3b1217c8c809b6e5c9cf77427a6') {
         session_start();
         $_SESSION['logged_in'] = true;
@@ -21,7 +22,8 @@
         echo "Nesprávné administrátorské heslo.<br>";
       }
     }
-    elseif($page == "hudebnik.php") {   //hudebnik
+    //hudebnik
+    elseif($page == "hudebnik.php") {   
       $sql = "select * from Hudebnik where rodne_cislo='$login'";
       $vysledek = mysql_query($sql);
       //dotaz nic nevratil
@@ -51,7 +53,8 @@
         }
       }
     }
-    else {  //neadmin, nehudebnik
+    //neadmin, nehudebnik
+    else {  
       $sql = "select * from Uzivatel where login='$login'";
       $vysledek = mysql_query($sql);
       //dotaz nic nevratil
