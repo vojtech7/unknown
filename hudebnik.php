@@ -24,10 +24,10 @@
     // if(0){
       echo "
       <form action='login.php?page=$role.php' method='post' enctype='multipart/form-data'>
-        <h3>Pøihlá¹ení</h3>
+        <h3>Přihlášení</h3>
         Rodné číslo:<input type='text' name='rodne_cislo'><br>
         Heslo:<input type='password' name='heslo'>
-        <input type='submit' value='Pøihlásit'>         
+        <input type='submit' value='Přihlásit'>         
       </form>";
 
     }
@@ -47,9 +47,11 @@
       $nadpis_vysledku = "Seznam koncertù";
       echo "<div id=logout_btn><a href='logout.php'>Odhlásit se</a></div>";
       echo '<div id="menu"><ul>';
-      echo "<button onclick='P_add_form_show()'>Zobraz nejbli¾¹í koncert</button>";
+      //echo "<button onclick='P_add_form_show(\"$role\")'>Zobraz nejbližší koncert</button>";
+      echo "<div class=switch_btn><a href='?moje=true'>Moje koncerty</a></div>";
+      echo "<div class=switch_btn><a href='?moje=false'>Všechny koncerty</a></div>";
       echo "</ul><div>";
-
+ 
 
       // tabulka se vstupy pro hledani
         echo '<table id="hledani" class="pattern">
@@ -84,7 +86,11 @@
 
           echo "<tr>";
           /*tahani dat z databaze*/
-          $sql = "select * from ".$tabulka;
+          if (isset($_GET["moje"]) && $_GET["moje"]=="true")
+            $sql = "select * from $tabulka NATURAL JOIN Vystupuje_na
+                    WHERE rodne_cislo ='".$_SESSION["user_login"]."';";
+          else 
+            $sql = "select * from $tabulka";
           
           $vysledek = mysql_query($sql);
           $columns_count = count($nazvy_sloupcu);

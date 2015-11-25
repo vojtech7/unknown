@@ -10,7 +10,10 @@ function check_empty() {
 
 //Function To Display Popup
 function P_add_form_show(role) {
-	
+	if (role == "hudebnik") {
+		document.getElementById('P_add_form').style.display = "block";
+		return;
+	};
 	if (role=="admin") {
 		document.getElementById('frm-login').value = "";
 		document.getElementById('frm-heslo').value = "";

@@ -16,6 +16,9 @@
     <?php
       include "connect.php";
 
+      
+      $nazvy_sloupcu = array('ID_skladby', 'ID_koncertu', 'poradi', 'jmeno', 'styl', 'nazev', 'delka');
+
       //id koncertu poslano pres input hidden
       if(isset($_POST['id_kon'])) {
         $id_kon = $_POST['id_kon'];
@@ -59,10 +62,27 @@
         echo "<br>";
       }
 
-      $sql_sez_skl = "SELECT * FROM Slozen_z WHERE id_kon='$id_kon' ORDER BY poradi ASC;";
-      $sez_skl_vysl = mysql_query($sez_skl_vysl);
+      $sql_sez_skl = "SELECT *
+                      FROM Slozen_z
+                      NATURAL JOIN (
+                        SELECT jmeno, styl, nazev, delka, ID_skladby
+                        FROM Skladba NATURAL JOIN Autor) AS alias
+                      WHERE ID_koncertu =$id_kon
+                      ORDER BY poradi ASC";
+      echo $sql_sez_skl;
+      $sez_skl_vysl = mysql_query($sql_sez_skl);
+      $columns_count = count($nazvy_sloupcu);
+
       while ($skladba = mysql_fetch_array($sez_skl_vysl)) {
         //vypsat skladby jako u aranzera...
+        echo "<br>";
+        //print_r($skladba);
+        echo $columns_count;
+        echo "<tr>";
+        for ($i=0; $i < $columns_count; $i++) {
+          if($i==0) continue;
+          echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$skladba[$i]}</td>";
+        }
       }
 
     ?>

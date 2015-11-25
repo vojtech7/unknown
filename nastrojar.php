@@ -132,11 +132,13 @@
           if ($_GET["edit"]=="edit") {
 		        //upravujeme radek
             $PK_old=$_GET["PK_old"];
-  	 		    $sql="UPDATE $tabulka_uprav SET datum_vyroby = STR_TO_DATE('$datum_vyroby', '%d.%m.%Y'), vyrobce ='$vyrobce', dat_posl_revize=STR_TO_DATE('$dat_posl_revize', '%d.%m.%Y'), dat_posl_vymeny =STR_TO_DATE('$dat_posl_vymeny', '%d.%m.%Y'), vymeneno ='$vymeneno', ttype = '$ttype', vyrobni_cislo = '$vyrobni_cislo'  WHERE vyrobni_cislo = '$PK_old'";
+  	 		    $sql="UPDATE $tabulka_uprav SET datum_vyroby = $datum_vyroby, vyrobce ='$vyrobce', dat_posl_revize=$dat_posl_revize,
+               dat_posl_vymeny = $dat_posl_vymeny, vymeneno ='$vymeneno', ttype = '$ttype', vyrobni_cislo = '$vyrobni_cislo' 
+               WHERE vyrobni_cislo = '$PK_old'";
           }
           elseif ($_GET["edit"]=="add") {
-      			$sql = "INSERT INTO $tabulka_uprav VALUES ($datum_vyroby, '$vyrobce', STR_TO_DATE('$dat_posl_revize', '%d.%m.%Y'),
-      			STR_TO_DATE('$dat_posl_vymeny', '%d.%m.%Y'), '$vymeneno', '$vyrobni_cislo', '$ttype');"; 
+      			$sql = "INSERT INTO $tabulka_uprav VALUES ($datum_vyroby, '$vyrobce', $dat_posl_revize,
+      			$dat_posl_vymeny, '$vymeneno', '$vyrobni_cislo', '$ttype');"; 
           }
           // $sql = "INSERT INTO $tabulka_uprav VALUES (NULL, '$vyrobce', NULL, NULL, '$vymeneno', '$vyrobni_cislo', '$ttype');";
           //echo 'edit je: '.$_GET["edit"];
@@ -165,13 +167,14 @@
             if($i==0 or $i==2 or $i==3) {  // datumy
               if ($row[$i]==null) {
                 $mydate="---";
+                $alter=$alter."~~";
               }
               else{
                 $date = date_create($row[$i]);
                 $mydate = date_format($date, "d.m.Y");
+                $alter = $alter.$mydate."~~";
               }
               echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$mydate}</td>";
-              $alter = $alter.$mydate."~~";
             }
             else {
               echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$i]}</td>";
