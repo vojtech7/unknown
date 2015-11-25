@@ -35,13 +35,21 @@
       //idcka skladeb pro koncert
       if(isset($_POST['skladby'])) {
         $skladby = $_POST['skladby'];
+        //pridani skladeb koncertu
+        foreach ($skladby as $i => $s) {
+          $p = $i + 1;
+          $sql_prid_skl = "INSERT INTO Slozen_z VALUES ('$id_kon', '$s', '$p');";
+          $prid_skl_vysl = mysql_query($sql_prid_skl);
+          echo $sql_prid_skl;
+          echo "<br>";
+        }
         print_r($skladby);
         echo "<br>";
       }
-      else {
-        echo "Nejsou zadany skladby pro koncert.";
-        exit();
-      }
+      // else {
+      //   echo "Nejsou zadany skladby pro koncert.";
+      //   exit();
+      // }
 
       $sql_naz_kon = "SELECT * FROM Koncert WHERE ID_koncertu='$id_kon'";
       $koncert_vysledek = mysql_query($sql_naz_kon);
@@ -50,17 +58,15 @@
       $datum =  $koncert['datum_a_cas'];
       $mesto =  $koncert['mesto'];
       $adresa = $koncert['adresa'];
-      print_r($koncert);  //FIXME: zobrazit privetiveji, nez takto
-      echo "<br>";
+      // print_r($koncert);  //FIXME: zobrazit privetiveji, nez takto
 
-      //pridani skladeb koncertu
-      foreach ($skladby as $i => $s) {
-        $p = $i + 1;
-        $sql_prid_skl = "INSERT INTO Slozen_z VALUES ('$id_kon', '$s', '$p');";
-        $prid_skl_vysl = mysql_query($sql_prid_skl);
-        echo $sql_prid_skl;
-        echo "<br>";
-      }
+      echo "<h1>Detail koncertu $nazev</h1>";
+
+      echo "<br><ul>
+                  <li>Datum: $datum</li>
+                  <li>Město: $mesto</li>
+                  <li>Adresa: $adresa</li>
+                </ul> ";
 
       $sql_sez_skl = "SELECT *
                       FROM Slozen_z
@@ -69,21 +75,25 @@
                         FROM Skladba NATURAL JOIN Autor) AS alias
                       WHERE ID_koncertu =$id_kon
                       ORDER BY poradi ASC";
-      echo $sql_sez_skl;
+      // echo $sql_sez_skl;
       $sez_skl_vysl = mysql_query($sql_sez_skl);
       $columns_count = count($nazvy_sloupcu);
 
+      echo "<h3>Seznam skladeb</h3>";
+      echo "<table>";
       while ($skladba = mysql_fetch_array($sez_skl_vysl)) {
         //vypsat skladby jako u aranzera...
-        echo "<br>";
+        // echo "<br>";
         //print_r($skladba);
-        echo $columns_count;
+        // echo $columns_count;
         echo "<tr>";
         for ($i=0; $i < $columns_count; $i++) {
           if($i==0) continue;
           echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$skladba[$i]}</td>";
         }
       }
+      echo "</tr>";
+      echo "</table>";
 
     ?>
   </body>

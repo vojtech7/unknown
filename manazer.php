@@ -144,11 +144,15 @@
         while($row = mysql_fetch_array($vysledek)){
           echo "<tr>";
           for ($i=0; $i < $columns_count; $i++) {
-            if($i==0) {
+            if($i==0) {   //ID_koncertu
               $alter = $alter.$row[$i]."~~";
-              continue;   //ID_koncertu
+              continue;
             }
-            if($i==2) {  // datum koncertu
+            else if($i==1) {  // jmeno koncertu 
+              echo "<td class='filter_{$nazvy_sloupcu[$i]}'><a href='koncert.php?id_kon={$row[0]}'>{$row[$i]}</a></td>";
+              $alter = $alter.$row[$i]."~~";
+            }
+            else if($i==2) {  // datum koncertu
               $date = date_create($row[$i]);
               $mydate = date_format($date, "d.m.Y H:i");
               echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$mydate}</td>";
@@ -226,6 +230,6 @@
   <!-- <button id="popup" onclick="P_add_form_show()">Popup</button> -->';
   }//uzivatel je prihlasen
   ?>
-    
+
   </body>
 </html>
