@@ -10,7 +10,7 @@
     <script src="js/filter.js"></script>
     <script src="js/form.js"></script>
     <style> .required label { color: maroon } </style>
-    <title>Nástrojáø Filharmonie Liptákov</title>
+    <title>Nástrojář Filharmonie Liptákov</title>
   </head>
 <body>
   <!-- uvodni inicializace -->
@@ -27,10 +27,10 @@
     if(0){
       echo "
       <form action='login.php?page=$role.php' method='post' enctype='multipart/form-data'>
-        <h3>Pøihlá¹ení</h3>
+        <h3>Přihlášení</h3>
         Login:<input type='text' name='login'><br>
         Heslo:<input type='password' name='heslo'>
-        <input type='submit' value='Pøihlásit'>         
+        <input type='submit' value='Přihlásit'>         
       </form>";
     }
 
@@ -51,7 +51,7 @@
       echo "<div id=logout_btn><a href='logout.php'>Odhlásit se</a></div>";
       echo '<div id="menu"><ul>';
       // echo "<ul><li><a href='P_add_form_show()'>Pridat zamestnance</a></li>";
-      echo "<button onclick='P_add_form_show(\"$role\")'>Pøidat nástroj</button>";
+      echo "<button onclick='P_add_form_show(\"$role\")'>Přidat nástroj</button>";
       echo "</ul><div>";
 
 
@@ -119,27 +119,29 @@
         
         if(isset($_GET["datum_vyroby"]) and isset($_GET["vyrobce"]) and isset($_GET["dat_posl_revize"])
              and isset($_GET["dat_posl_vymeny"]) and isset($_GET["vymeneno"]) and isset($_GET["vyrobni_cislo"])
-              and isset($_GET["ttype"]) and isset($_GET["edit"])) {
-          $datum_vyroby = $_GET['datum_vyroby'];
+              and isset($_GET["ttype"]) and isset($_GET["edit"]) and isset($_GET["PK_old"])) {
+        
           $vyrobce = $_GET['vyrobce'];
-          $dat_posl_revize = $_GET['dat_posl_revize'];
-          $dat_posl_vymeny = $_GET['dat_posl_vymeny'];
+          $datum_vyroby = $_GET['datum_vyroby'] !="" ? "STR_TO_DATE('".$_GET['datum_vyroby']."', '%d.%m.%Y')" : "null";
+          $dat_posl_revize = $_GET['dat_posl_revize']!="" ? "STR_TO_DATE('".$_GET['dat_posl_revize']."', '%d.%m.%Y')" : "null";
+          $dat_posl_vymeny = $_GET['dat_posl_vymeny']!="" ? "STR_TO_DATE('".$_GET['dat_posl_vymeny']."', '%d.%m.%Y')" : "null";
           $vymeneno = $_GET['vymeneno'];
           $vyrobni_cislo = $_GET['vyrobni_cislo'];
           $ttype = $_GET['ttype'];
           
           if ($_GET["edit"]=="edit") {
 		        //upravujeme radek
-  	 		    $sql="UPDATE $tabulka_uprav SET datum_vyroby = STR_TO_DATE('$datum_vyroby', '%d.%m.%Y'), vyrobce ='$vyrobce', dat_posl_revize=STR_TO_DATE('$dat_posl_revize', '%d.%m.%Y'), dat_posl_vymeny =STR_TO_DATE('$dat_posl_vymeny', '%d.%m.%Y'), vymeneno ='$vymeneno', ttype = '$ttype'  WHERE vyrobni_cislo = '$vyrobni_cislo'";
+            $PK_old=$_GET["PK_old"];
+  	 		    $sql="UPDATE $tabulka_uprav SET datum_vyroby = STR_TO_DATE('$datum_vyroby', '%d.%m.%Y'), vyrobce ='$vyrobce', dat_posl_revize=STR_TO_DATE('$dat_posl_revize', '%d.%m.%Y'), dat_posl_vymeny =STR_TO_DATE('$dat_posl_vymeny', '%d.%m.%Y'), vymeneno ='$vymeneno', ttype = '$ttype', vyrobni_cislo = '$vyrobni_cislo'  WHERE vyrobni_cislo = '$PK_old'";
           }
           elseif ($_GET["edit"]=="add") {
-      			$sql = "INSERT INTO $tabulka_uprav VALUES (STR_TO_DATE('$datum_vyroby', '%d.%m.%Y'), '$vyrobce', STR_TO_DATE('$dat_posl_revize', '%d.%m.%Y'),
+      			$sql = "INSERT INTO $tabulka_uprav VALUES ($datum_vyroby, '$vyrobce', STR_TO_DATE('$dat_posl_revize', '%d.%m.%Y'),
       			STR_TO_DATE('$dat_posl_vymeny', '%d.%m.%Y'), '$vymeneno', '$vyrobni_cislo', '$ttype');"; 
           }
           // $sql = "INSERT INTO $tabulka_uprav VALUES (NULL, '$vyrobce', NULL, NULL, '$vymeneno', '$vyrobni_cislo', '$ttype');";
-          echo 'edit je: '.$_GET["edit"];
+          //echo 'edit je: '.$_GET["edit"];
           echo $sql;
-      		$insert_success = mysql_query($sql);
+          $insert_success = mysql_query($sql);
       		if(!$insert_success) echo "nepodarilo se vlozit polozku";
       		header("Location:nastrojar.php");
         }
@@ -161,8 +163,13 @@
           echo "<tr>";
           for ($i=0; $i < $columns_count; $i++) { 
             if($i==0 or $i==2 or $i==3) {  // datumy
-              $date = date_create($row[$i]);
-              $mydate = date_format($date, "d.m.Y");
+              if ($row[$i]==null) {
+                $mydate="---";
+              }
+              else{
+                $date = date_create($row[$i]);
+                $mydate = date_format($date, "d.m.Y");
+              }
               echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$mydate}</td>";
               $alter = $alter.$mydate."~~";
             }
@@ -233,14 +240,14 @@
     $form->addText('vymeneno','Vymìnìno');
     $form->addHidden('edit');
     $form->addHidden('PK_old');
-    $form->addSubmit('send', 'Pøidat');
+    $form->addSubmit('send', 'Přidat');
 
   echo $form; // vykresli formular
 
   $sub1 = $form->addContainer('first');
 
   if ($form->isSuccess()) {
-    echo 'Formuláø byl správnì vyplnìn a odeslán';
+    echo 'Formulář byl správnì vyplnìn a odeslán';
       $values = $form->getValues();
     dump($values);
   }

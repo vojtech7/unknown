@@ -80,6 +80,7 @@ function P_alter_form_show(params, role) {
 		document.getElementById('frm-vymeneno').value = res[4];
 		document.getElementById('frm-vyrobni_cislo').value = res[5];
 		document.getElementById('frm-ttype').value = res[6];
+		document.getElementById("frm-PK_old").value=res[5];		//vyrobni cislo
 	};
 	if (role=="personalista") {
 		document.getElementById("frm-rodne_cislo").value=res[0];
