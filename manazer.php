@@ -124,7 +124,7 @@
             if(!$insert_success) echo "nepodarilo se vlozit polozku";
             header("Location:vyber_skladby_kon.php?id_kon=$ID_koncertu");
           }
-          // header("Location:manazer.php");
+           header("Location:manazer.php");
         }
 
         /*tahani dat z databaze*/

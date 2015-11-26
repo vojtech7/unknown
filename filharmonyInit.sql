@@ -73,6 +73,7 @@ CREATE TABLE IF NOT EXISTS Vystupuje_na(
 CREATE TABLE IF NOT EXISTS Slozen_z(
   ID_koncertu INT,
   ID_skladby INT,
+  poradi INT,
   PRIMARY KEY (ID_koncertu, ID_skladby),
   FOREIGN KEY(ID_koncertu) REFERENCES Koncert(ID_koncertu) ON DELETE CASCADE,
   FOREIGN KEY(ID_skladby) REFERENCES Skladba(ID_skladby) ON DELETE CASCADE
@@ -87,6 +88,7 @@ CREATE TABLE IF NOT EXISTS Ma_nastudovano(
 CREATE TABLE IF NOT EXISTS Hraje_v(
   ttype VARCHAR(20),
   ID_skladby INT,
+  pocet INT,
   PRIMARY KEY (ttype, ID_skladby),
   FOREIGN KEY(ttype) REFERENCES Typ(ttype) ON DELETE CASCADE,
   FOREIGN KEY(ID_skladby) REFERENCES Skladba(ID_skladby) ON DELETE CASCADE
