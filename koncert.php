@@ -16,13 +16,14 @@
     <?php
       include "connect.php";
       include 'functions.php';
+      $nazvy_sloupcu = array('nazev', 'styl', 'jmeno', 'delka', 'poradi');
+      $nadpisy_sloupcu = array('Název', 'Styl', 'Autor', 'Délka [min]', 'Pořadí');
       
-      //id koncertu poslano pres input hidden
       if(isset($_POST['id_kon'])) {
         $id_kon = $_POST['id_kon'];
-        print_r($id_kon);
-        echo "<br>";
+        header("Location:?id_kon=$id_kon"); //poslu id koncertu do get parametru
       }
+      //id koncertu poslano pres get, z odkazu ve vypisu koncertu
       elseif (isset($_GET['id_kon'])) {
         $id_kon = $_GET['id_kon'];
       }
@@ -38,16 +39,8 @@
           $p = $i + 1;
           $sql_prid_skl = "INSERT INTO Slozen_z VALUES ('$id_kon', '$s', '$p');";
           $prid_skl_vysl = mysql_query($sql_prid_skl);
-          echo $sql_prid_skl;
-          echo "<br>";
         }
-        print_r($skladby);
-        echo "<br>";
       }
-      // else {
-      //   echo "Nejsou zadany skladby pro koncert.";
-      //   exit();
-      // }
 
       $sql_naz_kon = "SELECT * FROM Koncert WHERE ID_koncertu='$id_kon'";
       $sql_delka_kon = "SELECT SUM(delka) FROM Slozen_z NATURAL JOIN
@@ -57,11 +50,11 @@
       $koncert_vysledek = mysql_query($sql_naz_kon);
       $koncert = mysql_fetch_array($koncert_vysledek);
       $nazev =  $koncert['nazev_koncertu'];
-      $datum =  $koncert['datum_a_cas'];
+      $datum = date_create($koncert['datum_a_cas']);
+      $datum = date_format($datum, "d.m.Y H:i");
       $mesto =  $koncert['mesto'];
       $adresa = $koncert['adresa'];
       $delka = mysql_fetch_array(mysql_query("$sql_delka_kon"));
-      // print_r($koncert);  //FIXME: zobrazit privetiveji, nez takto
 
       echo "<h1>Detail koncertu $nazev</h1>";
 
@@ -122,7 +115,7 @@
 				WHERE ID_koncertu = 13
 				GROUP BY ttype";
 
-	  $nadpisy_sloupcu = array('Typ', 'Počet');
+  	  $nadpisy_sloupcu = array('Typ', 'Počet');
       $nazvy_sloupcu = array('ttype', 'MAX(pocet)');      
       $title = "Seznam nástrojů";
       print_table($sql, $title, $nadpisy_sloupcu, $nazvy_sloupcu);

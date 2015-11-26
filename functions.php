@@ -24,9 +24,15 @@
       pøedává se do formuláøe pro úpravu polozky
         */
       $alter="";
+      //pokud vykresluju tabulky pro přehled (a mazaní, tak tam potřebuju kvůli vzhledu i id="prehled")
+      if ($buttons!=null) {
+        $data = "id=\"prehled\"";
+      }
+      else
+        $data = "";
       
       echo "<h3>$title</h3>";
-      echo "<table id=\"prehled\" class=\"data\" class=\"\">";
+      echo "<table  class=\"data\" class=\"\">";
         //výpis hlavičky tabulky
       for ($i=0; $i <$columns_count ; $i++) { 
         echo "<td class='filter_{$nadpisy_sloupcu[$i]}'>$nadpisy_sloupcu[$i]</td>";
