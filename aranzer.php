@@ -11,7 +11,7 @@
     <style> .required label { color: maroon } </style>
     <script src="js/filter.js"></script>
     <script src="js/form.js"></script>
-    <title>AranæÈr Filharmonie Lipt·kov</title>
+    <title>Aran¬æ√©r Filharmonie Lipt√°kov</title>
   </head>
 <body>
 
@@ -24,7 +24,7 @@
 
     session_start();
     $role = 'aranzer';
-    $nadpisy_sloupcu = array('N·zev', 'DÈlka [min]', 'JmÈno autora');
+    $nadpisy_sloupcu = array('N√°zev', 'D√©lka [min]', 'Jm√©no autora');
     $nazvy_sloupcu = array('ID_skladby', 'nazev', 'delka', 'jmeno');
     $tabulka_upravy = "Skladba";
     //uzivatel neni prihlasen
@@ -32,10 +32,10 @@
     if(0){
       echo "
       <form action='login.php?page=$role.php' method='post' enctype='multipart/form-data'>
-        <h3>P¯ihl·πenÌ</h3>
+        <h3>P√∏ihl√°¬πen√≠</h3>
         Login:<input type='text' name='login'><br>
         Heslo:<input type='password' name='heslo'>
-        <input type='submit' value='P¯ihl·sit'>         
+        <input type='submit' value='P√∏ihl√°sit'>         
       </form>";
     }
 
@@ -47,7 +47,7 @@
 
     else {
      //ziskani jmen autoru pro dalsi praci
-    $sql = "select jmeno from Autor";
+    $sql = "SELECT jmeno FROM Autor";
     $autori = mysql_query($sql);
 
     for ($i=0; $i < mysql_num_rows($autori); $i++) { 
@@ -55,15 +55,18 @@
       $seznam_jmen[$row["jmeno"]] = $row["jmeno"];
     }
     $page = "aranzer.php";
-    echo "<div id=logout_btn><a href='logout.php'>Odhl·sit se</a></div>";
+    echo "<div id=logout_btn><a href='logout.php'>Odhl√°sit se</a></div>";
     echo '<div id="menu"><ul>';
-     // echo "<ul><li><a href='P_add_form_show()'>P¯idat zamÏstnance</a></li>";
-    echo "<button onclick='P_add_form_show(\"$role\")'>P¯idat skladbu</button>";
+     // echo "<ul><li><a href='P_add_form_show()'>P√∏idat zam√¨stnance</a></li>";
+    echo "<button class=\"skladba\" onclick='P_add_form_show(\"$role\", \"skladba\")'>P√∏idat skladbu</button><br>";
+    echo "<button class=\"autor\" onclick='P_add_form_show(\"$role\", \"autor\")'>P√∏idat autora</button><br>";
+    echo "<button onclick='switch_table(\"skladba\")'>Zobrazit skladby</button><br>";
+    echo "<button onclick='switch_table(\"autor\")'>Zobrazit autory</button><br>";
     echo "</ul><div>";
 
     //tabulka se vstupy pro hledani
-      echo '<table id="hledani" class="pattern">
-            <span class="nadpis" id="nadpis_vyhledavani">Filtry pro vyhled·v·nÌ n·strojÈ</span>
+      echo '<table id="hledani" class="pattern" class="skladba">
+            <span class="nadpis" id="nadpis_vyhledavani">Filtry pro vyhled√°v√°n√≠ skladby</span>
             <tr>';
         foreach ($nadpisy_sloupcu as $value) {
           echo "<td>". $value ."</td>";
@@ -117,11 +120,11 @@
               mysql_query($sql);
             }
             elseif ($_GET["edit"]=="add") {
-              $sql = "select max(ID_skladby) from  $tabulka_upravy.";
+              $sql = "SELECT max(ID_skladby) FROM  $tabulka_upravy.";
               $cislo = mysql_fetch_row(mysql_query($sql));
               $ID_skladby = 1 + $cislo[0];
 
-              $sql = "select ID_autora from Autor WHERE jmeno= \"".$_GET["jmeno"]."\"";
+              $sql = "SELECT ID_autora FROM Autor WHERE jmeno= \"".$_GET["jmeno"]."\"";
               $cislo = mysql_fetch_row(mysql_query($sql));
               $ID_autora=$cislo[0];
               
@@ -140,15 +143,32 @@
         $columns_count = count($nazvy_sloupcu);
 
       $tabulka_vypis = "Autor natural join Skladba ";
-      $sql = "select ID_skladby, nazev, delka, jmeno from   ".$tabulka_vypis;
+      $sql = "SELECT ID_skladby, nazev, delka, jmeno FROM   ".$tabulka_vypis;
       $title = "Seznam skladeb";
-      $nadpisy_sloupcu = array('N·zev', 'DÈlka [min]', 'JmÈno autora');
+      $nadpisy_sloupcu = array('N√°zev', 'D√©lka [min]', 'Jm√©no autora');
       $nazvy_sloupcu = array('ID_skladby', 'nazev', 'delka', 'jmeno');
       $ignore = array('ID_skladby');
       $butons = array("edit", "delete");
       $PK = "ID_skladby";
+      echo "<div class=\"skladba\">";
       print_table($sql, $title, $nadpisy_sloupcu, $nazvy_sloupcu, $ignore, $butons, $PK, $role, $page);
+      echo "</div>";
       
+
+      $tabulka_vypis = "Autor";
+      $sql = "SELECT * FROM   ".$tabulka_vypis;
+      $title = "Seznam skladeb";
+      $nadpisy_sloupcu = array('Jm√©no', 'Zaƒç√°tek tvorby', 'Konec tvorby', 'Styl');
+      $nazvy_sloupcu = array('ID_autora', 'jmeno', 'zacatek_tvorby', 'konec_tvorby', 'styl');
+      $ignore = array('ID_autora');
+      $butons = array("edit", "delete");
+      $PK = "ID_autora";
+      echo "<div class=\"autor\">";
+      print_table($sql, $title, $nadpisy_sloupcu, $nazvy_sloupcu, $ignore, $butons, $PK, $role, $page);
+      echo "</div ";
+
+
+
       echo '</div>
             <!-- formular pro pridani -->
             <div id="P_add_form" class="abc">
@@ -164,32 +184,61 @@
 
     require_once 'Nette/Forms/Form.php';
 
-    $add = new Form;
-    $add->setAction('index.php?page=aranzer.php');
-    $add->setMethod('GET');
+    $add_skladba = new Form;
+    $add_skladba->setAction('index.php?page=aranzer.php');
+    $add_skladba->setMethod('GET');
 
 
-    $add->addSelect('jmeno', 'Jmeno autora', $seznam_jmen)
-      ->setPrompt( 'Zadejte jmÈno autora');
-    $add->addText('nazev', 'Nazev:')
+    $add_skladba->addSelect('jmeno', 'Jmeno autora', $seznam_jmen)
+      ->setPrompt( 'Zadejte jmÔøΩno autora');
+    $add_skladba->addText('nazev', 'Nazev:')
       ->addRule(Form::FILLED, 'Zadejte nazev skladby');
-    $add->addText('delka', 'DÈlka [min]')
+    $add_skladba->addText('delka', 'DÔøΩlka [min]')
       ->addRule(Form::FILLED, 'Zadejte delku skladby');
-    $add->addHidden('edit');
-    $add->addHidden('id');
-    $add->addSubmit('send', 'Pridat');
+    $add_skladba->addHidden('edit');
+    $add_skladba->addHidden('id');
+    $add_skladba->addSubmit('send', 'Pridat');
 
 
-  echo $add; // vykresli formular
+  echo $add_skladba; // vykresli formular
 
-  $sub1 = $add->addContainer('first');
+  $sub1 = $add_skladba->addContainer('first');
 
-  if ($add->isSuccess()) {
-    echo 'Formul·¯ byl spr·vnÏ vyplnÏn a odesl·n';
-      $values = $add->getValues();
+  if ($add_skladba->isSuccess()) {
+    echo 'Formul√°√∏ byl spr√°vn√¨ vypln√¨n a odesl√°n';
+      $values = $add_skladba->getValues();
     dump($values);
   }
 
+  /**************************************
+      Dalsi formular
+  ***************************************/
+    $add_autor = new Form;
+    $add_autor->setAction('index.php?page=aranzer.php');
+    $add_autor->setMethod('GET');
+
+
+    $add_autor->addSelect('jmeno', 'Jmeno autora', $seznam_jmen)
+      ->setPrompt( 'Zadejte jmÔøΩno autora');
+    $add_autor->addText('nazev', 'Nazev:')
+      ->addRule(Form::FILLED, 'Zadejte nazev skladby');
+    $add_autor->addText('delka', 'D√©lka [min]')
+      ->addRule(Form::FILLED, 'Zadejte delku skladby');
+    $add_autor->addHidden('edit');
+    $add_autor->addHidden('id');
+    $add_autor->addSubmit('send', 'Pridat');
+
+
+  echo $add_autor; // vykresli formular
+
+  $sub1 = $add_autor->addContainer('first');
+
+  if ($add_autor->isSuccess()) {
+    echo 'Formul√°√∏ byl spr√°vn√¨ vypln√¨n a odesl√°n';
+      $values = $add_autor->getValues();
+    dump($values);
+  }
+  //vypisuje html kod na dalsich radcich
   echo '
   </div>
   <!-- Popup Div Ends Here -->
@@ -198,6 +247,8 @@
   <!-- <button id="popup" onclick="P_add_form_show()">Popup</button> -->';
   }//uzivatel je prihlasen
   ?>
-    
+  <script type="text/javascript">
+    $('.autor').hide();
+  </script>    
   </body>
 </html>

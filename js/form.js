@@ -9,7 +9,7 @@ function check_empty() {
 }
 
 //Function To Display Popup
-function P_add_form_show(role) {
+function P_add_form_show(role, table) {
 	if (role == "hudebnik") {
 		document.getElementById('P_add_form').style.display = "block";
 		return;
@@ -21,6 +21,7 @@ function P_add_form_show(role) {
 		document.getElementById('frm-info').value = "";
 	};
 	if (role=="aranzer") {
+		alert(table);
 		document.getElementById('frm-jmeno').value = "";
 		document.getElementById('frm-nazev').value = "";
 		document.getElementById('frm-delka').value = "";
@@ -100,4 +101,29 @@ function P_alter_form_show(params, role) {
 //Function to Hide Alert
 function P_add_form_hide(){
 	document.getElementById('P_add_form').style.display = "none";
+}
+/*
+function switch_table (argument) {
+	document.getElementsByClassName('skladba')[0].style.display='none';
+	document.getElementsByClassName('skladba')[1].style.display='none';
+	//document.getElementsByClassName('skladba')[2].style.display='none';
+	document.getElementsByClassName('autor')[0].style.display='none';
+	document.getElementsByClassName('autor')[1].style.display='none';
+	
+	document.getElementsByClassName('autor').style.display='none'; 
+	document.getElementsByClassName(argument).style.display='show'; 
+}
+*/
+function switch_table(argument) {
+    if (argument=='skladba') {
+    	$('.autor').hide();
+    	$('.skladba').show();
+    };
+    	
+    if (argument=='autor') {
+    	$('.skladba').hide();
+    	$('.autor').show();
+    };
+    	
+
 }

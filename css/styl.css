@@ -128,6 +128,10 @@ table, th, td {
 	background-color: orange;
 	color: black;
 }
+.skladba {
+  display: block;
+}
+
 span.nadpis {font: italic 150/1.5 arial;
 			 font-size: 20;
 			 font-style: italic;

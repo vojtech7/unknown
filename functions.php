@@ -13,11 +13,11 @@
         PK: primární klíč (podle kterého se odtraňuje atd.)
         role: role
   */
-  function print_table($sql, $title, $nadpisy_sloupcu, $nazvy_sloupcu, $ignore=null, $buttons=null,$PK=null, $role=null)
+  function print_table($sql, $title, $nadpisy_sloupcu, $nazvy_sloupcu, $ignore=null, $buttons=null,$PK=null, $role=null, $page=null)
   {
       $table = mysql_query($sql);
       $columns_count = count($nadpisy_sloupcu);
-      $page = "$role.php";
+      
       
       /*
       $alter = hodnoty v¹ech sloupcù tabulky oddìlené vlnovkou ~~
@@ -26,7 +26,7 @@
       $alter="";
       
       echo "<h3>$title</h3>";
-      echo "<table>";
+      echo "<table id=\"prehled\" class=\"data\" class=\"\">";
         //výpis hlavičky tabulky
       for ($i=0; $i <$columns_count ; $i++) { 
         echo "<td class='filter_{$nadpisy_sloupcu[$i]}'>$nadpisy_sloupcu[$i]</td>";
@@ -40,7 +40,7 @@
           if (is_array($ignore) and in_array($nazvy_sloupcu[$i], $ignore)) 
             continue;
           else
-            echo "<td class='filter_{$nadpisy_sloupcu[$j]}'>{$row[$nazvy_sloupcu[$i]]}</td>";
+            echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$nazvy_sloupcu[$i]]}</td>";
             $j++;
         }
          
@@ -53,7 +53,7 @@
           if (in_array("edit", $buttons)) {
             //dám $alter do uvozovek
             $alter="\"".$alter."\"";
-            echo "<td class=alter_btn><button onclick='P_alter_form_show($alter, \"$role\")'>Upravit</button></td>";
+            echo "<td class=alter_btn><button onclick='P_alter_form_show($alter, \"$role\", \"$title\")'>Upravit</button></td>";
             $alter="";
           }
         }
