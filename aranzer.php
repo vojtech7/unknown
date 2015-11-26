@@ -98,10 +98,8 @@
         echo "</span>";
 
         echo "<tr>";
-        $count=0;
         foreach ($nadpisy_sloupcu as $value) {
           echo "<td class=\"hlavicka\">". $value ."</td>";
-          $count++;
         }
         echo "</tr>";
 

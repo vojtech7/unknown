@@ -232,14 +232,14 @@
     $form->addText('vyrobni_cislo','Vyrobni cislo')
         ->addRule(Form::FILLED, 'Zadejte vyrobni cislo');
     $form->addText('datum_vyroby', 'Datum výroby')
-         ->setAttribute('placeholder', 'dd.mm.rrrr')
-         ->addRule('dateType', 'Zadejte platne datum ve formatu dd.mm.rrrr');
+         ->setAttribute('placeholder', 'DD.MM.RRRR')
+         ->addRule('dateType', 'Zadejte platne datum ve formatu DD.MM.RRRR');
     $form->addText('dat_posl_revize', 'Datum poslední revize')
-         ->setAttribute('placeholder', 'dd.mm.rrrr')
-         ->addRule('dateType', 'Zadejte platne datum ve formatu dd.mm.rrrr');
+         ->setAttribute('placeholder', 'DD.MM.RRRR')
+         ->addRule('dateType', 'Zadejte platne datum ve formatu DD.MM.RRRR');
     $form->addText('dat_posl_vymeny','Datum poslední výmìny')
-         ->setAttribute('placeholder', 'dd.mm.rrrr')
-         ->addRule('dateType', 'Zadejte platne datum ve formatu dd.mm.rrrr');
+         ->setAttribute('placeholder', 'DD.MM.RRRR')
+         ->addRule('dateType', 'Zadejte platne datum ve formatu DD.MM.RRRR');
     $form->addText('vymeneno','Vymìnìno');
     $form->addHidden('edit');
     $form->addHidden('PK_old');
