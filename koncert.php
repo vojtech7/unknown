@@ -119,6 +119,8 @@
       $nazvy_sloupcu = array('ttype', 'MAX(pocet)');      
       $title = "Seznam nástrojů";
       print_table($sql, $title, $nadpisy_sloupcu, $nazvy_sloupcu);
+
+      echo "<a href='index.php?page=manazer.php'>Zpet na vypis koncertu</a>";
     ?>
   </body>
 </html>

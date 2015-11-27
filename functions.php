@@ -32,7 +32,7 @@
         $data = "";
       
       echo "<h3>$title</h3>";
-      echo "<table  class=\"data\" class=\"\">";
+      echo "<table $data class=\"data\" class=\"\">";
         //výpis hlavičky tabulky
       for ($i=0; $i <$columns_count ; $i++) { 
         echo "<td class='filter_{$nadpisy_sloupcu[$i]}'>$nadpisy_sloupcu[$i]</td>";
