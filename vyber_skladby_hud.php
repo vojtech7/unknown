@@ -52,10 +52,8 @@
       //prirazeni nastroju hudebnikovi
       if(!empty($nastroje_id)) {
         foreach($nastroje_id as $n) {
-          $sql_prid_nastr = "INSERT INTO Hraje_na VALUES ('$n', '$rc_hud')";
+          $sql_prid_nastr = "UPDATE Nastroj SET rodne_cislo = '$rc_hud' WHERE vyrobni_cislo = '$n'";
           $prid_skl_vysl = mysql_query($sql_prid_nastr);
-          // echo $sql_prid_nastr;
-          // echo "<br>";
         }
       }
       else {

@@ -78,7 +78,7 @@
 
 
       $sql_sez_nastr = "SELECT *
-                      FROM Hraje_na NATURAL JOIN Nastroj
+                      FROM Nastroj
                       WHERE rodne_cislo='$rc_hud'";
       // echo $sql_sez_nastr;
       $sez_nastr_vysl = mysql_query($sql_sez_nastr);

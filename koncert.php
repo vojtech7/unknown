@@ -112,7 +112,7 @@
 				NATURAL JOIN (
 					SELECT ttype, pocet, ID_skladby
 			  		FROM Skladba NATURAL JOIN Hraje_v) AS alias
-				WHERE ID_koncertu = 13
+				WHERE ID_koncertu = $id_kon
 				GROUP BY ttype";
 
   	  $nadpisy_sloupcu = array('Typ', 'Počet');
