@@ -191,7 +191,7 @@
     require_once 'Nette/Forms/Form.php';
 
     $form = new Form;
-    $form->setAction('index.php?page=manazer.php');
+    $form->setAction('manazer.php');
     $form->setMethod('GET');
 
     function datetimeType($item, $arg) {

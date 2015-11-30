@@ -185,7 +185,7 @@
     require_once 'Nette/Forms/Form.php';
 
     $add_skladba = new Form;
-    $add_skladba->setAction('index.php?page=aranzer.php');
+    $add_skladba->setAction('aranzer.php');
     $add_skladba->setMethod('GET');
 
 
@@ -214,7 +214,7 @@
       Dalsi formular
   ***************************************/
     $add_autor = new Form;
-    $add_autor->setAction('index.php?page=aranzer.php');
+    $add_autor->setAction('aranzer.php');
     $add_autor->setMethod('GET');
 
 

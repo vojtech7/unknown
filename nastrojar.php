@@ -216,7 +216,7 @@
   require_once 'Nette/Forms/Form.php';
 
     $form = new Form;
-    $form->setAction('index.php?page=nastrojar.php');
+    $form->setAction('nastrojar.php');
     $form->setMethod('GET');
 
      $nadpisy_sloupcu = array('', '', '', '', '', '', 'Typ');

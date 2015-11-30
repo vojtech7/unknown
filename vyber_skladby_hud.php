@@ -58,6 +58,7 @@
       }
       else {
         echo "Je treba zadat aspon jeden nastroj pro hudebnika.";
+        echo "<a href='vyber_nastroje_hud.php?rc_hud=$rc_hud'>Zpet na vyber nastroju</a>";
         exit();
       }
 

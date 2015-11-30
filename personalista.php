@@ -169,7 +169,7 @@
 	require_once 'Nette/Forms/Form.php';
 
 		$form = new Form;
-		$form->setAction('index.php?page=personalista.php');
+		$form->setAction('personalista.php');
 		$form->setMethod('GET');
 
 		$form->addText('jmeno', 'Jmeno:')
