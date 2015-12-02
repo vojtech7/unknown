@@ -9,7 +9,7 @@ function check_empty() {
 }
 
 //Function To Display Popup
-function P_add_form_show(role, table) {
+function P_add_form_show(role, tabulka) {
 	if (role == "hudebnik") {
 		document.getElementById('P_add_form').style.display = "block";
 		return;
@@ -21,10 +21,25 @@ function P_add_form_show(role, table) {
 		document.getElementById('frm-info').value = "";
 	};
 	if (role=="aranzer") {
-		alert(table);
-		document.getElementById('frm-jmeno').value = "";
-		document.getElementById('frm-nazev').value = "";
-		document.getElementById('frm-delka').value = "";
+		if (tabulka=='Seznam skladeb') {
+			document.getElementById('frm-edit_skladba').value = "add";
+			document.getElementById('frm-send_skladba').value = "Přidat";
+			document.getElementById('frm-nazev').value = "";
+			document.getElementById('frm-delka').value = "";
+			document.getElementById('frm-jmeno').value = "";
+			document.getElementById('P_add_skladba_form').style.display = "block";
+			return;
+		};
+		if (tabulka == 'Seznam autoru') {
+			document.getElementById('frm-edit_autor').value = "add";
+			document.getElementById('frm-send_autor').value = "Přidat";
+			document.getElementById('frm-jmeno_autora').value = "";
+			document.getElementById('frm-zacatek_tvorby').value = 0;
+			document.getElementById('frm-konec_tvorby').value = 0;
+			document.getElementById('frm-styl').value = "";
+			document.getElementById('P_add_autor_form').style.display = "block";
+			return;
+		};
 	};
 	if (role=="manazer") {
 		document.getElementById('frm-mesto').value = "";
@@ -58,14 +73,34 @@ function P_add_form_hide(){
 
 
 //Function To Display Alert
-function P_alter_form_show(params, role) {
+function P_alter_form_show(params, role, tabulka) {
 	res=params.split("~~");
+	//spolecne hodnoty
 	
+
 	if (role=="aranzer") {
-		document.getElementById("frm-id").value = res[0];
-		document.getElementById('frm-nazev').value = res[1];
-		document.getElementById('frm-delka').value = res[2];
-		document.getElementById('frm-jmeno').value = res[3];
+		if (tabulka=='Seznam skladeb') {
+			document.getElementById('frm-edit_skladba').value = "edit";
+			document.getElementById('frm-send_skladba').value = "Ulozit zmeny";
+			document.getElementById("frm-id").value = res[0];
+			document.getElementById('frm-nazev').value = res[1];
+			document.getElementById('frm-delka').value = res[2];
+			document.getElementById('frm-jmeno').value = res[3];
+			document.getElementById('P_add_skladba_form').style.display = "block";
+			return;
+		};
+		if (tabulka == 'Seznam autoru') {
+			document.getElementById('frm-edit_autor').value = "edit";
+			document.getElementById('frm-send_autor').value = "Ulozit zmeny";
+			document.getElementById('frm-ID_autora').value = res[0];
+			document.getElementById('frm-jmeno_autora').value = res[1];
+			document.getElementById('frm-zacatek_tvorby').value = res[2];
+			document.getElementById('frm-konec_tvorby').value = res[3];
+			document.getElementById('frm-styl').value = res[4];
+			document.getElementById('P_add_autor_form').style.display = "block";
+			return;
+		};
+		
 	};
 	if (role=="manazer") {
 		document.getElementById('frm-id').value = res[0];
@@ -99,21 +134,22 @@ function P_alter_form_show(params, role) {
 }
 
 //Function to Hide Alert
-function P_add_form_hide(){
-	document.getElementById('P_add_form').style.display = "none";
+function P_add_form_hide(tabulka){
+	switch (tabulka) {
+		case 'autor':
+			document.getElementById('P_add_autor_form').style.display = "none";
+			break;
+		case 'skladba':
+			document.getElementById('P_add_skladba_form').style.display = "none";
+			break;
+		default:
+			document.getElementById('P_add_form').style.display = "none";
+			break;
+		}
 }
-/*
-function switch_table (argument) {
-	document.getElementsByClassName('skladba')[0].style.display='none';
-	document.getElementsByClassName('skladba')[1].style.display='none';
-	//document.getElementsByClassName('skladba')[2].style.display='none';
-	document.getElementsByClassName('autor')[0].style.display='none';
-	document.getElementsByClassName('autor')[1].style.display='none';
-	
-	document.getElementsByClassName('autor').style.display='none'; 
-	document.getElementsByClassName(argument).style.display='show'; 
-}
-*/
+
+//Prepinani tabulek
+
 function switch_table(argument) {
     if (argument=='skladba') {
     	$('.autor').hide();
