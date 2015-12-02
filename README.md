@@ -8,7 +8,7 @@
   <li>serazovat obsah tabulky podle domeny kliknutim na nadpis sloupce</li>
   <li>prejmenovat ttype na neco normalniho (typ nebo nastroj)</li>
   <li>grafika(, rozbalovaci tabulky)</li>
-  <li>dalo by se pridat tabulku Revize(PK<<datum, id_nastroje>>, vymeneno, poznamka) pro historii revizi nastroju</li>
+  <li>dalo by se pridat tabulku Revize(PK[datum, id_nastroje], vymeneno, poznamka) pro historii revizi nastroju</li>
   <li>mozna pridat toninu, datum vytvoreni, druh skladby</li>
   <li>vypisovat obsahy tabulek po napr. 20 radcich, dat odkazy na 1-20, 21-40, ...; v MySQL klauzule LIMIT offset, limit</li>
   <li>vytknout společné věci rolí do jednoho souboru, udelat funkce pro casto opakujici se kod</li>
