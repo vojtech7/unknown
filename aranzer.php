@@ -22,6 +22,7 @@
     include 'functions.php';
     use Nette\Forms\Form;
 
+    ini_set('session.save_path',getcwd(). '/');
     session_start();
     $role = 'aranzer';
     $nadpisy_sloupcu = array('Název', 'Délka [min]', 'Jméno autora');
@@ -133,9 +134,10 @@
                              VALUES ('$ID_skladby', '$nazev', '$delka', '$ID_autora');";
               $insert_success = mysql_query($insert_row);
               if(!$insert_success) echo "nepodarilo se vlozit polozku";
+              header("Location:vyber_nastroje_skl.php?id_skl=$ID_skladby");
             }
           
-          header("Location:aranzer.php");
+          // header("Location:aranzer.php");
         }
         /*tahani dat z databaze*/
         
