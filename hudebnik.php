@@ -87,10 +87,10 @@
           echo "<tr>";
           /*tahani dat z databaze*/
           if (isset($_GET["moje"]) && $_GET["moje"]=="true")
-            $sql = "select * from $tabulka NATURAL JOIN Vystupuje_na
+            $sql = "SELECT * FROM $tabulka NATURAL JOIN Vystupuje_na
                     WHERE rodne_cislo ='".$_SESSION["user_login"]."';";
           else 
-            $sql = "select * from $tabulka";
+            $sql = "SELECT * FROM $tabulka";
           
           $vysledek = mysql_query($sql);
           $columns_count = count($nazvy_sloupcu);

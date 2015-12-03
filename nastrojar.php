@@ -125,27 +125,27 @@
           $datum_vyroby = $_GET['datum_vyroby'] !="" ? "STR_TO_DATE('".$_GET['datum_vyroby']."', '%d.%m.%Y')" : "null";
           $dat_posl_revize = $_GET['dat_posl_revize']!="" ? "STR_TO_DATE('".$_GET['dat_posl_revize']."', '%d.%m.%Y')" : "null";
           $dat_posl_vymeny = $_GET['dat_posl_vymeny']!="" ? "STR_TO_DATE('".$_GET['dat_posl_vymeny']."', '%d.%m.%Y')" : "null";
-          $vymeneno = $_GET['vymeneno'];
+          $vymeneno = $_GET['vymeneno'] != "" ? "'".$_GET['vymeneno']."'" : "null";
           $vyrobni_cislo = $_GET['vyrobni_cislo'];
           $ttype = $_GET['ttype'];
           
-          if ($_GET["edit"]=="edit") {
+          if($_GET["edit"]=="edit") {
 		        //upravujeme radek
             $PK_old=$_GET["PK_old"];
   	 		    $sql="UPDATE $tabulka_uprav SET datum_vyroby = $datum_vyroby, vyrobce ='$vyrobce', dat_posl_revize=$dat_posl_revize,
-               dat_posl_vymeny = $dat_posl_vymeny, vymeneno ='$vymeneno', ttype = '$ttype', vyrobni_cislo = '$vyrobni_cislo' 
+               dat_posl_vymeny = $dat_posl_vymeny, vymeneno =$vymeneno, ttype = '$ttype', vyrobni_cislo = '$vyrobni_cislo', rodne_cislo = null
                WHERE vyrobni_cislo = '$PK_old'";
           }
-          elseif ($_GET["edit"]=="add") {
+          elseif($_GET["edit"]=="add") {
       			$sql = "INSERT INTO $tabulka_uprav VALUES ($datum_vyroby, '$vyrobce', $dat_posl_revize,
-      			$dat_posl_vymeny, '$vymeneno', '$vyrobni_cislo', '$ttype');"; 
+      			$dat_posl_vymeny, $vymeneno, '$vyrobni_cislo', '$ttype', null);"; 
           }
           // $sql = "INSERT INTO $tabulka_uprav VALUES (NULL, '$vyrobce', NULL, NULL, '$vymeneno', '$vyrobni_cislo', '$ttype');";
           //echo 'edit je: '.$_GET["edit"];
           echo $sql;
           $insert_success = mysql_query($sql);
-      		if(!$insert_success) echo "nepodarilo se vlozit polozku";
-      		header("Location:nastrojar.php");
+      		if(!$insert_success) echo "nepodarilo se vlozit polozku: ".mysql_error();
+      		// header("Location:nastrojar.php");
         }
 
         /*tahani dat z databaze*/
@@ -193,7 +193,7 @@
         echo "</table>";
 
       //ziskani typu nastroju pro select ve formulari
-      $sql = "select * from Typ";
+      $sql = "SELECT * FROM Typ";
       $typy = mysql_query($sql);
 
       for ($i=0; $i < mysql_num_rows($typy); $i++) { 
@@ -216,7 +216,7 @@
   require_once 'Nette/Forms/Form.php';
 
     $form = new Form;
-    $form->setAction('index.php?page=nastrojar.php');
+    $form->setAction('nastrojar.php');
     $form->setMethod('GET');
 
      $nadpisy_sloupcu = array('', '', '', '', '', '', 'Typ');

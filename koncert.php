@@ -45,7 +45,7 @@
       $sql_naz_kon = "SELECT * FROM Koncert WHERE ID_koncertu='$id_kon'";
       $sql_delka_kon = "SELECT SUM(delka) FROM Slozen_z NATURAL JOIN
        						(SELECT delka, ID_skladby
-                        	 FROM Skladba NATURAL JOIN Autor) AS alias
+                        	 FROM Skladba) AS alias
                       WHERE ID_koncertu = $id_kon";
       $koncert_vysledek = mysql_query($sql_naz_kon);
       $koncert = mysql_fetch_array($koncert_vysledek);
@@ -112,13 +112,15 @@
 				NATURAL JOIN (
 					SELECT ttype, pocet, ID_skladby
 			  		FROM Skladba NATURAL JOIN Hraje_v) AS alias
-				WHERE ID_koncertu = 13
+				WHERE ID_koncertu = $id_kon
 				GROUP BY ttype";
 
   	  $nadpisy_sloupcu = array('Typ', 'Počet');
       $nazvy_sloupcu = array('ttype', 'MAX(pocet)');      
       $title = "Seznam nástrojů";
       print_table($sql, $title, $nadpisy_sloupcu, $nazvy_sloupcu);
+
+      echo "<a href='manazer.php'>Zpet na vypis koncertu</a>";
     ?>
   </body>
 </html>

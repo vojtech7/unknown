@@ -113,7 +113,7 @@
 						$sql = "INSERT INTO $tabulka_uprav VALUES ('$rodne_cislo', '$jmeno', '$prijmeni', '$heslo_hash');";
 						$success = mysql_query($sql);
 						if(!$success) $error =  "nepodarilo se vlozit polozku";	
-            header("Location:vyber_skladby_hud.php?rc_hud=$rodne_cislo");
+            header("Location:vyber_nastroje_hud.php?rc_hud=$rodne_cislo");
 					}
 					
 					if (isset($error)) {
@@ -169,7 +169,7 @@
 	require_once 'Nette/Forms/Form.php';
 
 		$form = new Form;
-		$form->setAction('index.php?page=personalista.php');
+		$form->setAction('personalista.php');
 		$form->setMethod('GET');
 
 		$form->addText('jmeno', 'Jmeno:')
