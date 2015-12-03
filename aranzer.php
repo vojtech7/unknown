@@ -87,10 +87,10 @@
     //tabulky se vstupy pro hledani
     
       echo "<div class=\"skladba\">";
-       //print_search_table($skladba["nadpisy_sloupcu"], $skladba["nazvy_sloupcu"], "skladba", $seznam_jmen, $skladba["ignore"]);
+       print_search_table($skladba["nadpisy_sloupcu"], $skladba["nazvy_sloupcu"], "skladba", $seznam_jmen, $skladba["ignore"]);
       echo "</div>";
       echo "<div class=\"autor\">"; 
-       //print_search_table($autor["nadpisy_sloupcu"], $autor["nazvy_sloupcu"], "autor", $seznam_jmen, $autor["ignore"]);
+       print_search_table($autor["nadpisy_sloupcu"], $autor["nazvy_sloupcu"], "autor", $seznam_jmen, $autor["ignore"]);
       echo "</div>";
 
         //pred zobrazenim radku se provedou pripadne SQL dotazy nad tabulkami
@@ -154,7 +154,6 @@
               PŘIDÁVÁNÍ A ÚPRAVA AUTORŮ
         ************************************************/
 
-<<<<<<< HEAD
         //pridani nebo uprava radku tabulky
         if(isset($_GET["jmeno_autora"]) and isset($_GET["zacatek_tvorby"]) and isset($_GET["konec_tvorby"]) and isset($_GET["styl"]) and isset($_GET["edit_autor"])) {
         $jmeno = $_GET["jmeno_autora"];
@@ -168,13 +167,12 @@
                       SET ID_autora = $ID_autora, jmeno ='$jmeno', zacatek_tvorby = $zacatek_tvorby, konec_tvorby = $konec_tvorby, styl = $styl
                       WHERE ID_autora =$ID_autora";
               mysql_query($sql);
-=======
+
               $insert_row = "INSERT INTO $tabulka_upravy 
                              VALUES ('$ID_skladby', '$nazev', '$delka', '$ID_autora');";
               $insert_success = mysql_query($insert_row);
               if(!$insert_success) echo "nepodarilo se vlozit polozku";
               header("Location:vyber_nastroje_skl.php?id_skl=$ID_skladby");
->>>>>>> origin/master
             }
         elseif ($_GET["edit_autor"]=="add") {
           $sql = "SELECT max(ID_autora) FROM  {$autor['tabulka_upravy']} ;";

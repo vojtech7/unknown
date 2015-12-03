@@ -14,17 +14,24 @@
         buttons: tlačítka, která mají být v tabulce (pole stringů)
         PK: primární klíč (podle kterého se odtraňuje atd.)
         role: role
+        page
   */
-  function print_table($tabulka, $role=null, $page=null)
+  function print_table($sql, $title=null, $nadpisy_sloupcu=null, $nazvy_sloupcu=null, $ignore=null, $buttons=null, $PK=null, $role=null, $page=null)
   {
-      $nadpisy_sloupcu = $tabulka["nadpisy_sloupcu"];
-      $nazvy_sloupcu = $tabulka["nazvy_sloupcu"];
-      $tabulka_upravy = $tabulka["tabulka_upravy"];
-      $ignore = $tabulka["ignore"];
-      $sql = $tabulka["sql"];
-      $title = $tabulka["title"];
-      $buttons = $tabulka["buttons"];
-      $PK = $tabulka["PK"];
+    if (is_array($sql)) {
+      //pokud je zadane pole parametru, tak se na posledni dva namapuji 2. a 3. parametr
+      $role = $title;
+      $page = $nadpisy_sloupcu;
+      //dal se to mapuje aspon trochu inteligentne
+      $title = $sql["title"];
+      $nadpisy_sloupcu = $sql["nadpisy_sloupcu"];
+      $nazvy_sloupcu = $sql["nazvy_sloupcu"];
+      $ignore = $sql["ignore"];
+      $tabulka_upravy = $sql["tabulka_upravy"];
+      $buttons = $sql["buttons"];
+      $PK = $sql["PK"];
+      $sql = $sql["sql"];
+    }
       
       $table = mysql_query($sql);
       $columns_count = count($nadpisy_sloupcu);
@@ -59,7 +66,7 @@
           if (is_array($ignore) and in_array($nazvy_sloupcu[$i], $ignore)) 
             continue;
           elseif ($nazvy_sloupcu[$i] == "nazev") {
-            echo "<td class='filter_{$nazvy_sloupcu[$i]}'><a href='skladba.php?id_skladby={$row[$nazvy_sloupcu[0]]}'>{$row[$nazvy_sloupcu[$i]]}</a></td>";
+            echo "<td class='filter_{$nazvy_sloupcu[$i]}'><a href='skladba.php?id_skl={$row[$nazvy_sloupcu[0]]}'>{$row[$nazvy_sloupcu[$i]]}</a></td>";
           }
             echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$nazvy_sloupcu[$i]]}</td>";
             $j++;
