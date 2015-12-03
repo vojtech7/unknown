@@ -61,6 +61,10 @@ function P_add_form_show(role, tabulka) {
 		document.getElementById("frm-prijmeni").value="";
 		document.getElementById('frm-PK_old').value="";
 	};
+	if (role == "skladba") {
+		document.getElementById('P_add_form').style.display = "block";
+		return;	
+	};
 	document.getElementById('frm-edit').value = "add";
 	document.getElementById('frm-send').value = "Přidat";
 	document.getElementById('P_add_form').style.display = "block";

@@ -16,7 +16,8 @@
 
   <?php  
     include "connect.php";
-
+    
+    session_save_path("./tmp");
     session_start();
     $role = 'hudebnik';
     //uzivatel neni prihlasen

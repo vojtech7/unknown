@@ -19,7 +19,8 @@
   <?php  
     include "connect.php";
     use Nette\Forms\Form;
-
+    
+    session_save_path("./tmp");
     session_start();
     $role = 'manazer';
     //uzivatel neni prihlasen

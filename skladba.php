@@ -16,6 +16,8 @@
     <?php
       include "connect.php";
       include 'functions.php';
+      use Nette\Forms\Form;
+
       $nazvy_sloupcu = array('nazev', 'styl', 'jmeno', 'delka', 'poradi');
       $nadpisy_sloupcu = array('Název', 'Styl', 'Autor', 'Délka [min]', 'Pořadí');
 
@@ -89,7 +91,7 @@
       $nadpisy_sloupcu = array('Typ', 'Počet');      
       $nazvy_sloupcu = array('ttype', 'pocet');
       print_table($sql, $title, $nadpisy_sloupcu, $nazvy_sloupcu);
-
+      echo "<button onclick='P_add_form_show(\"skladba\")'>Přidat nástroj</button>";
                 // tabulka koncertu
       $sql = "SELECT nazev_koncertu, datum_a_cas, mesto, adresa
                       FROM Skladba NATURAL JOIN Slozen_z NATURAL JOIN Koncert
@@ -111,7 +113,55 @@
       $nazvy_sloupcu = array('jmeno', 'prijmeni');
       print_table($sql, $title, $nadpisy_sloupcu, $nazvy_sloupcu);
 
+
+      /********************************************
+          FORMULÁŘE
+      *********************************************/
       echo "<a href='aranzer.php'>Zpet na vypis skladeb</a>";
+
+            echo '</div>
+            <!-- formular pro pridani -->
+            <div id="P_add_form" class="abc">
+            <!-- Popup Div Starts Here -->
+            <div id="popupContact">
+            <!-- Contact Us Form -->
+            <img id="close" src="img/close-icon.png" onclick ="P_add_form_hide()">
+
+
+
+            <!-- vvvvvvvvvvvvv Nette Form  vvvvvvvvvvvvv -->';
+  require 'Nette/loader.php';
+
+    require_once 'Nette/Forms/Form.php';
+
+    $add = new Form;
+    $add->setAction('aranzer.php');
+    $add->setMethod('GET');
+
+    for ($i=0; $i < count($nastroje_jm); $i++) { 
+        $add->addText($nastroje_jm[$i], $nastroje_jm[$i])
+            ->setType('number')
+            ->addRule(Form::INTEGER, 'Počet musi být číslo');
+    }
+
+  echo $add; // vykresli formular
+
+  $sub1 = $add->addContainer('first');
+
+  if ($add->isSuccess()) {
+    echo 'Formuláø byl správnì vyplnìn a odeslán';
+      $values = $add->getValues();
+    dump($values);
+  }
+
+  //vypisuje html kod na dalsich radcich
+  echo '
+  </div>
+  <!-- Popup Div Ends Here -->
+  </div>
+  <!-- Display Popup Button -->
+  <!-- <button id="popup" onclick="P_add_form_show()">Popup</button> -->';
+  //uzivatel je prihlasen
     ?>
   </body>
 </html>

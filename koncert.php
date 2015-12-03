@@ -76,7 +76,7 @@
       
       $title = "Seznam skladeb";
   
-      $nadpisy_sloupcu = array('Pořadí', 'Jméno', 'Název', 'Styl', 'Délka');
+      $nadpisy_sloupcu = array('Pořadí', 'Jméno autora', 'Název', 'Styl', 'Délka');
       $nazvy_sloupcu = array('poradi', 'jmeno', 'nazev', 'styl', 'delka');
       print_table($sql, $title, $nadpisy_sloupcu, $nazvy_sloupcu);
 

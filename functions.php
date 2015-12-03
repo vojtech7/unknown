@@ -27,7 +27,7 @@
       $nadpisy_sloupcu = $sql["nadpisy_sloupcu"];
       $nazvy_sloupcu = $sql["nazvy_sloupcu"];
       $ignore = $sql["ignore"];
-      $tabulka_upravy = $sql["tabulka_upravy"];
+      $tabulka_uprav = $sql["tabulka_uprav"];
       $buttons = $sql["buttons"];
       $PK = $sql["PK"];
       $sql = $sql["sql"];
@@ -65,8 +65,9 @@
           $alter = $alter.$row[$nazvy_sloupcu[$i]]."~~";
           if (is_array($ignore) and in_array($nazvy_sloupcu[$i], $ignore)) 
             continue;
-          elseif ($nazvy_sloupcu[$i] == "nazev") {
+          elseif ($nazvy_sloupcu[$i] == "nazev" and $role == "aranzer") {
             echo "<td class='filter_{$nazvy_sloupcu[$i]}'><a href='skladba.php?id_skl={$row[$nazvy_sloupcu[0]]}'>{$row[$nazvy_sloupcu[$i]]}</a></td>";
+            continue;
           }
             echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$nazvy_sloupcu[$i]]}</td>";
             $j++;
@@ -75,7 +76,7 @@
         if ($buttons != null) {
           if (in_array("delete", $buttons) and $PK != null) {
               //predam si PK do url parametru delete
-              echo "<td id=delete_btn><a href='?page={$page}&delete={$row[$PK]}&tabulka={$tabulka_upravy}'>Odstranit</a></td>";
+              echo "<td id=delete_btn><a href='?page={$page}&delete={$row[$PK]}&tabulka={$tabulka_uprav}'>Odstranit</a></td>";
              
            } 
           if (in_array("edit", $buttons)) {
