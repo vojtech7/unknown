@@ -40,6 +40,30 @@
         array_push($nastroje_jm, $nastroj_jm_radek[0]);
       }
 
+<<<<<<< HEAD
+      foreach($nastroje_jm as $typ) {
+        $pocet = $_POST[$typ];
+        if($pocet > 0) {    //TODO: take kontrolovat, jestli je dostatecny pocet danych nastroju v DB
+          $poc_na_sklade_vysl = mysql_query("SELECT COUNT(*) FROM Nastroj WHERE ttype = '$typ'");
+          $poc_na_sklade_radek = mysql_fetch_array($poc_na_sklade_vysl);
+          $poc_na_sklade = $poc_na_sklade_radek[0];
+          if($pocet > $poc_na_sklade) {
+            echo "Nastroju typu $typ je na sklade pouze $poc_na_sklade.";
+            echo "<br><a href='vyber_nastroje_skl.php?id_skl=$id_skl'>Zpet na vyber nastroju</a>";
+            exit();
+          }
+          $sql_prid_nas = "INSERT INTO Hraje_v VALUES (\"$typ\", $id_skl, $pocet)";
+          // echo $sql_prid_nas."<br>";
+          $pri_nas_vysl = mysql_query($sql_prid_nas);
+        }
+      }
+
+      // print_r($nastroje_jm);
+      // print_r($_POST);
+      // exit();
+      
+      $sql_skladba = "SELECT nazev, delka, jmeno
+=======
       //pridani nastroju skladbe
       if(!empty($_POST)) {
         foreach($nastroje_jm as $typ) {
@@ -61,6 +85,7 @@
       }
 
       $sql_skladba = "SELECT nazev, delka, jmeno, styl
+>>>>>>> origin/master
                         FROM Skladba NATURAL JOIN Autor
                         WHERE ID_skladby = '$id_skl'";
       $skladba_vysledek = mysql_query($sql_skladba);
@@ -68,12 +93,32 @@
       $nazev =  $skladba['nazev'];
       $delka =  $skladba['delka'];
       $jmeno = $skladba['jmeno'];
+<<<<<<< HEAD
+=======
       $styl = $skladba['styl'];
+>>>>>>> origin/master
 
       echo "<h1>Detail skladby $nazev</h1>";
 
       echo "<br><ul>
                   <li>Název: $nazev</li>
+<<<<<<< HEAD
+                  <li>Délka: $delka</li>
+                  <li>Autor: $jmeno</li>
+                </ul> ";
+
+                //tabulka hudebniku
+      // $sql = "SELECT jmeno, prijmeni, ID_koncertu
+      //                 FROM Hudebnik
+      //                 NATURAL JOIN Vystupuje_na
+      //                 WHERE ID_koncertu = $id_kon
+      //                 ORDER BY prijmeni ASC";
+
+      // $title = "Seznam hudebníků";
+      // $nadpisy_sloupcu = array('Jméno', 'Příjmení');      
+      // $nazvy_sloupcu = array('jmeno', 'prijmeni');
+      // print_table($sql, $title, $nadpisy_sloupcu, $nazvy_sloupcu);
+=======
                   <li>Délka: $delka minut</li>
                   <li>Autor: $jmeno</li>
                   <li>Styl: $styl</li>
@@ -110,6 +155,7 @@
       $nadpisy_sloupcu = array('Jméno', 'Příjmení');      
       $nazvy_sloupcu = array('jmeno', 'prijmeni');
       print_table($sql, $title, $nadpisy_sloupcu, $nazvy_sloupcu);
+>>>>>>> origin/master
 
       echo "<a href='aranzer.php'>Zpet na vypis skladeb</a>";
     ?>
