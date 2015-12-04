@@ -141,9 +141,12 @@
     for ($i=0; $i < count($nastroje_jm); $i++) { 
         $add->addText($nastroje_jm[$i], $nastroje_jm[$i])
             ->setType('number')
+            ->setValue('0')
+            ->setAttribute('min', '0')
             ->addRule(Form::INTEGER, 'Počet musi být číslo');
     }
 
+  $add->addSubmit('send', 'Pridat');
   echo $add; // vykresli formular
 
   $sub1 = $add->addContainer('first');

@@ -130,6 +130,7 @@
                       WHERE ID_skladby =$ID_skladby";
               echo $sql;
               mysql_query($sql);
+              // header("Location:aranzer.php");
             }
         elseif ($_GET["edit_skladba"]=="add") {
             $sql = "SELECT max(ID_skladby) FROM  {$skladba['tabulka_uprav']} ;";
@@ -146,9 +147,9 @@
             echo $insert_row;
             $insert_success = mysql_query($insert_row);
             if(!$insert_success) echo "nepodarilo se vlozit polozku";
+            header("Location:vyber_nastroje_skl.php?id_skl=$ID_skladby");
           }
         
-          header("Location:aranzer.php");
         }
         /************************************************
               PŘIDÁVÁNÍ A ÚPRAVA AUTORŮ
@@ -172,7 +173,6 @@
                              VALUES ('$ID_skladby', '$nazev', '$delka', '$ID_autora');";
               $insert_success = mysql_query($insert_row);
               if(!$insert_success) echo "nepodarilo se vlozit polozku";
-              header("Location:vyber_nastroje_skl.php?id_skl=$ID_skladby");
             }
         elseif ($_GET["edit_autor"]=="add") {
           $sql = "SELECT max(ID_autora) FROM  {$autor['tabulka_uprav']} ;";
