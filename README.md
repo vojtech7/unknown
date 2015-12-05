@@ -2,6 +2,8 @@
 <ul>
   <li>upravovani seznamu/tabulek uvnitr detailu</li>
   <li>vybrat seznam hudebniku na koncert na zaklade zadanych skladeb</li>
+  <li>moznost upravovat vazebni tabulky - uprava nastroju pro skladbu, skladeb pro koncert apod.</li>
+  <li>klikatelni autori ; pri operacich(add/edit/delete) s autory zobrazovat tabulku autoru(implementace napr. pomoci cookies)</li>
   <li>datumy koncertu by mely byt pouze v budoucnosti, po uplynuti data konani by nemelo jit koncert upravovat ani odstranovat, koncert by presel do "historie" filharmonie</li>
   <li>presunout tlacitka upravit(mozna i odstranit) do detailu objektu</li>
   <li>tlacitko odstranit opatrit confirmem</li>
