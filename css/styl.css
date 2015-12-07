@@ -83,6 +83,17 @@ table, th, td {
   text-align: center;
   color: white;
 }
+.switch_btn a{
+  -webkit-appearance: button;
+  -moz-appearance: button;
+  appearance: button;
+
+  text-decoration: none;
+  color: white;
+  background: #CD853F;
+  margin: 10px;
+  width: 10%;
+}
 #edit_btn a:hover {
 	background-color: powderblue;
 	color: dodgerblue;

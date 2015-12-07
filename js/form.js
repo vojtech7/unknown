@@ -47,13 +47,23 @@ function P_add_form_show(role, tabulka) {
 		document.getElementById('frm-datum_a_cas').value = "";
 	};
 	if (role=="nastrojar") {
-		document.getElementById('frm-ttype').value = "";
-		document.getElementById('frm-vyrobce').value = "";
-		document.getElementById('frm-vyrobni_cislo').value = "";
-		document.getElementById('frm-datum_vyroby').value = "";
-		document.getElementById('frm-dat_posl_revize').value = "";
-		document.getElementById('frm-dat_posl_vymeny').value = "";
-		document.getElementById('frm-vymeneno').value = "";
+		if (tabulka == "nastroj") {
+			document.getElementById('frm-ttype').value = "";
+			document.getElementById('frm-vyrobce').value = "";
+			document.getElementById('frm-vyrobni_cislo').value = "";
+			document.getElementById('frm-datum_vyroby').value = "";
+			document.getElementById('frm-dat_posl_revize').value = "";
+			document.getElementById('frm-dat_posl_vymeny').value = "";
+			document.getElementById('frm-vymeneno').value = "";
+			document.getElementById("frm-edit").value = "add";
+			document.getElementById('P_add_nastroj_form').style.display = "block";
+			return;
+		};
+		if (tabulka == "typ") {
+			document.getElementById('frm-typ').value = "";
+			document.getElementById('P_add_typ_form').style.display = "block";
+			return;	
+		};
 	};
 	if (role=="personalista") {
 		document.getElementById("frm-rodne_cislo").value="";
@@ -62,6 +72,7 @@ function P_add_form_show(role, tabulka) {
 		document.getElementById('frm-PK_old').value="";
 	};
 	if (role == "skladba") {
+		
 		document.getElementById('P_add_form').style.display = "block";
 		return;	
 	};
@@ -116,14 +127,20 @@ function P_alter_form_show(params, role, tabulka) {
 		//alert(res[1]);
 	};
 	if (role=="nastrojar") {
-		document.getElementById('frm-datum_vyroby').value = res[0];
-		document.getElementById('frm-vyrobce').value = res[1];
-		document.getElementById('frm-dat_posl_revize').value = res[2];
-		document.getElementById('frm-dat_posl_vymeny').value = res[3];
-		document.getElementById('frm-vymeneno').value = res[4];
-		document.getElementById('frm-vyrobni_cislo').value = res[5];
-		document.getElementById('frm-ttype').value = res[6];
-		document.getElementById("frm-PK_old").value=res[5];		//vyrobni cislo
+		if (tabulka == "Seznam nástrojů") {
+			document.getElementById('frm-datum_vyroby').value = res[1];
+			document.getElementById('frm-vyrobce').value = res[2];
+			document.getElementById('frm-dat_posl_revize').value = res[4];
+			document.getElementById('frm-dat_posl_vymeny').value = res[6];
+			document.getElementById('frm-vymeneno').value = res[7];
+			document.getElementById('frm-vyrobni_cislo').value = res[8];
+			document.getElementById('frm-ttype').value = res[9];
+			document.getElementById("frm-PK_old").value = res[8];		//vyrobni cislo
+			document.getElementById('frm-edit').value = "edit";
+			document.getElementById('frm-send').value = "Ulozit zmeny";
+			document.getElementById('P_add_nastroj_form').style.display = "block";
+			return;
+		};
 	};
 	if (role=="personalista") {
 		document.getElementById("frm-rodne_cislo").value=res[0];
@@ -146,6 +163,12 @@ function P_add_form_hide(tabulka){
 		case 'skladba':
 			document.getElementById('P_add_skladba_form').style.display = "none";
 			break;
+		case 'nastroj':
+			document.getElementById('P_add_nastroj_form').style.display = "none";
+			break;
+		case 'typ':
+			document.getElementById('P_add_typ_form').style.display = "none";
+			break;
 		default:
 			document.getElementById('P_add_form').style.display = "none";
 			break;
@@ -164,6 +187,15 @@ function switch_table(argument) {
     	$('.skladba').hide();
     	$('.autor').show();
     };
+
+    if (argument=='nastroj') {
+    	$('.typ').hide();
+    	$('.nastroj').show();
+    };
     	
+    if (argument=='typ') {
+    	$('.nastroj').hide();
+    	$('.typ').show();
+    };	
 
 }

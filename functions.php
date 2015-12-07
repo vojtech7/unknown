@@ -61,16 +61,33 @@
         //výpis těla
       while ($row = mysql_fetch_array($table, MYSQL_ASSOC)) {
         echo "<tr>";
-        for ($i=0, $j=0; $i <count($nazvy_sloupcu); $i++) {
+        for ($i=0; $i <count($nazvy_sloupcu); $i++) {
           $alter = $alter.$row[$nazvy_sloupcu[$i]]."~~";
+                      //sloupce, které se nevykreslují
           if (is_array($ignore) and in_array($nazvy_sloupcu[$i], $ignore)) 
             continue;
-          elseif ($nazvy_sloupcu[$i] == "nazev" and $role == "aranzer") {
-            echo "<td class='filter_{$nazvy_sloupcu[$i]}'><a href='skladba.php?id_skl={$row[$nazvy_sloupcu[0]]}'>{$row[$nazvy_sloupcu[$i]]}</a></td>";
+                      //název skladby -> přidává se odkaz na skladbu
+          elseif ($nazvy_sloupcu[$i] == "nazev") {
+            echo "<td class='filter_{$nazvy_sloupcu[$i]}'><a href='skladba.php?id_skl={$row["ID_skladby"]}'>{$row[$nazvy_sloupcu[$i]]}</a></td>";
             continue;
           }
-            echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$nazvy_sloupcu[$i]]}</td>";
-            $j++;
+                      //nahrazení prázdného data ---
+          elseif (strpos($nazvy_sloupcu[$i], "dat") !== false) {
+            if ($row[$nazvy_sloupcu[$i]]==null) {
+              $mydate="---";
+              $alter=$alter."~~";
+            }
+            else{
+              $date = date_create($row[$nazvy_sloupcu[$i]]);
+              $mydate = date_format($date, "d.m.Y");
+              $alter = $alter.$mydate."~~";
+            }
+            echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$mydate}</td>";
+            continue;
+          }
+
+                    //defaultní vykreslení buňky
+          echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$nazvy_sloupcu[$i]]}</td>";
         }
          
         if ($buttons != null) {

@@ -25,7 +25,7 @@
     session_save_path("./tmp");
     session_start();
     $role = 'aranzer';
-    $skladba  = array();
+    $skladba = array();
     $skladba["nadpisy_sloupcu"] = array('Název', 'Délka [min]', 'Jméno autora');
     $skladba["nazvy_sloupcu"] = array('ID_skladby', 'nazev', 'delka', 'jmeno');
     $skladba["tabulka_uprav"] = "Skladba";
@@ -118,6 +118,7 @@
           $nazev = $_GET["nazev"];
           $delka = $_GET["delka"];
         if ($_GET["edit_skladba"]=="edit") {
+              echo "upravuje se radek<br>";
               //upravuje se radek
               $ID_skladby = $_GET["id"];
               $sql_id = "SELECT ID_autora 
@@ -128,8 +129,9 @@
               $sql = "UPDATE {$skladba['tabulka_uprav']} 
                       SET ID_skladby = $ID_skladby, nazev ='$nazev', delka=$delka, ID_autora =$ID_autora 
                       WHERE ID_skladby =$ID_skladby";
-              echo $sql;
+              //echo $sql;
               mysql_query($sql);
+              header("Location:aranzer.php");
             }
         elseif ($_GET["edit_skladba"]=="add") {
             $sql = "SELECT max(ID_skladby) FROM  {$skladba['tabulka_uprav']} ;";
@@ -143,12 +145,14 @@
 
             $insert_row = "INSERT INTO {$skladba['tabulka_uprav']} 
                            VALUES ('$ID_skladby', '$nazev', '$delka', '$ID_autora');";
-            echo $insert_row;
+           // echo $insert_row;
             $insert_success = mysql_query($insert_row);
             if(!$insert_success) echo "nepodarilo se vlozit polozku";
           }
-        
-          header("Location:aranzer.php");
+          if ($_GET["edit_skladba"]=="add")
+            header("Location: skladba.php?id_skl=$ID_skladby&new=true");
+          else
+            header("Location:aranzer.php");
         }
         /************************************************
               PŘIDÁVÁNÍ A ÚPRAVA AUTORŮ
@@ -168,10 +172,6 @@
                       WHERE ID_autora =$ID_autora";
               mysql_query($sql);
 
-              $insert_row = "INSERT INTO $tabulka_uprav 
-                             VALUES ('$ID_skladby', '$nazev', '$delka', '$ID_autora');";
-              $insert_success = mysql_query($insert_row);
-              if(!$insert_success) echo "nepodarilo se vlozit polozku";
               header("Location:vyber_nastroje_skl.php?id_skl=$ID_skladby");
             }
         elseif ($_GET["edit_autor"]=="add") {
@@ -183,6 +183,7 @@
                          VALUES ('$ID_autora', '$jmeno', '$zacatek_tvorby', '$konec_tvorby', '$styl');";
           $insert_success = mysql_query($insert_row);
           if(!$insert_success) echo "nepodarilo se vlozit polozku";
+          header("Location:vyber_nastroje_skl.php?");
         }
           
           header("Location:aranzer.php");
@@ -239,11 +240,12 @@
 
   $sub1 = $add_skladba->addContainer('first');
 
+/*
   if ($add_skladba->isSuccess()) {
     echo 'Formuláø byl správnì vyplnìn a odeslán';
       $values = $add_skladba->getValues();
     dump($values);
-  }
+  }*/
 
   //vypisuje html kod na dalsich radcich
   echo '
@@ -292,12 +294,6 @@
 
   $sub1 = $add_autor->addContainer('second');
 
-  if ($add_autor->isSuccess()) {
-    echo 'Formuláø byl správnì vyplnìn a odeslán';
-      $values = $add_autor->getValues();
-    dump($values);
-  }
- 
 
 
     //vypisuje html kod na dalsich radcich
