@@ -1,5 +1,6 @@
 <?php
   include "connect.php";
+  session_save_path("./tmp");
 
   if(!empty($_POST)) {
     if(isset($_POST['login'])) $login = $_POST['login'];
@@ -24,7 +25,7 @@
     }
     //hudebnik
     elseif($page == "hudebnik.php") {   
-      $sql = "select * from Hudebnik where rodne_cislo='$login'";
+      $sql = "SELECT * FROM Hudebnik WHERE rodne_cislo='$login'";
       $vysledek = mysql_query($sql);
       //dotaz nic nevratil
       if ($vysledek == false or mysql_num_rows($vysledek) == 0) {
@@ -55,7 +56,7 @@
     }
     //neadmin, nehudebnik
     else {  
-      $sql = "select * from Uzivatel where login='$login'";
+      $sql = "SELECT * FROM Uzivatel WHERE login='$login'";
       $vysledek = mysql_query($sql);
       //dotaz nic nevratil
       if ($vysledek == false or mysql_num_rows($vysledek) == 0) {

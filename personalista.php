@@ -43,6 +43,7 @@
 
 		//uzivatel je prihlasen, tohle else je az do konce souboru
 		else {
+		 $_SESSION['timestamp'] = time();
 		 $tabulka_uprav = "Hudebnik";
 		 $nadpisy_sloupcu = array('Jméno', 'Pøíjmení', 'Rodné èíslo');
 		 $nazvy_sloupcu = array('jmeno', 'prijmeni', 'rodne_cislo');
@@ -143,7 +144,7 @@
 						$alter = $alter.$row[$i]."~~";
 					}
 					//predam si PK do url parametru delete
-					echo "<td id=delete_btn><a href='?page={$page}&delete={$row[$pk]}'>Odstranit</a></td>";
+					echo "<td id=delete_btn><a href='?delete={$row[$pk]}' onclick='return confirm(\"Opravdu odstranit?\");'>Odstranit</a></td>";
 					$alter="\"".$alter."\"";
 					echo "<td class=alter_btn><button onclick='P_alter_form_show($alter, \"$role\")'>Upravit</button></td>";
 					$alter="";

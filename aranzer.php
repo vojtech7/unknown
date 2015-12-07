@@ -48,8 +48,8 @@
     $autor["PK"] = "ID_autora";
     
     //uzivatel neni prihlasen
-    // if(!isset($_SESSION['logged_in']) or $_SESSION['role'] != $role) {
-    if(0){
+    if(!isset($_SESSION['logged_in']) or $_SESSION['role'] != $role) {
+    // if(0){
       echo "
       <form action='login.php?page=$role.php' method='post' enctype='multipart/form-data'>
         <h3>Pøihlá¹ení</h3>
@@ -66,6 +66,7 @@
     // }
 
     else {
+      $_SESSION['timestamp'] = time();
        //ziskani jmen autoru pro dalsi praci
       $sql = "SELECT jmeno FROM Autor";
       $autori = mysql_query($sql);
@@ -75,7 +76,7 @@
         $seznam_jmen[$row["jmeno"]] = $row["jmeno"];
     }
     $page = "aranzer.php";
-    echo "<div id=logout_btn><a href='logout.php'>Odhlásit se</a></div>";
+    echo "<div id=logout_btn>Příhlášen $role {$_SESSION['user_login']}<br><a href='logout.php'>Odhlásit se</a></div>";
     echo '<div id="menu"><ul>';
      // echo "<ul><li><a href='P_add_form_show()'>Pøidat zamìstnance</a></li>";
     echo "<li><button class=\"skladba\" onclick='P_add_form_show(\"$role\", \"Seznam skladeb\")'>Pøidat skladbu</button><br></li>";

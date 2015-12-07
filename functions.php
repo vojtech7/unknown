@@ -93,7 +93,7 @@
         if ($buttons != null) {
           if (in_array("delete", $buttons) and $PK != null) {
               //predam si PK do url parametru delete
-              echo "<td id=delete_btn><a href='?page={$page}&delete={$row[$PK]}&tabulka={$tabulka_uprav}'>Odstranit</a></td>";
+              echo "<td id=delete_btn><a href='?delete={$row[$PK]}&tabulka={$tabulka_uprav}' onclick='return confirm(\"Opravdu odstranit?\");'>Odstranit</a></td>";
              
            } 
           if (in_array("edit", $buttons)) {

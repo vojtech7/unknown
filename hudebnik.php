@@ -41,6 +41,7 @@
 
     //uzivatel je prihlasen, tohle else je az do konce souboru
     else {
+      $_SESSION['timestamp'] = time();
       $tabulka = "Koncert";
       $nadpisy_sloupcu = array('ID koncertu', 'Název Koncertu', 'Datum a èas', 'Mìsto', 'Adresa');
       $nazvy_sloupcu = array('ID_koncertu', 'nazev_koncertu', 'datum_a_cas', 'mesto', 'adresa');
