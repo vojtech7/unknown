@@ -79,6 +79,7 @@
       $nadpisy_sloupcu = array('Pořadí', 'Jméno autora', 'Název', 'Styl', 'Délka');
       $nazvy_sloupcu = array('poradi', 'jmeno', 'nazev', 'styl', 'delka');
       print_table($sql, $title, $nadpisy_sloupcu, $nazvy_sloupcu);
+      echo "<a href=vyber_skl_kon.php?id_kon=$id_kon><label>Upravit</label></a>";
 
                 //tabulka hudebniku
       $sql = "SELECT jmeno, prijmeni, ID_koncertu

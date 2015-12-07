@@ -34,13 +34,29 @@
       while($typ_radek = mysql_fetch_array($typy_vysledek)) {
         array_push($typy, $typ_radek[0]);
       }
-      //ziskani IDcek nastroju z radio buttonu predchoziho formulare
-      $nastroje_id = array();
-      foreach($typy as $typ) {
-        if(isset($_POST[$typ]) and $_POST[$typ] != 'none') {
-          array_push($nastroje_id, $_POST[$typ]);
+      
+      //upravuje se stavajici hrac, ID jsou uz v db
+      if (isset($_GET["edit"]) and $_GET["edit"] == "true") {
+        $sql_id = "SELECT vyrobni_cislo
+                   FROM Nastroj
+                   Where rodne_cislo = '$rc_hud'";
+        $result_id = mysql_query($sql_id);
+        $nastroje_id = array();
+        while ($row = mysql_fetch_row($result_id)) {
+          array_push($nastroje_id, $row[0]);
         }
+      
+        
       }
+      else {
+        //ziskani IDcek nastroju z radio buttonu predchoziho formulare
+        $nastroje_id = array();
+        foreach($typy as $typ) {
+          if(isset($_POST[$typ]) and $_POST[$typ] != 'none') {
+            array_push($nastroje_id, $_POST[$typ]);
+          }
+        }
+      } 
       //ziskani jmen(typu) z IDcek nastroju
       $nastroje_jm = array();
       foreach($nastroje_id as $n_id) {
@@ -49,6 +65,29 @@
         array_push($nastroje_jm, $nastroj_jm_radek[0]);
       }
 
+      //ziskani ID nacvicenych skladeb (pouze uprava stavajiciho)
+      if (isset($_GET["edit"]) and $_GET["edit"] == "true") {
+        $sql_nastud = "SELECT ID_skladby
+                       FROM Hudebnik NATURAL JOIN Ma_nastudovano
+                       WHERE rodne_cislo = '$rc_hud';";
+        $vysledek = mysql_query($sql_nastud);
+        $nastud = array();
+        while ($row = mysql_fetch_array($vysledek)) {
+          array_push($nastud, $row[0]);
+        }
+      }
+      
+      // uprava nastroju hudebnika (nejdrive se smazou ty stare, pote se nahrajou ty nove)
+      $sql_dlt = "UPDATE Nastroj
+                  SET rodne_cislo = NULL
+                  WHERE rodne_cislo = '$rc_hud'";
+      if (mysql_query($sql_dlt) == false) {
+        echo $sql_dlt;
+      }
+  
+      if (isset($_POST["edit"])) {
+        header("Location:hud_detail.php?rc_hud=$rc_hud");
+      }
       //prirazeni nastroju hudebnikovi
       if(!empty($nastroje_id)) {
         foreach($nastroje_id as $n) {
@@ -56,13 +95,16 @@
           $prid_skl_vysl = mysql_query($sql_prid_nastr);
         }
       }
+      elseif (isset($_GET["edit"] )) {
+        
+      }
       else {
         echo "Je treba zadat aspon jeden nastroj pro hudebnika.";
         echo "<a href='vyber_nastroje_hud.php?rc_hud=$rc_hud'>Zpet na vyber nastroju</a>";
         exit();
       }
 
-      $nazvy_sloupcu_skl = array('nazev', 'delka', 'jmeno', 'styl');
+      $nazvy_sloupcu_skl = array('nazev', 'jmeno', 'styl');
       $col_count_skl = count($nazvy_sloupcu_skl);
 
       $sql_jm_hud = "SELECT jmeno, prijmeni FROM Hudebnik WHERE rodne_cislo='$rc_hud'";
@@ -73,7 +115,7 @@
       echo "<h2>Vyberte skladby pro hudebnika $jmeno $prijmeni</h2>";
 
       //jen ty skladby, v nichz vystupuje nastroj, na ktery hudebnik hraje
-      $sql_skl = "SELECT DISTINCT ID_skladby, nazev, delka, jmeno, styl, ID_autora
+      $sql_skl = "SELECT DISTINCT ID_skladby, nazev, jmeno, styl
                            FROM Skladba NATURAL JOIN Hraje_v NATURAL JOIN Autor
                            WHERE ttype = '$nastroje_jm[0]'";
       for ($i=1; $i < count($nastroje_jm); $i++) { 
@@ -87,7 +129,9 @@
       echo "<table>";
       while($row_skl = mysql_fetch_array($skladby)){
         echo "<tr>";
-        echo "<td><input type='checkbox' name='skladby[]' value='$row_skl[0]'></td>";
+        $checked = "";
+        if(in_array($row_skl[0], $nastud)) $checked = "checked";        
+        echo "<td><input type='checkbox' name='skladby[]' value='$row_skl[0]' $checked></td>";
         for ($i=1; $i <= $col_count_skl; $i++) {
           echo "<td>{$row_skl[$i]}</td>";
         }

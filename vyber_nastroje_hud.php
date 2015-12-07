@@ -24,6 +24,39 @@
         exit();
       }
 
+            //upravuje se existující hudebník
+      $moje_vypujcky = array();
+      if (isset($_GET["edit"]) and $_GET["edit"] == "true") {
+        $sql = "SELECT vyrobni_cislo
+                FROM Nastroj
+                WHERE rodne_cislo = '{$_GET["rc_hud"]}'";
+        //echo $sql;
+        $nastroje_radek = mysql_query($sql);
+        if ($nastroje_radek == false) {
+          echo mysql_error();
+        }
+
+        while($nastroj = mysql_fetch_array($nastroje_radek)) {
+          array_push($moje_vypujcky, $nastroj['vyrobni_cislo']);
+        }
+      }
+       
+       //vypujcene nastroje nekym jinym
+      $sql_vypujcene = "SELECT vyrobni_cislo
+                        FROM Nastroj
+                        WHERE rodne_cislo IS NOT NULL AND rodne_cislo != '$rc_hud'";
+      $vypujcene_radek = mysql_query($sql_vypujcene);
+      if ($vypujcene_radek == false) {
+        echo mysql_error();
+      }
+
+      $vypujcene = array();
+      while($vypujceny = mysql_fetch_array($vypujcene_radek)) {
+        array_push($vypujcene, $vypujceny['vyrobni_cislo']);
+      }
+      // print_r($vypujcene);
+      // exit();
+
       $sql_jm_hud = "SELECT jmeno, prijmeni FROM Hudebnik WHERE rodne_cislo='$rc_hud'";
       $hudebnik_vysledek = mysql_query($sql_jm_hud);
       $hudebnik_radek = mysql_fetch_array($hudebnik_vysledek);
@@ -31,16 +64,19 @@
       $prijmeni = $hudebnik_radek['prijmeni'];
       echo "<h2>Vyberte nastroje pro hudebnika $jmeno $prijmeni</h2>";
 
-      $nadpisy_sloupcu_nastr = array('Datum výroby', 'Výrobce', 'Datum poslední revize', 'Datum poslední výmìny', 'Vymìnìno', 'Výrobní èíslo', 'Typ');
-      $nazvy_sloupcu_nastr = array('datum_vyroby', 'vyrobce','dat_posl_revize', 'dat_posl_vymeny', 'vymeneno', 'vyrobni_cislo', 'ttype');
+      $nadpisy_sloupcu_nastr = array('Typ', 'Výrobce', 'Výrobní èíslo');
+      $nazvy_sloupcu_nastr = array('ttype', 'vyrobce', 'vyrobni_cislo');
       $col_count = count($nazvy_sloupcu_nastr);      
 
-      $sql_nastroje = "SELECT * FROM Nastroj ORDER BY ttype";
+      $sql_nastroje = "SELECT ttype, vyrobce, vyrobni_cislo, rodne_cislo FROM Nastroj ORDER BY ttype";
       $nastroje = mysql_query($sql_nastroje);
 
       $prvni_typ = mysql_query("SELECT ttype FROM Typ ORDER BY ttype LIMIT 1"); //ziskani abecedne prvniho typu
       $typ_old_row = mysql_fetch_array($prvni_typ);
       $typ_old = $typ_old_row[0];
+
+      $edit="";
+      if (isset($_GET["edit"]) and $_GET["edit"] == "true") {$edit = "?edit=true"; }
       echo "<form action='vyber_skladby_hud.php' method='post'>";
       //tabulky serazene podle typu, pro kazdou skupinu typu samostatna tabulka
       echo "<table>";
@@ -53,7 +89,11 @@
           echo "<table><tr>";
           echo "<tr><td><input type='radio' name='$typ' value='none'></td><td>Zadny z techto</td></tr>";
         }
-        echo "<td><input type='radio' name='$typ' value='{$row_nastroj['vyrobni_cislo']}'></td>";
+        $checked = "";
+        $disabled = "";
+        if(in_array($row_nastroj['vyrobni_cislo'], $vypujcene)) $disabled = "disabled";        
+        if(in_array($row_nastroj['vyrobni_cislo'], $moje_vypujcky)) $checked = "checked";
+        echo "<td><input type='radio' name='$typ' value='{$row_nastroj['vyrobni_cislo']}' $checked $disabled></td>";
         for($i=0; $i < $col_count; $i++) {
           echo "<td>$row_nastroj[$i]</td>";
         }
@@ -63,8 +103,15 @@
       echo "</tr>";
       echo "</table>";
       echo "<input type='hidden' name='rc_hud' value='$rc_hud'>";
-      echo "<input type='submit' name='nastr_odeslat' value='Vybrat nastroje'>";
+      if (isset($_GET["edit"]) and $_GET["edit"] == "true") { $button_label = 'Ulozit zmeny'; }
+      else { $button_label = 'Vybrat nastroje'; }
+      echo "<input type='submit' name='nastr_odeslat' value='$button_label'>";
+      if (isset($_GET["edit"]) and $_GET["edit"] == "true")
+        echo "<input type='hidden' name='edit' value='true'>";
+      
       echo "</form>";
+
+
 
     ?>
   </body>

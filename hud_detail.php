@@ -16,15 +16,14 @@
     <?php
       include "connect.php";
 
-      $nazvy_sloupcu_skl = array('nazev', 'styl', 'jmeno');
-      $nadpisy_sloupcu_skl = array('Název', 'Styl', 'Autor');
-      $nadpisy_sloupcu_nastr = array('Datum výroby', 'Výrobce', 'Datum poslední revize', 'Datum poslední výmìny', 'Vymìnìno', 'Výrobní èíslo', 'Typ');
-      $nazvy_sloupcu_nastr = array('datum_vyroby', 'vyrobce','dat_posl_revize', 'dat_posl_vymeny', 'vymeneno', 'vyrobni_cislo', 'ttype');
+      $nazvy_sloupcu_skl = array('nazev', 'jmeno', 'styl');
+      $nadpisy_sloupcu_skl = array('Název', 'Autor', 'Styl');
+      $nadpisy_sloupcu_nastr = array( 'Typ', 'Výrobce', 'Výrobní èíslo');
+      $nazvy_sloupcu_nastr = array('ttype', 'vyrobce','vyrobni_cislo');
 
       //rc hudebnika poslano pres input hidden
       if(isset($_POST['rc_hud'])) {
         $rc_hud = $_POST['rc_hud'];
-        header("Location:?rc_hud=$rc_hud"); //poslu rc hudebnika do get parametru
       }
       elseif (isset($_GET['rc_hud'])) {
         $rc_hud = $_GET['rc_hud'];
@@ -33,6 +32,13 @@
         echo "Neni zadan konkretni hudebnik.";
         exit();
       }
+          //odstranim vsechny zaznamy o upravovanem hraci (zapisou se nove)
+      $sql_dlt = "DELETE FROM Ma_nastudovano
+                  WHERE rodne_cislo = '$rc_hud'";
+      if (mysql_query($sql_dlt) == false) {
+        echo $sql_dlt;
+      }
+
       //idcka skladeb pro hudebnika
       if(isset($_POST['skladby'])) {
         $skladby = $_POST['skladby'];
@@ -42,7 +48,7 @@
           $prid_skl_vysl = mysql_query($sql_prid_skl);
         }
       }
-
+      
       $sql_jm_hud = "SELECT * FROM Hudebnik WHERE rodne_cislo='$rc_hud'";
       $hudebnik_vysledek = mysql_query($sql_jm_hud);
       $hudebnik_radek = mysql_fetch_array($hudebnik_vysledek);
@@ -75,6 +81,7 @@
       }
       echo "</tr>";
       echo "</table>";
+      echo "<a href=vyber_skladby_hud.php?rc_hud=$rc_hud&edit=true><label>Upravit</label></a>";
 
 
       $sql_sez_nastr = "SELECT *
@@ -100,7 +107,7 @@
       }
       echo "</tr>";
       echo "</table>";
-
+      echo "<a href=vyber_nastroje_hud.php?rc_hud=$rc_hud&edit=true><label>Upravit</label></a><br><br>";
       echo "<a href='index.php?page=personalista.php'>Zpet na vypis hudebniku</a>";
 
     ?>

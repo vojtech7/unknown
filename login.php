@@ -24,7 +24,7 @@
     }
     //hudebnik
     elseif($page == "hudebnik.php") {   
-      $sql = "select * from Hudebnik where rodne_cislo='$login'";
+      $sql = "SELECT * from Hudebnik where rodne_cislo='$login'";
       $vysledek = mysql_query($sql);
       //dotaz nic nevratil
       if ($vysledek == false or mysql_num_rows($vysledek) == 0) {

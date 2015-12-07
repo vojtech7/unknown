@@ -199,3 +199,8 @@ function switch_table(argument) {
     };	
 
 }
+function show_table(argument) {
+     // document.getElementById('add').style.display = "block";
+      $('.add').show();
+      return;
+    }
