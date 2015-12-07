@@ -1,0 +1,18 @@
+input seznam-skladeb
+kandidati = vyber hudebniky majici nacvicenu alespon jednu skladbu koncertu()
+kandidati = kandidati.order_by(pocet_ovladanych_nastroju, asc)
+zvoleni_pro_koncert = array(count(seznam-skladeb))
+for skladba in seznam-skladeb do
+  for nastroj in skladba do
+    zvoleni_pro_skladbu = array()
+    for k in kandidati do
+      if k.hraje_na(nastroj)
+        zvoleni_pro_skladbu.push(k.pop())   //odebere z kandidatu a presune do zvolenych pro skladbu
+      if k.empty()
+        raise error
+    done
+    zvoleni_pro_koncert.push(zvoleni_pro_skladbu)
+  done
+done
+seznam-hudebniku = call_user_func_array('array_intersect', zvoleni_pro_koncert)
+output seznam-hudebniku
