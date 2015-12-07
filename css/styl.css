@@ -124,16 +124,18 @@ table, th, td {
   background: orange;
   color: black;
 }
-#logout_btn a {
-	border: red solid;
-	background-color: red;
+#logout_btn {
 	text-align: center;
-  text-decoration: none;
-  text-align: center;
-  color: white;
   position: absolute;
   top: 10px;
   right: 20px;
+}
+#logout_btn a {
+  border: red solid;
+  background-color: red;
+  text-align: center;
+  text-decoration: none;
+  color: white;
 }
 #logout_btn a:hover {
 	background-color: orange;

@@ -46,6 +46,7 @@
     //uzivatel je prihlasen, tohle else je az do konce souboru
     else {
 
+      $_SESSION['timestamp'] = time();
       $nastroj = array();
       $nastroj["nadpisy_sloupcu"] = array('Datum výroby', 'Výrobce', 'Datum poslední revize', 'Datum poslední výmìny', 'Vymìnìno', 'Výrobní èíslo', 'Typ');
       $nastroj["nazvy_sloupcu"] = array('datum_vyroby', 'vyrobce','dat_posl_revize', 'dat_posl_vymeny', 'vymeneno', 'vyrobni_cislo', 'ttype');

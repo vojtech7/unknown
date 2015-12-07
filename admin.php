@@ -43,6 +43,7 @@
 
     //uzivatel je prihlasen
     else {
+      $_SESSION['timestamp'] = time();
       $tabulka = "Uzivatel";
       $nadpisy_sloupcu = array('Login', 'Role', 'Info');
       $nazvy_sloupcu = array('login', 'heslo_hash', 'role', 'info');

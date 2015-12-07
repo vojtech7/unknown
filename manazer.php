@@ -129,7 +129,7 @@
         }
 
         /*tahani dat z databaze*/
-        $sql = "select * from ".$tabulka_uprav;
+        $sql = "SELECT * FROM $tabulka_uprav ORDER BY datum_a_cas";
         
         $vysledek = mysql_query($sql);
         $columns_count = count($nazvy_sloupcu);
@@ -166,7 +166,7 @@
           }
           
           //predam si PK do url parametru delete
-          echo "<td id=delete_btn><a href='?page={$page}&delete={$row[$pk]}'>Odstranit</a></td>";
+          echo "<td id=delete_btn><a href='?delete={$row[$pk]}' onclick='return confirm(\"Opravdu odstranit?\");'>Odstranit</a></td>";
           //dám $alter do uvozovek
           $alter="\"".$alter."\"";
           echo "<td class=alter_btn><button onclick='P_alter_form_show($alter, \"$role\")'>Upravit</button></td>";
