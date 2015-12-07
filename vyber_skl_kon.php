@@ -24,9 +24,37 @@
         exit();
       }
 
+     if (isset($_POST["edit"]) and $_POST["edit"]="true") {
+        $sql = "SELECT MAX(poradi)
+                FROM Slozen_z
+                WHERE ID_koncertu = $id_kon;";
+        $poradi = mysql_fetch_array(mysql_query($sql));
+        $poradi = $poradi[0];
+        $poradi++;
+
+        $sql = "SELECT COUNT(ID_skladby) FROM Skladba";
+        $pocet = mysql_fetch_array(mysql_query($sql));
+        $pocet = $pocet[0];
+
+         for ($i=0; $i < $pocet; $i++) { 
+           if (isset($_POST[$i])) {
+            $sql = "INSERT INTO Slozen_z
+                    VALUES ($id_kon, {$_POST[$i]}, $poradi)";
+            $poradi++;
+           }
+           
+         }
+
+      }
+
+      if (isset($_GET["delete"])) {
+        $sql = "DELETE FROM Slozen_z
+                WHERE ID_koncertu = {$_GET["id_kon"]} and ID_skladby = {$_GET["delete"]};";
+        mysql_query($sql);
+      }
       $sql = "SELECT poradi, nazev, delka, ID_skladby
               FROM Slozen_z NATURAL JOIN Skladba
-              WHERE ID_koncertu = 16
+              WHERE ID_koncertu = $id_kon
               ORDER BY poradi";
        $title="Skladby koncertu";
        $nadpisy_sloupcu = array("Pořadí", "Název", "Délka");
@@ -53,7 +81,7 @@
           else
             echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$nazvy_sloupcu[$i]]}</td>\n";
         }
-        echo "<td id=delete_btn><a href='?delete={$row[$PK]}'>Odstranit</a></td>\n";
+        echo "<td id=delete_btn><a href='?delete={$row[$PK]}&id_kon=$id_kon'>Odstranit</a></td>\n";
       }
       echo "</table>\n";
       echo "</div>\n";
@@ -62,15 +90,12 @@
     /***********************************
       VYPIS PRIDAVANI DALSICH SKLADEB
     ************************************/       
-      $sql = "SELECT DISTINCT nazev, jmeno, delka, styl, ID_skladby
-              FROM Skladba
-              NATURAL JOIN Autor
-              NATURAL JOIN Slozen_z
-              WHERE ID_koncertu != $id_kon";
+      $sql = "SELECT DISTINCT nazev, jmeno, delka, ID_skladby
+              FROM Skladba NATURAL JOIN Autor";
 
       $title = "Tabulky pro pridani";
-      $nazvy_sloupcu = array("nazev", "jmeno", "delka", "styl");
-      $nadpisy_sloupcu = array("Přidat", "Název", "Jméno", "Délka [min]", "Styl");
+      $nazvy_sloupcu = array("nazev", "jmeno", "delka");
+      $nadpisy_sloupcu = array("Přidat", "Název", "Jméno", "Délka [min]");
       $columns_count = count($nadpisy_sloupcu);
       $table = mysql_query($sql);
       $PK = "ID_skladby";
@@ -78,18 +103,18 @@
       echo "<div class='add'>\n";
        echo "<h3>$title</h3>\n";
 
-      echo "<form action='vyber_skl_kon.php' method='post'>";
+      echo "<form action='vyber_skl_kon.php?id_kon=$id_kon' method='post'>";
       echo "<table class=\"data\" class=\"\">\n";
         //výpis hlavičky tabulky
       for ($i=0; $i <$columns_count ; $i++) { 
         echo "<td class='filter_{$nadpisy_sloupcu[$i]}'>$nadpisy_sloupcu[$i]</td>\n";
       }
-      echo "string";
         //výpis těla
+      $row_count=0;
       while ($row = mysql_fetch_array($table, MYSQL_ASSOC)) {
         echo "<tr>\n";
 
-        echo "<td><input type='checkbox' name={$row["ID_skladby"]}></td>\n";
+        echo "<td><input type='checkbox' name='$row_count' value={$row["ID_skladby"]}></td>\n";
         for ($i=0; $i <count($nazvy_sloupcu); $i++) {
           if ($nazvy_sloupcu[$i] == "nazev") {
             echo "<td class='filter_{$nazvy_sloupcu[$i]}'><a href='skladba.php?id_skl={$row["ID_skladby"]}'>{$row[$nazvy_sloupcu[$i]]}</a></td>\n";
@@ -97,10 +122,12 @@
           }
           echo "<td class='filter_{$nazvy_sloupcu[$i]}'>{$row[$nazvy_sloupcu[$i]]}</td>\n";
         }
+        $row_count++;
       }
       echo "<button onclick=''>Pridat</button>\n";
       echo "</table>\n";
-      echo "<form action='vyber_skl_kon.php' method='post'>";
+      echo "<input type='hidden' name='edit' value='true'>";
+      echo "</form>";
       echo "</div>\n";
 
 
