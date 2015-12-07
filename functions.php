@@ -33,7 +33,7 @@
       $sql = $sql["sql"];
     }
       
-      $table = mysql_query($sql);
+      $table = user_db_query($sql);
       $columns_count = count($nadpisy_sloupcu);
       
       /*
@@ -161,6 +161,9 @@ function user_db_query($sql)
 {
   require 'connect.php';
   $result = mysql_query($sql) or trigger_error(mysql_error());
+  if ($result == false) {
+    exit();
+  }
   return $result;
 }
 

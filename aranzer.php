@@ -69,7 +69,7 @@
       $_SESSION['timestamp'] = time();
        //ziskani jmen autoru pro dalsi praci
       $sql = "SELECT jmeno FROM Autor";
-      $autori = mysql_query($sql);
+      $autori = user_db_query($sql);
 
       for ($i=0; $i < mysql_num_rows($autori); $i++) { 
         $row = mysql_fetch_array($autori, MYSQL_ASSOC);
@@ -105,7 +105,7 @@
 
           $delete_row = "DELETE FROM {$_GET["tabulka"]} 
                          WHERE $pk ='{$_GET["delete"]}';";
-          $delete_success = mysql_query($delete_row);
+          $delete_success = user_db_query($delete_row);
           if(!$delete_success) echo "nepodarilo se odstranit polozku";
           header("Location:aranzer.php");
         }
@@ -125,29 +125,29 @@
               $sql_id = "SELECT ID_autora 
                          FROM Autor 
                          WHERE jmeno= '{$_GET["jmeno"]}'";
-              $cislo = mysql_fetch_row(mysql_query($sql_id));
+              $cislo = mysql_fetch_row(user_db_query($sql_id));
               $ID_autora=$cislo[0];
               $sql = "UPDATE {$skladba['tabulka_uprav']} 
                       SET ID_skladby = $ID_skladby, nazev ='$nazev', delka=$delka, ID_autora =$ID_autora 
                       WHERE ID_skladby =$ID_skladby";
               //echo $sql;
-              mysql_query($sql);
+              user_db_query($sql);
               header("Location:aranzer.php");
             }
         elseif ($_GET["edit_skladba"]=="add") {
             $sql = "SELECT max(ID_skladby) FROM  {$skladba['tabulka_uprav']} ;";
-            $cislo = mysql_fetch_row(mysql_query($sql));
+            $cislo = mysql_fetch_row(user_db_query($sql));
             $ID_skladby = 1 + $cislo[0];
 
             $sql = "SELECT ID_autora FROM Autor WHERE jmeno= \"".$_GET["jmeno"]."\"";
-            $cislo = mysql_fetch_row(mysql_query($sql));
+            $cislo = mysql_fetch_row(user_db_query($sql));
             $ID_autora=$cislo[0];
             
 
             $insert_row = "INSERT INTO {$skladba['tabulka_uprav']} 
                            VALUES ('$ID_skladby', '$nazev', '$delka', '$ID_autora');";
            // echo $insert_row;
-            $insert_success = mysql_query($insert_row);
+            $insert_success = user_db_query($insert_row);
             if(!$insert_success) echo "nepodarilo se vlozit polozku";
             header("Location:vyber_nastroje_skl.php?id_skl=$ID_skladby");
           }
@@ -172,17 +172,17 @@
               $sql = "UPDATE {$autor['tabulka_uprav']} 
                       SET ID_autora = $ID_autora, jmeno ='$jmeno', zacatek_tvorby = $zacatek_tvorby, konec_tvorby = $konec_tvorby, styl = $styl
                       WHERE ID_autora =$ID_autora";
-              mysql_query($sql);
+              user_db_query($sql);
 
             }
         elseif ($_GET["edit_autor"]=="add") {
           $sql = "SELECT max(ID_autora) FROM  {$autor['tabulka_uprav']} ;";
-          $cislo = mysql_fetch_row(mysql_query($sql));
+          $cislo = mysql_fetch_row(user_db_query($sql));
           $ID_autora = 1 + $cislo[0];
 
           $insert_row = "INSERT INTO {$autor['tabulka_uprav']} 
                          VALUES ('$ID_autora', '$jmeno', '$zacatek_tvorby', '$konec_tvorby', '$styl');";
-          $insert_success = mysql_query($insert_row);
+          $insert_success = user_db_query($insert_row);
           if(!$insert_success) echo "nepodarilo se vlozit polozku";
           header("Location:vyber_nastroje_skl.php?");
         }
@@ -191,7 +191,7 @@
         }
         /*tahani dat z databaze*/
         
-        $vysledek = mysql_query($sql);
+        $vysledek = user_db_query($sql);
         $columns_count = count($skladba["nazvy_sloupcu"]);
 
       

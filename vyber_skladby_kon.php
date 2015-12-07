@@ -15,6 +15,7 @@
   <body>
     <?php
       include "connect.php";
+      include 'functions.php';
 
       if(isset($_GET['id_kon'])) {
         $id_kon = $_GET['id_kon'];
@@ -30,11 +31,11 @@
       $col_count_skl = count($nazvy_sloupcu_skl);
 
       $sql_aut = "SELECT ID_autora, jmeno, styl FROM Autor";
-      $autori = mysql_query($sql_aut);
+      $autori = user_db_query($sql_aut);
       $sql_skl_zaklad = "SELECT ID_skladby, nazev, delka, ID_autora FROM Skladba WHERE ID_autora=";
 
       $sql_naz_kon = "SELECT nazev_koncertu FROM Koncert WHERE ID_koncertu='$id_kon'";
-      $koncert_vysledek = mysql_query($sql_naz_kon);
+      $koncert_vysledek = user_db_query($sql_naz_kon);
       $koncert = mysql_fetch_array($koncert_vysledek);
       $nazev_koncertu = $koncert['nazev_koncertu'];
       echo "<h2>Vyberte skladby pro koncert $nazev_koncertu</h2>";
@@ -50,7 +51,7 @@
         $ID_aut = $row_aut[0];
           
         $sql_skl = $sql_skl_zaklad."'$ID_aut'";
-        $skladby = mysql_query($sql_skl);
+        $skladby = user_db_query($sql_skl);
 
         //vypis skladeb daneho autora
         echo "<table style='margin-left:20px;'>";

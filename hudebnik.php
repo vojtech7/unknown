@@ -16,7 +16,7 @@
 
   <?php  
     include "connect.php";
-    
+    include 'functions.php';
     session_save_path("./tmp");
     session_start();
     $role = 'hudebnik';

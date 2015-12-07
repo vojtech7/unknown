@@ -19,6 +19,7 @@
 		// use Nette\Forms\Form;
 
 		include "connect.php";
+		include 'functions.php';
 		use Nette\Forms\Form;
 		session_save_path("./tmp");
 		session_start();
@@ -92,7 +93,7 @@
 				//odstraneni hudebnika z tabulky
 				if(isset($_GET['delete'])) {
 					$delete_row = "DELETE FROM ".$tabulka_uprav." WHERE ".$pk.'="'.$_GET['delete'].'";';
-					$delete_success = mysql_query($delete_row);
+					$delete_success = user_db_query($delete_row);
 					if(!$delete_success) echo "nepodarilo se odstranit polozku";
 					header("Location:personalista.php");
 				}
@@ -105,14 +106,14 @@
 
 					if ($_GET["edit"]=="edit") {
 						$sql="UPDATE $tabulka_uprav SET jmeno = '$jmeno', prijmeni ='$prijmeni', rodne_cislo='$rodne_cislo', heslo_hash='$heslo_hash' WHERE rodne_cislo='".$_GET["PK_old"]."'";
-						$success = mysql_query($sql);
+						$success = user_db_query($sql);
 						//echo $sql;
 						if(!$success) $error = "nepodarilo se upravit polozku";	
 						header("Location:personalista.php");
 					}
 					else {
 						$sql = "INSERT INTO $tabulka_uprav VALUES ('$rodne_cislo', '$jmeno', '$prijmeni', '$heslo_hash');";
-						$success = mysql_query($sql);
+						$success = user_db_query($sql);
 						if(!$success) $error =  "nepodarilo se vlozit polozku";	
             header("Location:vyber_nastroje_hud.php?rc_hud=$rodne_cislo");
 					}
@@ -124,7 +125,7 @@
 
 				/*tahani dat z databaze*/
 				$sql = "select * from ".$tabulka_uprav;
-				$vysledek = mysql_query($sql);
+				$vysledek = user_db_query($sql);
 				$columns_count = count($nazvy_sloupcu);
 
 				/*

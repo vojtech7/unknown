@@ -15,6 +15,7 @@
   <body>
     <?php
       include "connect.php";
+      include 'functions.php';
 
       $nazvy_sloupcu_skl = array('nazev', 'jmeno', 'styl');
       $nadpisy_sloupcu_skl = array('Název', 'Autor', 'Styl');
@@ -35,7 +36,7 @@
           //odstranim vsechny zaznamy o upravovanem hraci (zapisou se nove)
       $sql_dlt = "DELETE FROM Ma_nastudovano
                   WHERE rodne_cislo = '$rc_hud'";
-      if (mysql_query($sql_dlt) == false) {
+      if (user_db_query($sql_dlt) == false) {
         echo $sql_dlt;
       }
 
@@ -45,12 +46,12 @@
         //pridani skladeb hudebnikovi
         foreach ($skladby as $i => $s) {
           $sql_prid_skl = "INSERT INTO Ma_nastudovano VALUES ('$rc_hud', '$s');";
-          $prid_skl_vysl = mysql_query($sql_prid_skl);
+          $prid_skl_vysl = user_db_query($sql_prid_skl);
         }
       }
       
       $sql_jm_hud = "SELECT * FROM Hudebnik WHERE rodne_cislo='$rc_hud'";
-      $hudebnik_vysledek = mysql_query($sql_jm_hud);
+      $hudebnik_vysledek = user_db_query($sql_jm_hud);
       $hudebnik_radek = mysql_fetch_array($hudebnik_vysledek);
       $jmeno = $hudebnik_radek['jmeno'];
       $prijmeni = $hudebnik_radek['prijmeni'];
@@ -64,7 +65,7 @@
                         FROM Skladba NATURAL JOIN Autor) AS alias
                       WHERE rodne_cislo='$rc_hud'";
       // echo $sql_sez_skl;
-      $sez_skl_vysl = mysql_query($sql_sez_skl);
+      $sez_skl_vysl = user_db_query($sql_sez_skl);
       $columns_count_skl = count($nazvy_sloupcu_skl);
 
       echo "<h3>Seznam nastudovanych skladeb</h3>";
@@ -88,7 +89,7 @@
                       FROM Nastroj
                       WHERE rodne_cislo='$rc_hud'";
       // echo $sql_sez_nastr;
-      $sez_nastr_vysl = mysql_query($sql_sez_nastr);
+      $sez_nastr_vysl = user_db_query($sql_sez_nastr);
       $columns_count_nastr = count($nazvy_sloupcu_nastr);
 
       echo "<h3>Seznam vypujcenych nastroju</h3>";

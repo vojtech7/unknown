@@ -31,7 +31,7 @@
       }
 
       $sql_autor = "SELECT * FROM Autor WHERE ID_autora='$id_aut'";
-      $autor_vysledek = mysql_query($sql_autor);
+      $autor_vysledek = user_db_query($sql_autor);
       $autor = mysql_fetch_array($autor_vysledek);
       $jmeno=  $autor['jmeno'];
       $zac_tv =  $autor['zacatek_tvorby'];

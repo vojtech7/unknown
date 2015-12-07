@@ -15,6 +15,7 @@
   <body>
     <?php
       include "connect.php";
+      include 'functions.php';
 
       if(isset($_GET['id_skl'])) {
         $id_skl = $_GET['id_skl'];
@@ -25,7 +26,7 @@
       }
 
       $sql_naz_skl = "SELECT nazev FROM Skladba WHERE ID_skladby='$id_skl'";
-      $skladba_vysledek = mysql_query($sql_naz_skl);
+      $skladba_vysledek = user_db_query($sql_naz_skl);
       $skladba_radek = mysql_fetch_array($skladba_vysledek);
       $naz_skl = $skladba_radek['nazev'];
       echo "<h2>Vyberte nastroje pro skladbu $naz_skl</h2>";
@@ -36,7 +37,7 @@
       $typ_nas = 'ttype';
 
       $sql_typy = "SELECT ttype FROM Nastroj GROUP BY ttype";  //FIXME: vypisovat jenom typy(zgrupovane)
-      $typy = mysql_query($sql_typy);
+      $typy = user_db_query($sql_typy);
       echo "<form action='skladba.php' method='post'>";
       echo "<table>";
       while($row_typ = mysql_fetch_array($typy)) {

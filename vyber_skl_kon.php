@@ -15,6 +15,7 @@
   <body>
     <?php
       include "connect.php";
+      include 'functions.php';
 
       if(isset($_GET['id_kon'])) {
         $id_kon = $_GET['id_kon'];
@@ -28,19 +29,19 @@
         $sql = "SELECT MAX(poradi)
                 FROM Slozen_z
                 WHERE ID_koncertu = $id_kon;";
-        $poradi = mysql_fetch_array(mysql_query($sql));
+        $poradi = mysql_fetch_array(user_db_query($sql));
         $poradi = $poradi[0];
         $poradi++;
 
         $sql = "SELECT COUNT(ID_skladby) FROM Skladba";
-        $pocet = mysql_fetch_array(mysql_query($sql));
+        $pocet = mysql_fetch_array(user_db_query($sql));
         $pocet = $pocet[0];
 
          for ($i=0; $i < $pocet; $i++) { 
            if (isset($_POST[$i])) {
             $sql = "INSERT INTO Slozen_z
                     VALUES ($id_kon, {$_POST[$i]}, $poradi)";
-            mysql_query($sql);
+            user_db_query($sql);
             $poradi++;
            }
            
@@ -51,7 +52,7 @@
       if (isset($_GET["delete"])) {
         $sql = "DELETE FROM Slozen_z
                 WHERE ID_koncertu = {$_GET["id_kon"]} and ID_skladby = {$_GET["delete"]};";
-        mysql_query($sql);
+        user_db_query($sql);
       }
       $sql = "SELECT poradi, nazev, delka, ID_skladby
               FROM Slozen_z NATURAL JOIN Skladba
@@ -61,7 +62,7 @@
        $nadpisy_sloupcu = array("Pořadí", "Název", "Délka");
        $nazvy_sloupcu = array('poradi', 'nazev', 'delka');
        $columns_count = count($nazvy_sloupcu);
-       $table = mysql_query($sql);
+       $table = user_db_query($sql);
        $PK = "ID_skladby";
 
        echo "<div>\n";
@@ -98,7 +99,7 @@
       $nazvy_sloupcu = array("nazev", "jmeno", "delka");
       $nadpisy_sloupcu = array("Přidat", "Název", "Jméno", "Délka [min]");
       $columns_count = count($nadpisy_sloupcu);
-      $table = mysql_query($sql);
+      $table = user_db_query($sql);
       $PK = "ID_skladby";
 
       echo "<div class='add'>\n";

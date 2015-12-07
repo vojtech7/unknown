@@ -15,7 +15,7 @@
   <body>
     <?php
       include "connect.php";
-
+      include 'functions.php';
       if(isset($_GET['rc_hud'])) {
         $rc_hud = $_GET['rc_hud'];
       }
@@ -31,7 +31,7 @@
                 FROM Nastroj
                 WHERE rodne_cislo = '{$_GET["rc_hud"]}'";
         //echo $sql;
-        $nastroje_radek = mysql_query($sql);
+        $nastroje_radek = user_db_query($sql);
         if ($nastroje_radek == false) {
           echo mysql_error();
         }
@@ -45,7 +45,7 @@
       $sql_vypujcene = "SELECT vyrobni_cislo
                         FROM Nastroj
                         WHERE rodne_cislo IS NOT NULL AND rodne_cislo != '$rc_hud'";
-      $vypujcene_radek = mysql_query($sql_vypujcene);
+      $vypujcene_radek = user_db_query($sql_vypujcene);
       if ($vypujcene_radek == false) {
         echo mysql_error();
       }
@@ -58,7 +58,7 @@
       // exit();
 
       $sql_jm_hud = "SELECT jmeno, prijmeni FROM Hudebnik WHERE rodne_cislo='$rc_hud'";
-      $hudebnik_vysledek = mysql_query($sql_jm_hud);
+      $hudebnik_vysledek = user_db_query($sql_jm_hud);
       $hudebnik_radek = mysql_fetch_array($hudebnik_vysledek);
       $jmeno = $hudebnik_radek['jmeno'];
       $prijmeni = $hudebnik_radek['prijmeni'];
@@ -69,9 +69,9 @@
       $col_count = count($nazvy_sloupcu_nastr);      
 
       $sql_nastroje = "SELECT ttype, vyrobce, vyrobni_cislo, rodne_cislo FROM Nastroj ORDER BY ttype";
-      $nastroje = mysql_query($sql_nastroje);
+      $nastroje = user_db_query($sql_nastroje);
 
-      $prvni_typ = mysql_query("SELECT ttype FROM Typ ORDER BY ttype LIMIT 1"); //ziskani abecedne prvniho typu
+      $prvni_typ = user_db_query("SELECT ttype FROM Typ ORDER BY ttype LIMIT 1"); //ziskani abecedne prvniho typu
       $typ_old_row = mysql_fetch_array($prvni_typ);
       $typ_old = $typ_old_row[0];
 

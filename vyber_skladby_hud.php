@@ -15,6 +15,7 @@
   <body>
     <?php
       include "connect.php";
+      include 'functions.php';
 
       if(isset($_POST['rc_hud'])) {
         $rc_hud = $_POST['rc_hud'];
@@ -29,7 +30,7 @@
       }
 
       //ziskani typu nastroju z DB
-      $typy_vysledek = mysql_query("SELECT ttype FROM Typ ORDER BY ttype");
+      $typy_vysledek = user_db_query("SELECT ttype FROM Typ ORDER BY ttype");
       $typy = array();
       while($typ_radek = mysql_fetch_array($typy_vysledek)) {
         array_push($typy, $typ_radek[0]);
@@ -40,7 +41,7 @@
         $sql_id = "SELECT vyrobni_cislo
                    FROM Nastroj
                    Where rodne_cislo = '$rc_hud'";
-        $result_id = mysql_query($sql_id);
+        $result_id = user_db_query($sql_id);
         $nastroje_id = array();
         while ($row = mysql_fetch_row($result_id)) {
           array_push($nastroje_id, $row[0]);
@@ -60,7 +61,7 @@
       //ziskani jmen(typu) z IDcek nastroju
       $nastroje_jm = array();
       foreach($nastroje_id as $n_id) {
-        $nastroj_jm_vysl = mysql_query("SELECT ttype FROM Nastroj WHERE vyrobni_cislo = $n_id");
+        $nastroj_jm_vysl = user_db_query("SELECT ttype FROM Nastroj WHERE vyrobni_cislo = $n_id");
         $nastroj_jm_radek = mysql_fetch_array($nastroj_jm_vysl);
         array_push($nastroje_jm, $nastroj_jm_radek[0]);
       }
@@ -70,7 +71,7 @@
         $sql_nastud = "SELECT ID_skladby
                        FROM Hudebnik NATURAL JOIN Ma_nastudovano
                        WHERE rodne_cislo = '$rc_hud';";
-        $vysledek = mysql_query($sql_nastud);
+        $vysledek = user_db_query($sql_nastud);
         $nastud = array();
         while ($row = mysql_fetch_array($vysledek)) {
           array_push($nastud, $row[0]);
@@ -81,7 +82,7 @@
       $sql_dlt = "UPDATE Nastroj
                   SET rodne_cislo = NULL
                   WHERE rodne_cislo = '$rc_hud'";
-      if (mysql_query($sql_dlt) == false) {
+      if (user_db_query($sql_dlt) == false) {
         echo $sql_dlt;
       }
   
@@ -92,7 +93,7 @@
       if(!empty($nastroje_id)) {
         foreach($nastroje_id as $n) {
           $sql_prid_nastr = "UPDATE Nastroj SET rodne_cislo = '$rc_hud' WHERE vyrobni_cislo = '$n'";
-          $prid_skl_vysl = mysql_query($sql_prid_nastr);
+          $prid_skl_vysl = user_db_query($sql_prid_nastr);
         }
       }
       elseif (isset($_GET["edit"] )) {
@@ -108,7 +109,7 @@
       $col_count_skl = count($nazvy_sloupcu_skl);
 
       $sql_jm_hud = "SELECT jmeno, prijmeni FROM Hudebnik WHERE rodne_cislo='$rc_hud'";
-      $hudebnik_vysledek = mysql_query($sql_jm_hud);
+      $hudebnik_vysledek = user_db_query($sql_jm_hud);
       $hudebnik_radek = mysql_fetch_array($hudebnik_vysledek);
       $jmeno = $hudebnik_radek['jmeno'];
       $prijmeni = $hudebnik_radek['prijmeni'];
@@ -123,7 +124,7 @@
       }
       $sql_skl .= " ORDER BY jmeno";
       // echo $sql_skl;
-      $skladby = mysql_query($sql_skl);
+      $skladby = user_db_query($sql_skl);
 
       echo "<form action='hud_detail.php' method='post'>";
       echo "<table>";
