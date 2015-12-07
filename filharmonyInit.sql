@@ -22,6 +22,7 @@ CREATE TABLE IF NOT EXISTS Nastroj(
   vymeneno VARCHAR(20),
   vyrobni_cislo INT,
   ttype VARCHAR(20),
+  rodne_cislo CHAR(11),
   PRIMARY KEY (vyrobni_cislo),
   FOREIGN KEY(ttype) REFERENCES Typ(ttype) ON DELETE CASCADE
 ) ENGINE=INNODB; 

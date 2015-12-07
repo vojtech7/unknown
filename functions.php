@@ -148,4 +148,20 @@
         echo "</table>";
       
     }
+
+/*********************************
+      Wrapper nad mysql_query()
+*********************************/
+/*
+  Parametry funkce:
+    povinné:
+      sql: dotaz do databáze
+*/
+function user_db_query($sql)
+{
+  require 'connect.php';
+  $result = mysql_query($sql) or trigger_error(mysql_error());
+  return $result;
+}
+
 ?>
