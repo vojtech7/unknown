@@ -40,6 +40,7 @@
            if (isset($_POST[$i])) {
             $sql = "INSERT INTO Slozen_z
                     VALUES ($id_kon, {$_POST[$i]}, $poradi)";
+            mysql_query($sql);
             $poradi++;
            }
            
