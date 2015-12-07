@@ -85,13 +85,38 @@
       $sql = "SELECT ttype, pocet
                       FROM Skladba
                       NATURAL JOIN Hraje_v
-                      WHERE ID_skladby = $id_skl";
+                      WHERE ID_skladby = $id_skl and pocet != 0";
 
       $title = "Nástroje, které hrají ve skladbě";
       $nadpisy_sloupcu = array('Typ', 'Počet');      
       $nazvy_sloupcu = array('ttype', 'pocet');
       print_table($sql, $title, $nadpisy_sloupcu, $nazvy_sloupcu);
-          //data pro úpravu počtu nástrojů
+
+          //Úprava počtu nástrojů
+      if (isset($_GET["send"])) {
+          //seznam typů nástrojů
+        $sql = "SELECT DISTINCT(ttype)
+                FROM Hraje_v";
+        $typy = mysql_query($sql);
+        while ($row = mysql_fetch_array($typy, MYSQL_NUM)) {
+          $pocet = $_GET[$row[0]];
+          $typ = $row[0];
+          $poc_na_sklade_vysl = mysql_query("SELECT COUNT(*) FROM Nastroj WHERE ttype = '$typ'");
+            $poc_na_sklade_radek = mysql_fetch_array($poc_na_sklade_vysl);
+            $poc_na_sklade = $poc_na_sklade_radek[0];
+            if($pocet > $poc_na_sklade) {
+              echo "Nastroju typu $typ je na sklade pouze $poc_na_sklade.";
+              echo "<br><a href='skladba.php?id_skl=$id_skl&show=true'>Zpet na vyber nastroju</a>";
+              exit();
+            }
+          $sql = "UPDATE Hraje_v
+                  SET pocet = $pocet
+                  WHERE ttype = '{$row[0]}' and ID_skladby = $id_skl";
+          if(mysql_query($sql) == false)
+            echo mysql_error();
+        }
+        header("Location:?id_skl=$id_skl");
+      }
       
       echo "<button onclick='P_add_form_show(\"skladba\")'>Přidat nástroj</button>";
                 // tabulka koncertu
@@ -135,40 +160,53 @@
   require 'Nette/loader.php';
 
     require_once 'Nette/Forms/Form.php';
-
+    //získání aktuálního počtu nástroj ů ve skladbě
+    $sql_pocet = "SELECT pocet
+                  FROM Hraje_v
+                  WHERE ID_skladby = $id_skl;";
+    $nastroje = mysql_query($sql_pocet);
+    //print_r($nastroje_jm);
     $add = new Form;
     $add->setAction('skladba.php?id_skl='.$_GET["id_skl"]);
     $add->setMethod('GET');
 
     for ($i=0; $i < count($nastroje_jm); $i++) { 
+        $pocet = mysql_fetch_array($nastroje, MYSQL_NUM);
         $add->addText($nastroje_jm[$i], $nastroje_jm[$i])
             ->setType('number')
-            ->setValue('0')
+            ->setValue($pocet[0])
             ->setAttribute('min', '0')
             ->addRule(Form::INTEGER, 'Počet musi být číslo');
     }
     $add->addSubmit('send', 'Upravit'); 
     //$form->addHidden(]);
 
-  $add->addSubmit('send', 'Pridat');
-  echo $add; // vykresli formular
+    echo $add; // vykresli formular
 
-  $sub1 = $add->addContainer('first');
-  /*
-  if ($add->isSuccess()) {
-    echo 'Formuláø byl správnì vyplnìn a odeslán';
-      $values = $add->getValues();
-    dump($values);
-  }
-  */
-  //vypisuje html kod na dalsich radcich
-  echo '
-  </div>
-  <!-- Popup Div Ends Here -->
-  </div>
-  <!-- Display Popup Button -->
-  <!-- <button id="popup" onclick="P_add_form_show()">Popup</button> -->';
-  //uzivatel je prihlasen
-    ?>
+    $sub1 = $add->addContainer('first');
+    /*
+    if ($add->isSuccess()) {
+      echo 'Formuláø byl správnì vyplnìn a odeslán';
+        $values = $add->getValues();
+      dump($values);
+    }
+    */
+    //vypisuje html kod na dalsich radcich
+    echo '
+    </div>
+    <!-- Popup Div Ends Here -->
+    </div>
+    <!-- Display Popup Button -->
+    <!-- <button id="popup" onclick="P_add_form_show()">Popup</button> -->';
+    //uzivatel je prihlasen
+    if (isset($_GET["show"]) and $_GET["show"] == "true") {
+      echo "<script type=\"text/javascript\">
+              document.getElementById('P_add_form').style.display = 'block';
+            </script>";
+    }
+
+
+  ?>
+
   </body>
 </html>

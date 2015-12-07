@@ -24,12 +24,12 @@
 								<span id="IS"><p>Informaèní systém</p></span><br>
 								<span id="prihlasit"><p>Pøihlásit se jako:</p></span><br>
 					    	<div id="menu"><ul>
-						      <li><a href="?page=manazer.php">Mana¾er</a></li>
-						      <li><a href="?page=personalista.php">Personalista</a></li>
-						      <li><a href="?page=hudebnik.php">Hudebník</a></li>
-						      <li><a href="?page=aranzer.php">Aran¾ér</a></li>
-						      <li><a href="?page=nastrojar.php">Nástrojáø</a></li>
-						      <li><a href="?page=admin.php">Administrátor</a></li></ul>
+						      <li><a href="manazer.php">Mana¾er</a></li>
+						      <li><a href="personalista.php">Personalista</a></li>
+						      <li><a href="hudebnik.php">Hudebník</a></li>
+						      <li><a href="aranzer.php">Aran¾ér</a></li>
+						      <li><a href="nastrojar.php">Nástrojáø</a></li>
+						      <li><a href="admin.php">Administrátor</a></li></ul>
 					      </div>
 				      </div>';
 				echo '<div id="rightArea">
