@@ -67,9 +67,11 @@ CREATE TABLE IF NOT EXISTS Hraje_na(
 CREATE TABLE IF NOT EXISTS Vystupuje_na(
   rodne_cislo CHAR(11),
   ID_koncertu INT,
+  ttype VARCHAR(20),
   PRIMARY KEY (rodne_cislo, ID_koncertu),
   FOREIGN KEY(rodne_cislo) REFERENCES Hudebnik(rodne_cislo) ON DELETE CASCADE,
-  FOREIGN KEY(ID_koncertu) REFERENCES Koncert(ID_koncertu) ON DELETE CASCADE
+  FOREIGN KEY(ID_koncertu) REFERENCES Koncert(ID_koncertu) ON DELETE CASCADE,
+  FOREIGN KEY(ttype) REFERENCES Typ(ttype) ON DELETE CASCADE
 ) ENGINE=INNODB;
 CREATE TABLE IF NOT EXISTS Slozen_z(
   ID_koncertu INT,
