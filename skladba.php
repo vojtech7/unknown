@@ -46,7 +46,7 @@
       if(!empty($_POST)) {
         foreach($nastroje_jm as $typ) {
           $pocet = $_POST[$typ];
-          if($pocet > 0) {
+          //if($pocet > 0) {
             $poc_na_sklade_vysl = mysql_query("SELECT COUNT(*) FROM Nastroj WHERE ttype = '$typ'");
             $poc_na_sklade_radek = mysql_fetch_array($poc_na_sklade_vysl);
             $poc_na_sklade = $poc_na_sklade_radek[0];
@@ -58,7 +58,7 @@
             $sql_prid_nas = "INSERT INTO Hraje_v VALUES (\"$typ\", $id_skl, $pocet)";
             // echo $sql_prid_nas."<br>";
             $pri_nas_vysl = mysql_query($sql_prid_nas);
-          }
+          //}
         }
       }
 
@@ -91,6 +91,8 @@
       $nadpisy_sloupcu = array('Typ', 'Počet');      
       $nazvy_sloupcu = array('ttype', 'pocet');
       print_table($sql, $title, $nadpisy_sloupcu, $nazvy_sloupcu);
+          //data pro úpravu počtu nástrojů
+      
       echo "<button onclick='P_add_form_show(\"skladba\")'>Přidat nástroj</button>";
                 // tabulka koncertu
       $sql = "SELECT nazev_koncertu, datum_a_cas, mesto, adresa
@@ -135,7 +137,7 @@
     require_once 'Nette/Forms/Form.php';
 
     $add = new Form;
-    $add->setAction('aranzer.php');
+    $add->setAction('skladba.php?id_skl='.$_GET["id_skl"]);
     $add->setMethod('GET');
 
     for ($i=0; $i < count($nastroje_jm); $i++) { 
@@ -145,18 +147,20 @@
             ->setAttribute('min', '0')
             ->addRule(Form::INTEGER, 'Počet musi být číslo');
     }
+    $add->addSubmit('send', 'Upravit'); 
+    //$form->addHidden(]);
 
   $add->addSubmit('send', 'Pridat');
   echo $add; // vykresli formular
 
   $sub1 = $add->addContainer('first');
-
+  /*
   if ($add->isSuccess()) {
     echo 'Formuláø byl správnì vyplnìn a odeslán';
       $values = $add->getValues();
     dump($values);
   }
-
+  */
   //vypisuje html kod na dalsich radcich
   echo '
   </div>

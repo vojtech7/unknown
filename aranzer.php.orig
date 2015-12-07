@@ -131,7 +131,11 @@
                       WHERE ID_skladby =$ID_skladby";
               //echo $sql;
               mysql_query($sql);
+<<<<<<< HEAD
+              // header("Location:aranzer.php");
+=======
               header("Location:aranzer.php");
+>>>>>>> vojta2
             }
         elseif ($_GET["edit_skladba"]=="add") {
             $sql = "SELECT max(ID_skladby) FROM  {$skladba['tabulka_uprav']} ;";
@@ -150,10 +154,14 @@
             if(!$insert_success) echo "nepodarilo se vlozit polozku";
             header("Location:vyber_nastroje_skl.php?id_skl=$ID_skladby");
           }
+<<<<<<< HEAD
+        
+=======
           if ($_GET["edit_skladba"]=="add")
-            header("Location: vyber_nastroje_skl.php?id_skl=$ID_skladby");
+            header("Location: skladba.php?id_skl=$ID_skladby&new=true");
           else
-          header("Location:aranzer.php");
+            header("Location:aranzer.php");
+>>>>>>> vojta2
         }
         /************************************************
               PŘIDÁVÁNÍ A ÚPRAVA AUTORŮ
@@ -173,6 +181,14 @@
                       WHERE ID_autora =$ID_autora";
               mysql_query($sql);
 
+<<<<<<< HEAD
+              $insert_row = "INSERT INTO $tabulka_uprav 
+                             VALUES ('$ID_skladby', '$nazev', '$delka', '$ID_autora');";
+              $insert_success = mysql_query($insert_row);
+              if(!$insert_success) echo "nepodarilo se vlozit polozku";
+=======
+              header("Location:vyber_nastroje_skl.php?id_skl=$ID_skladby");
+>>>>>>> vojta2
             }
         elseif ($_GET["edit_autor"]=="add") {
           $sql = "SELECT max(ID_autora) FROM  {$autor['tabulka_uprav']} ;";
